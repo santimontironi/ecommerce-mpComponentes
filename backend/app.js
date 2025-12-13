@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv"
 import cookieparser from "cookie-parser";
 import cors from "cors";
+import {router as adminRouter} from "./routes/admin-routes.js";
 
 dotenv.config()
 
@@ -16,5 +17,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
+
+app.use('', adminRouter)
 
 export default app
