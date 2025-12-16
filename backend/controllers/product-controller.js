@@ -1,6 +1,24 @@
 import Product from "../models/Product.js";
 import cloudinary from "../config/cloudinary.js";
 
+export const products = async (req, res) => {
+    try{
+        const {category} = req.query
+
+        if(category){
+            const products = await Product.find({active: true, category: category})
+            res.status(200).json({message:'Productos obtenidos correctamente', products: products})
+        }
+        else{
+            const products = await Product.find({active: true})
+            res.status(200).json({message:'Productos obtenidos correctamente', products: products})
+        }
+    }
+    catch(error){
+        res.status(500).json({message:'Error al obtener productos', error: error.message})
+    }
+}
+
 export const addProduct = async(req,res) => {
     try{
         const {name, price, description} = req.body
