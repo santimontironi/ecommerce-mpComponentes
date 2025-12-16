@@ -19,6 +19,19 @@ export const products = async (req, res) => {
     }
 }
 
+export const productById = async (req,res) => {
+    try{
+        const {id} = req.params
+
+        const product = await Product.findById(id)
+
+        res.status(200).json({message:'Producto obtenido correctamente', product: product})
+    }
+    catch(error){
+        res.status(500).json({message:'Error al obtener producto', error: error.message})
+    }
+}
+
 export const addProduct = async(req,res) => {
     try{
         const {name, price, description} = req.body
