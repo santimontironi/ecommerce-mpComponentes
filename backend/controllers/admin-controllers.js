@@ -57,6 +57,22 @@ export const loginAdmin = async (req, res) => {
     }
 };
 
+export const dashboardAdmin = async (req,res) => {
+    try{
+        const userId = req.user.id;
+        const admin = await Admin.findById(userId)
+
+        if(!admin){
+            return res.status(401).json({authorized: false});
+        }
+
+        res.status(200).json({message:"Dashboard obtenido correctamente", admin: admin})
+    }
+    catch(error){
+        res.status(500).json({message:"Error al obtener el dashboard", error: error.message});
+    }
+}
+
 export const logoutAdmin = async (req, res) => {
     try {
         res.clearCookie("token",{

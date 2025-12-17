@@ -34,9 +34,9 @@ export const createPreference = async (req, res) => {
                     },
                 },
                 back_urls: {
-                    success: 'https://nunodeportes.netlify.app/pay-correct',
-                    failure: 'https://nunodeportes.netlify.app/pay-fail',
-                    pending: 'https://nunodeportes.netlify.app/pay-pending',
+                    success: 'http://localhost:5173/pay-correct',
+                    failure: 'http://localhost:5173/pay-fail',
+                    pending: 'http://localhost:5173/pay-pending',
                 },
                 auto_return: 'approved',
             },
