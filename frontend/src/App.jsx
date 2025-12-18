@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginAdmin } from "../pages/LoginAdmin";
-import AdminProvider from "../context/AdminContext";
+import AdminProvider from "../context/adminContext";
+import SecurityRoutes from "../components/SecurityRoutes";
 import Home from "../pages/Home";
+import DashboardAdmin from "../pages/DashboardAdmin";
 
 function App() {
 
@@ -13,6 +15,12 @@ function App() {
 
         <Route path="/ingresar" element={<AdminProvider>
           <LoginAdmin />
+        </AdminProvider>} />
+
+        <Route path="/dashboard" element={<AdminProvider>
+          <SecurityRoutes>
+            <DashboardAdmin />
+          </SecurityRoutes>
         </AdminProvider>} />
 
 

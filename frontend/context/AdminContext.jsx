@@ -1,12 +1,13 @@
-import { createContext, useState } from "react";
-import { loginAdminAxios } from "../api/api";
+import { createContext, useEffect, useState } from "react";
+import { loginAdminAxios, dashboardAdminAxios } from "../api/api";
 import { Outlet } from "react-router-dom";
 
-export const contextAdmin = createContext();
+export const ContextAdmin = createContext();
 
-const AdminProvider = ({ children }) => {
+const AdminProvider = () => {
 
     const [admin, setAdmin] = useState(null);
+    const [loading,setLoading] = useState(true)
     const [loadingLogin,setLoadingLogin] = useState(false);
 
     async function loginAdmin(data){
@@ -25,10 +26,29 @@ const AdminProvider = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        async function getDashboard(){
+            try{
+                const res = await dashboardAdminAxios()
+                setAdmin(res.data.admin)
+            }
+            catch(error){
+                console.log("Error al obtener el dashboard", error);
+            }
+            finally{
+                setTimeout(() => {
+                    setLoading(false);
+                },2000)
+            }
+        }
 
-    return <contextAdmin.Provider value={{loadingLogin, loginAdmin, admin}}>
+        getDashboard();
+    })
+
+
+    return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading}}>
         <Outlet />
-    </contextAdmin.Provider>;
+    </ContextAdmin.Provider>;
 };
 
 export default AdminProvider
