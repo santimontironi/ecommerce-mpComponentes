@@ -17,7 +17,7 @@ function App() {
           <LoginAdmin />
         </AdminProvider>} />
 
-        <Route path="/dashboard" element={<AdminProvider>
+        <Route path="/panel-admin" element={<AdminProvider>
           <SecurityRoutes>
             <DashboardAdmin />
           </SecurityRoutes>

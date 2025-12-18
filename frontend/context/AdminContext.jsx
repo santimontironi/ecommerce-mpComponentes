@@ -1,10 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { loginAdminAxios, dashboardAdminAxios } from "../api/api";
-import { Outlet } from "react-router-dom";
 
 export const ContextAdmin = createContext();
 
-const AdminProvider = () => {
+const AdminProvider = ({children}) => {
 
     const [admin, setAdmin] = useState(null);
     const [loading,setLoading] = useState(true)
@@ -51,7 +50,7 @@ const AdminProvider = () => {
 
 
     return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading}}>
-        <Outlet />
+        {children}
     </ContextAdmin.Provider>;
 };
 
