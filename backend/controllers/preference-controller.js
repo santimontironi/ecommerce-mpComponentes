@@ -1,5 +1,5 @@
 import { Preference } from 'mercadopago';
-import client from '../config/mercadopago.js';
+import client from '../config/mpConfig.js';
 
 export const createPreference = async (req, res) => {
     try {

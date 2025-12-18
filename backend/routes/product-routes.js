@@ -1,6 +1,6 @@
 import { addProduct, deleteProduct, products, productById } from "../controllers/product-controller.js";
-import verifyToken from "../middlewares/verifyToken.js";
-import upload from "../middlewares/multer.js";
+import { verifyToken } from "../middlewares/verify-token.js";
+import { upload } from "../middlewares/multer.js";
 import { Router } from "express";
 
 export const router = Router()
