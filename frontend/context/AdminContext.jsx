@@ -30,7 +30,11 @@ const AdminProvider = () => {
         async function getDashboard(){
             try{
                 const res = await dashboardAdminAxios()
-                setAdmin(res.data.admin)
+                if(res.data.authorized === false){
+                    setAdmin(null)
+                }else{
+                    setAdmin(res.data.admin)
+                }
             }
             catch(error){
                 console.log("Error al obtener el dashboard", error);
