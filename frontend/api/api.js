@@ -1,11 +1,12 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: import.meta.VITE_BACKEND_URL_DEV,
+    baseURL: import.meta.env.VITE_BACKEND_URL_DEV,
+    withCredentials: true
 });
 
 export const loginAdminAxios = (data) => {
-    return api.post("/admin/login", { data });    
+    return api.post("/login", data );    
 };
 
 export const dashboardAdminAxios = () => {

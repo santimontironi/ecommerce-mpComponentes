@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv"
-import cookieparser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import bodyParser from "body-parser";
 import {router as adminRouter} from "./routes/admin-routes.js";
 import {router as productRouter} from "./routes/product-routes.js";
 import {router as preferenceRouter} from "./routes/preference-routes.js";
@@ -11,7 +12,9 @@ dotenv.config()
 const app = express()
 
 app.use(express.json())
-app.use(cookieparser())
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.use(cors({
     origin: process.env.FRONTEND_URL_DEV,

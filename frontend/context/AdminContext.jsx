@@ -14,9 +14,10 @@ const AdminProvider = ({children}) => {
         try{
             const res = await loginAdminAxios(data)
             setAdmin(res.data.admin)
+            return res.data
         }
         catch(error){
-            console.log("Error al iniciar sesión", error);
+            throw error
         }
         finally{
             setTimeout(() => {
@@ -33,6 +34,7 @@ const AdminProvider = ({children}) => {
                     setAdmin(null)
                 }else{
                     setAdmin(res.data.admin)
+                    return res.data
                 }
             }
             catch(error){
@@ -46,7 +48,7 @@ const AdminProvider = ({children}) => {
         }
 
         getDashboard();
-    })
+    },[])
 
 
     return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading}}>

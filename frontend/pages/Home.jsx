@@ -1,6 +1,14 @@
+import CategoryCard from "../components/CategoryCard"
+
 const Home = () => {
   return (
-    <div>Home</div>
+    <section>
+      <div>
+        <CategoryCard/>
+        <CategoryCard/>
+        <CategoryCard/>
+      </div>
+    </section>
   )
 }
 

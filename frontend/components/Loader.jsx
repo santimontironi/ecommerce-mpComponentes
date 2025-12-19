@@ -6,7 +6,7 @@ const Loader = () => {
             <CircularProgress
                 height="100"
                 width="100"
-                color="#4fa94d"
+                color="#fff"
                 ariaLabel="circular-progress-loading"
                 wrapperStyle={{}}
                 wrapperClass="wrapper-class"
