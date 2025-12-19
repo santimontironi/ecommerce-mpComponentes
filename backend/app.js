@@ -5,6 +5,7 @@ import cors from "cors";
 import {router as adminRouter} from "./routes/admin-routes.js";
 import {router as productRouter} from "./routes/product-routes.js";
 import {router as preferenceRouter} from "./routes/preference-routes.js";
+import {router as categoryRouter} from "./routes/category-routes.js";
 
 dotenv.config()
 
@@ -24,5 +25,6 @@ app.use(cors({
 app.use('', adminRouter)
 app.use('', productRouter)
 app.use('', preferenceRouter)
+app.use('', categoryRouter)
 
 export default app

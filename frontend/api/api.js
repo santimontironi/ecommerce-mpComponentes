@@ -20,3 +20,15 @@ export const getAllProductsAxios = () => {
 export const addProductAxios = (data) => {
     return api.post("/addProduct", data);
 }
+
+export const getAllCategoriesAxios = () => {
+    return api.get("/getAllCategories");
+}
+
+export const addCategoryAxios = (data) => {
+    return api.post("/addCategory", data);
+}
+
+export const deleteCategoryAxios = (id) => {
+    return api.delete(`/deleteCategory/${id}`);
+}

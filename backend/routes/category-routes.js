@@ -5,4 +5,4 @@ export const router = Router()
 
 router.get("/getAllCategories", categories)
 router.post("/addCategory", addCategory)
-router.delete("/eliminarCategoria/:id", deleteCategory)
+router.delete("/deleteCategory/:id", deleteCategory)
