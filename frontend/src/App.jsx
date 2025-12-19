@@ -4,6 +4,8 @@ import AdminProvider from "../context/adminContext";
 import SecurityRoutes from "../components/SecurityRoutes";
 import Home from "../pages/Home";
 import DashboardAdmin from "../pages/DashboardAdmin";
+import CategoriesProvider from "../context/CategoryContext";
+import AddCategory from "../pages/AddCategory";
 
 function App() {
 
@@ -11,7 +13,9 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<CategoriesProvider>
+          <Home />
+        </CategoriesProvider>} />
 
         <Route path="/ingresar" element={<AdminProvider>
           <LoginAdmin />
@@ -20,6 +24,14 @@ function App() {
         <Route path="/panel-admin" element={<AdminProvider>
           <SecurityRoutes>
             <DashboardAdmin />
+          </SecurityRoutes>
+        </AdminProvider>} />
+
+        <Route path="/agregar-categoria" element={<AdminProvider>
+          <SecurityRoutes>
+            <CategoriesProvider>
+              <AddCategory />
+            </CategoriesProvider>
           </SecurityRoutes>
         </AdminProvider>} />
 

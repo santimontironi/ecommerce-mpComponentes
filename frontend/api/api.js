@@ -26,7 +26,7 @@ export const getAllCategoriesAxios = () => {
 }
 
 export const addCategoryAxios = (data) => {
-    return api.post("/addCategory", data);
+    return api.post("/addCategory", data, { headers: { "Content-Type": "multipart/form-data" }});
 }
 
 export const deleteCategoryAxios = (id) => {

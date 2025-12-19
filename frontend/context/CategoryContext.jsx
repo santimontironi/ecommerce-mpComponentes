@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import { addCategoryAxios, getAllCategoriesAxios, deleteCategoryAxios } from "../api/api";
 
-export const ContextProducts = createContext();
+export const ContextCategories = createContext();
 
-export const CategoryProvider = ({ children }) => {
+const CategoriesProvider = ({ children }) => {
 
     const[categories,setCategories] = useState([]);
     const[loadingGetCategories,setLoadingGetCategories] = useState(true);
@@ -52,7 +52,9 @@ export const CategoryProvider = ({ children }) => {
     }
 
 
-    return <ContextProducts.Provider value={{addCategory,categories,loadingGetCategories,loadingAddCategory,deleteCategory}}>
+    return <ContextCategories.Provider value={{addCategory,categories,loadingGetCategories,loadingAddCategory,deleteCategory}}>
         {children}
-    </ContextProducts.Provider>
+    </ContextCategories.Provider>
 };
+
+export default CategoriesProvider;

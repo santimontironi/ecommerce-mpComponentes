@@ -13,13 +13,13 @@ export const categories = async (req, res) => {
 
 export const addCategory = async (req, res) => {
     try {
-        const { name, description } = req.body
+        const { name } = req.body
 
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
         const result = await cloudinary.uploader.upload(fileBase64);
 
-        const category = new Category({ image: result.secure_url, name, description })
+        const category = new Category({ image: result.secure_url, name })
 
         await category.save()
 
