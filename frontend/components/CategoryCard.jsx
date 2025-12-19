@@ -1,9 +1,9 @@
-const CategoryCard = ({ image, name, description }) => {
+const CategoryCard = ({ category }) => {
   return (
     <div className="category-card">
-      <img src={image} alt={name} />
-      <h3>{name}</h3>
-      <p>{description}</p>
+      <img src={category.image} alt={name} />
+      <h3>{category.name}</h3>
+      <p>{category.description}</p>
     </div>
   )
 }

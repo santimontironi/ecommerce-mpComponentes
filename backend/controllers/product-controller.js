@@ -2,39 +2,33 @@ import Product from "../models/Product.js";
 import cloudinary from "../config/cloudinary.js";
 
 export const products = async (req, res) => {
-    try{
-        const {category} = req.query
-
-        if(category){
-            const products = await Product.find({active: true, category: category})
-            res.status(200).json({message:'Productos obtenidos correctamente', products: products})
-        }
-        else{
-            const products = await Product.find({active: true})
-            res.status(200).json({message:'Productos obtenidos correctamente', products: products})
-        }
+    try {
+        const { category } = req.query
+        
+        const products = await Product.find({ active: true, category: category })
+        res.status(200).json({ message: 'Productos obtenidos correctamente', products: products })
     }
-    catch(error){
-        res.status(500).json({message:'Error al obtener productos', error: error.message})
+    catch (error) {
+        res.status(500).json({ message: 'Error al obtener productos', error: error.message })
     }
 }
 
-export const productById = async (req,res) => {
-    try{
-        const {id} = req.params
+export const productById = async (req, res) => {
+    try {
+        const { id } = req.params
 
         const product = await Product.findById(id)
 
-        res.status(200).json({message:'Producto obtenido correctamente', product: product})
+        res.status(200).json({ message: 'Producto obtenido correctamente', product: product })
     }
-    catch(error){
-        res.status(500).json({message:'Error al obtener producto', error: error.message})
+    catch (error) {
+        res.status(500).json({ message: 'Error al obtener producto', error: error.message })
     }
 }
 
-export const addProduct = async(req,res) => {
-    try{
-        const {name, price, description} = req.body
+export const addProduct = async (req, res) => {
+    try {
+        const { name, price, description } = req.body
 
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
@@ -49,22 +43,22 @@ export const addProduct = async(req,res) => {
 
         await product.save();
 
-        res.status(201).json({message:'Producto agregado correctamente', product: product})
+        res.status(201).json({ message: 'Producto agregado correctamente', product: product })
     }
-    catch(error){
-        res.status(500).json({message:'Error al agregar producto', error: error.message})
+    catch (error) {
+        res.status(500).json({ message: 'Error al agregar producto', error: error.message })
     }
 }
 
-export const deleteProduct = async (req,res) => {
-    try{
-        const {productId} = req.params
+export const deleteProduct = async (req, res) => {
+    try {
+        const { productId } = req.params
 
-        const product = await Product.findByIdAndUpdate(productId, {active: false})
+        const product = await Product.findByIdAndUpdate(productId, { active: false })
 
-        res.status(200).json({message:'Producto eliminado correctamente', product: product})
+        res.status(200).json({ message: 'Producto eliminado correctamente', product: product })
     }
-    catch(error){
-        res.status(500).json({message:'Error al eliminar producto', error: error.message})
+    catch (error) {
+        res.status(500).json({ message: 'Error al eliminar producto', error: error.message })
     }
 }

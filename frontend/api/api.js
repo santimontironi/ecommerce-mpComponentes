@@ -12,3 +12,11 @@ export const loginAdminAxios = (data) => {
 export const dashboardAdminAxios = () => {
     return api.get("/dashboard");
 }
+
+export const getAllProductsAxios = () => {
+    return api.get("/getAllProducts");
+}
+
+export const addProductAxios = (data) => {
+    return api.post("/addProduct", data);
+}
