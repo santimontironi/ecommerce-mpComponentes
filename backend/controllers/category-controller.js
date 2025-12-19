@@ -19,6 +19,12 @@ export const addCategory = async (req, res) => {
 
         const result = await cloudinary.uploader.upload(fileBase64);
 
+        const categoryRepeated = await Category.findOne({ name })
+
+        if (categoryRepeated) {
+            return res.status(400).json({ message: 'La categoria ya existe' })
+        }
+
         const category = new Category({ image: result.secure_url, name })
 
         await category.save()

@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ContextCategories } from "../context/CategoryContext";
 import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
+import Swal from 'sweetalert2'
 
 const AddCategory = () => {
     const { addCategory, loadingAddCategory } = useContext(ContextCategories);
@@ -13,18 +14,43 @@ const AddCategory = () => {
         formState: { errors }
     } = useForm();
 
-    function onSubmit(data) {
-        const formData = new FormData();
+    async function onSubmit(data) {
+        try {
+            const formData = new FormData();
 
-        formData.append("image", data.image[0]);
-        formData.append("name", data.name);
+            formData.append("image", data.image[0]);
+            formData.append("name", data.name);
 
-        addCategory(formData);
-        reset();
+            await addCategory(formData);
+
+            Swal.fire({
+                icon: "success",
+                title: "Categoría creada",
+                text: "La categoría se agregó correctamente",
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            setErrorAddCategory(null);
+
+            reset();
+        }
+        catch (error) {
+            if (error?.response?.data?.message) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: error.response.data.message,
+                });
+
+                reset();
+            }
+        }
     };
 
     return (
-        <section className="relative w-full h-screen overflow-hidden bg-linear-120 from-[#101010] to-[#001b48] flex items-center justify-center">
+        <section className="relative w-full h-screen overflow-hidden bg-linear-120 from-[#101010] to-[#001b48] flex flex-col gap-2 items-center justify-center">
 
             {loadingAddCategory ? <Loader /> : (
 
@@ -97,9 +123,9 @@ const AddCategory = () => {
                         </button>
 
                     </form>
+
                 </div>
             )}
-
         </section>
     );
 };
