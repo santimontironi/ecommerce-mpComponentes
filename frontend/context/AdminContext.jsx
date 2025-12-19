@@ -20,9 +20,7 @@ const AdminProvider = ({children}) => {
             throw error
         }
         finally{
-            setTimeout(() => {
-                setLoadingLogin(false);
-            },2000)
+            setLoadingLogin(false);
         }
     }
 
@@ -41,9 +39,7 @@ const AdminProvider = ({children}) => {
                 console.log("Error al obtener el dashboard", error);
             }
             finally{
-                setTimeout(() => {
-                    setLoading(false);
-                },2000)
+                setLoading(false);
             }
         }
 

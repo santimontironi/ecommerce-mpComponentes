@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
-
+import Back from "../components/Back"
 
 export const LoginAdmin = () => {
 
@@ -37,6 +37,8 @@ export const LoginAdmin = () => {
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-linear-120 from-[#101010] to-[#001b48] flex items-center justify-center containerLoginAdmin">
+
+      <Back url="/"/>
 
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
