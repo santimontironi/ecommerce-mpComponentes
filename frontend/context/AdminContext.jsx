@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { loginAdminAxios, dashboardAdminAxios } from "../api/api";
+import { loginAdminAxios, dashboardAdminAxios, logoutAdminAxios } from "../api/api";
 
 export const ContextAdmin = createContext();
 
@@ -50,8 +50,17 @@ const AdminProvider = ({children}) => {
         getDashboard();
     },[])
 
+    async function logoutAdmin () {
+        try {
+            await logoutAdminAxios()
+            setAdmin(null)
+        } catch (error) {
+            throw error
+        }
+    }
 
-    return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading}}>
+
+    return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading, logoutAdmin}}>
         {children}
     </ContextAdmin.Provider>;
 };

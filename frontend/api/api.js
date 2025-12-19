@@ -9,6 +9,10 @@ export const loginAdminAxios = (data) => {
     return api.post("/login", data );    
 };
 
+export const logoutAdminAxios = () => {
+    return api.post("/logout", {});
+}
+
 export const dashboardAdminAxios = () => {
     return api.get("/dashboard");
 }
