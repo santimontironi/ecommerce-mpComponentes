@@ -13,7 +13,16 @@ const AddProduct = () => {
 
   async function submitForm(data) {
     try {
-      await addProduct(data)
+      const formdata = new FormData()
+
+      formdata.append("image", data.image[0])
+      formdata.append("name", data.name)
+      formdata.append("description", data.description)
+      formdata.append("price", data.price)
+      formdata.append("category", data.category)
+
+      await addProduct(formdata)
+
       reset()
     }
     catch (error) {
