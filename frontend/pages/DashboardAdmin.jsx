@@ -27,17 +27,23 @@ const DashboardAdmin = () => {
               </p>
             </div>
 
-            <Link to="/agregar-categoria" className=" inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-20" >
-              + Agregar categoría
-            </Link>
+            <div className="flex flex-col md:flex-row gap-6">
+              <Link to="/agregar-categoria" className=" inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-20" >
+                + Agregar categoría
+              </Link>
+              <Link to="/agregar-producto" className=" inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-20" >
+                + Agregar producto
+              </Link>
+            </div>
+
           </header>
-        
+
           <div className="h-px w-full bg-white/20" />
 
           <section className="flex-1 overflow-y-auto pr-2">
             <CategoryList />
           </section>
-          
+
 
           <div>
             <button className="absolute bottom-5 right-6 bg-linear-to-r from-red-600 to-red-500 text-white font-medium shadow-lg hover:scale-[1.02] transition-all duration-20 px-4 py-2 rounded-lg cursor-pointer" onClick={logoutAdmin}>Cerrar sesión</button>

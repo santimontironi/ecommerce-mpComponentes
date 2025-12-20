@@ -6,6 +6,8 @@ import Home from "../pages/Home";
 import DashboardAdmin from "../pages/DashboardAdmin";
 import CategoriesProvider from "../context/CategoryContext";
 import AddCategory from "../pages/AddCategory";
+import AddProduct from "../pages/AddProduct";
+import { ProductsProvider } from "../context/ProductsContext";
 
 function App() {
 
@@ -34,6 +36,16 @@ function App() {
             <CategoriesProvider>
               <AddCategory />
             </CategoriesProvider>
+          </SecurityRoutes>
+        </AdminProvider>} />
+
+        <Route path="/agregar-producto" element={<AdminProvider>
+          <SecurityRoutes>
+            <ProductsProvider>
+              <CategoriesProvider>
+                <AddProduct />
+              </CategoriesProvider>
+            </ProductsProvider>
           </SecurityRoutes>
         </AdminProvider>} />
 

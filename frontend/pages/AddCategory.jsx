@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ContextCategories } from "../context/CategoryContext";
 import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
@@ -53,9 +53,9 @@ const AddCategory = () => {
     return (
         <section className="relative w-full h-screen overflow-hidden bg-linear-120 from-[#101010] to-[#001b48] flex flex-col gap-2 items-center justify-center containerAddCategory">
 
-            <div className="">
-                <Back url="/panel-admin" />
-            </div>
+        
+            <Back url="/panel-admin" />
+          
 
             {loadingAddCategory ? <Loader /> : (
 

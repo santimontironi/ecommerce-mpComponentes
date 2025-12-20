@@ -1,6 +1,73 @@
+import { useContext } from "react"
+import { ContextCategories } from "../context/CategoryContext"
+import { ContextProducts } from "../context/ProductsContext"
+import { useForm } from "react-hook-form"
+import Loader from "../components/Loader"
+
 const AddProduct = () => {
+
+  const { categories } = useContext(ContextCategories)
+  const { addProduct, loadingAddProduct } = useContext(ContextProducts)
+
+  const { handleSubmit, register, reset, formState: { errors } } = useForm()
+
+  async function submitForm(data) {
+    try {
+      await addProduct(data)
+      reset()
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <div>AddProduct</div>
+    <section className="containerAddProduct">
+      {loadingAddProduct ? <Loader /> : (
+        <div>
+          <form onSubmit={handleSubmit(submitForm)} method="post">
+
+            <div className="mb-3">
+              <label htmlFor="image">Imagen</label>
+              <input type="file" className="form-control" id="image" {...register("image", { required: true })} />
+              {errors.image && <p className="text-danger">La imagen es requerida</p>}
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">Nombre</label>
+              <input type="text" className="form-control" id="name" {...register("name", { required: true })} />
+              {errors.name && <p className="text-danger">El nombre es requerido</p>}
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="description">Descripcion</label>
+              <input type="text" className="form-control" id="description" {...register("description", { required: true })} />
+              {errors.description && <p className="text-danger">La descripcion es requerida</p>}
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="price">Precio</label>
+              <input type="number" className="form-control" id="price" {...register("price", { required: true })} />
+              {errors.price && <p className="text-danger">El precio es requerido</p>}
+            </div>
+
+            {categories.length > 0 && (
+              <div className="mb-3">
+                <label htmlFor="category">Categoria</label>
+                <select className="form-select" id="category" {...register("category", { required: true })}>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category._id}>{category.name}</option>
+                  ))}
+                </select>
+                {errors.category && <p className="text-danger">La categoria es requerida</p>}
+              </div>
+            )}
+
+            <button type="submit">Agregar producto</button>
+          </form>
+        </div>
+      )}
+    </section>
   )
 }
 
