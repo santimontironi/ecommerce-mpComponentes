@@ -3,6 +3,7 @@ import { ContextCategories } from "../context/CategoryContext"
 import { ContextProducts } from "../context/ProductsContext"
 import { useForm } from "react-hook-form"
 import Loader from "../components/Loader"
+import { Navigate } from "react-router-dom"
 
 const AddProduct = () => {
 
@@ -23,10 +24,19 @@ const AddProduct = () => {
 
       await addProduct(formdata)
 
-      reset()
+      Swal.fire({
+        icon: "success",
+        title: "Producto creado",
+        text: "El producto se creo correctamente",
+        timer: 2000,
+        showConfirmButton: false
+      })
+
+      Navigate("/panel-admin")
     }
     catch (error) {
       console.log(error)
+      reset()
     }
   }
 

@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginAdmin } from "../pages/LoginAdmin";
-import AdminProvider from "../context/adminContext";
-import SecurityRoutes from "../components/SecurityRoutes";
-import Home from "../pages/Home";
-import DashboardAdmin from "../pages/DashboardAdmin";
-import CategoriesProvider from "../context/CategoryContext";
-import AddCategory from "../pages/AddCategory";
-import AddProduct from "../pages/AddProduct";
-import { ProductsProvider } from "../context/ProductsContext";
+import { LoginAdmin } from "./pages/LoginAdmin";
+import AdminProvider from "./context/adminContext";
+import SecurityRoutes from "./components/SecurityRoutes";
+import Home from "./pages/Home";
+import DashboardAdmin from "./pages/DashboardAdmin";
+import CategoriesProvider from "./context/CategoryContext";
+import AddCategory from "./pages/AddCategory";
+import AddProduct from "./pages/AddProduct";
+import { ProductsProvider } from "./context/ProductsContext";
 
 function App() {
 
