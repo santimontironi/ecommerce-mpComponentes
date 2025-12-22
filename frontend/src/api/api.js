@@ -17,8 +17,8 @@ export const dashboardAdminAxios = () => {
     return api.get("/dashboard");
 }
 
-export const getAllProductsAxios = () => {
-    return api.get("/getAllProducts");
+export const getAllProductsAxios = (category) => {
+    return api.get("/getAllProducts", { params: { category } });
 }
 
 export const addProductAxios = (data) => {
@@ -35,4 +35,8 @@ export const addCategoryAxios = (data) => {
 
 export const deleteCategoryAxios = (id) => {
     return api.delete(`/deleteCategory/${id}`);
+}
+
+export const getProductsAdminAxios = (category) => {
+    return api.get("/getAllProductsAdmin", { params: { category } });
 }

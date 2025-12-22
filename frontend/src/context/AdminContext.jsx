@@ -9,6 +9,8 @@ const AdminProvider = ({children}) => {
     const [loading,setLoading] = useState(true)
     const [loadingLogin,setLoadingLogin] = useState(false);
 
+    const isAdmin = admin ? true : false
+
     async function loginAdmin(data){
         setLoadingLogin(true);
         try{
@@ -56,7 +58,7 @@ const AdminProvider = ({children}) => {
     }
 
 
-    return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading, logoutAdmin}}>
+    return <ContextAdmin.Provider value={{loadingLogin, loginAdmin, admin, loading, logoutAdmin, isAdmin}}>
         {children}
     </ContextAdmin.Provider>;
 };

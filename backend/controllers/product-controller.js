@@ -4,8 +4,12 @@ import cloudinary from "../config/cloudinary.js";
 export const products = async (req, res) => {
     try {
         const { category } = req.query
+
+        if(!category){
+            return res.status(400).json({ message: 'La categoria es requerida' })
+        }
         
-        const products = await Product.find({ active: true, category: category })
+        const products = await Product.find({ active: true, category: category }).sort({ createdAt: -1 })
         res.status(200).json({ message: 'Productos obtenidos correctamente', products: products })
     }
     catch (error) {

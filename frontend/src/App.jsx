@@ -8,6 +8,7 @@ import CategoriesProvider from "./context/CategoryContext";
 import AddCategory from "./pages/AddCategory";
 import AddProduct from "./pages/AddProduct";
 import { ProductsProvider } from "./context/ProductsContext";
+import Products from "./pages/Products";
 
 function App() {
 
@@ -47,6 +48,15 @@ function App() {
               </CategoriesProvider>
             </ProductsProvider>
           </SecurityRoutes>
+        </AdminProvider>} />
+
+
+        <Route path="/categoria/:categoryId" element={<AdminProvider>
+          <ProductsProvider>
+              <SecurityRoutes>
+                <Products />
+              </SecurityRoutes>
+          </ProductsProvider>
         </AdminProvider>} />
 
 
