@@ -1,1 +1,1 @@
-### Ecommerce stack MERN en desarrollo.
+### Ecommerce stack MERN (en desarrollo)
