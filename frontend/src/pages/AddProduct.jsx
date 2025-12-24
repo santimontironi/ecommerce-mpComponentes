@@ -3,8 +3,8 @@ import { ContextCategories } from "../context/CategoryContext"
 import { ContextProducts } from "../context/ProductsContext"
 import { useForm } from "react-hook-form"
 import Loader from "../components/Loader"
-import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
+import Back from "../components/Back"
 
 const AddProduct = () => {
 
@@ -12,8 +12,6 @@ const AddProduct = () => {
   const { addProduct, loadingAddProduct } = useContext(ContextProducts)
 
   const { handleSubmit, register, reset, formState: { errors } } = useForm()
-
-  const navigate = useNavigate()
 
   async function submitForm(data) {
     try {
@@ -35,7 +33,7 @@ const AddProduct = () => {
         showConfirmButton: false
       })
 
-      navigate("/panel-admin")
+      reset()
     }
     catch (error) {
       console.log(error)
@@ -44,48 +42,110 @@ const AddProduct = () => {
   }
 
   return (
-    <section className="containerAddProduct">
+    <section className="min-h-screen w-full bg-linear-to-br from-black via-blue-900 to-black flex items-center justify-center px-4">
+
+      <Back url="/panel-admin" />
+
       {loadingAddProduct ? <Loader /> : (
-        <div>
-          <form onSubmit={handleSubmit(submitForm)} method="post">
+        <div className="w-full max-w-xl bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
 
-            <div className="mb-3">
-              <label htmlFor="image">Imagen</label>
-              <input type="file" className="form-control" id="image" {...register("image", { required: true })} />
-              {errors.image && <p className="text-danger">La imagen es requerida</p>}
+          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            Agregar producto
+          </h1>
+
+          <form onSubmit={handleSubmit(submitForm)} method="post" className="space-y-4">
+
+            <div>
+              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+                Imagen
+              </label>
+              <input
+                type="file"
+                id="image"
+                className="w-full text-sm file:mr-4 file:py-2 file:px-4
+                file:rounded-lg file:border-0
+                file:text-sm file:font-semibold
+                file:bg-blue-600 file:text-white
+                hover:file:bg-blue-700
+                cursor-pointer"
+                {...register("image", { required: true })}
+              />
+              {errors.image && <p className="text-sm text-red-600 mt-1">La imagen es requerida</p>}
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">Nombre</label>
-              <input type="text" className="form-control" id="name" {...register("name", { required: true })} />
-              {errors.name && <p className="text-danger">El nombre es requerido</p>}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                Nombre
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                {...register("name", { required: true })}
+              />
+              {errors.name && <p className="text-sm text-red-600 mt-1">El nombre es requerido</p>}
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="description">Descripcion</label>
-              <input type="text" className="form-control" id="description" {...register("description", { required: true })} />
-              {errors.description && <p className="text-danger">La descripcion es requerida</p>}
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                Descripción
+              </label>
+              <textarea
+                type="text"
+                id="description"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                {...register("description", { required: true })}
+              />
+              {errors.description && <p className="text-sm text-red-600 mt-1">La descripción es requerida</p>}
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="price">Precio</label>
-              <input type="number" className="form-control" id="price" {...register("price", { required: true })} />
-              {errors.price && <p className="text-danger">El precio es requerido</p>}
+            <div>
+              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+                Precio
+              </label>
+              <input
+                type="number"
+                id="price"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                {...register("price", { required: true })}
+              />
+              {errors.price && <p className="text-sm text-red-600 mt-1">El precio es requerido</p>}
             </div>
 
             {categories.length > 0 && (
-              <div className="mb-3">
-                <label htmlFor="category">Categoria</label>
-                <select className="form-select" id="category" {...register("category", { required: true })}>
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                  Categoría
+                </label>
+                <select
+                  id="category"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  {...register("category", { required: true })}
+                >
+                  <option value="">Seleccionar categoría</option>
                   {categories.map((category) => (
                     <option key={category._id} value={category._id}>{category.name}</option>
                   ))}
                 </select>
-                {errors.category && <p className="text-danger">La categoria es requerida</p>}
+                {errors.category && <p className="text-sm text-red-600 mt-1">La categoría es requerida</p>}
               </div>
             )}
 
-            <button type="submit">Agregar producto</button>
+            <button
+              type="submit"
+              className="
+                w-full mt-4 py-3 rounded-lg
+                bg-linear-to-r from-blue-600 to-blue-800
+                text-white font-semibold
+                hover:from-blue-700 hover:to-blue-900
+                transition-all duration-300
+                shadow-lg
+                cursor-pointer
+              "
+            >
+              Agregar producto
+            </button>
+
           </form>
         </div>
       )}
