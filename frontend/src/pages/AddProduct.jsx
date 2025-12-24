@@ -3,7 +3,8 @@ import { ContextCategories } from "../context/CategoryContext"
 import { ContextProducts } from "../context/ProductsContext"
 import { useForm } from "react-hook-form"
 import Loader from "../components/Loader"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 
 const AddProduct = () => {
 
@@ -11,6 +12,8 @@ const AddProduct = () => {
   const { addProduct, loadingAddProduct } = useContext(ContextProducts)
 
   const { handleSubmit, register, reset, formState: { errors } } = useForm()
+
+  const navigate = useNavigate()
 
   async function submitForm(data) {
     try {
@@ -32,7 +35,7 @@ const AddProduct = () => {
         showConfirmButton: false
       })
 
-      Navigate("/panel-admin")
+      navigate("/panel-admin")
     }
     catch (error) {
       console.log(error)

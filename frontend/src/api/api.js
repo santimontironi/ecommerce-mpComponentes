@@ -22,7 +22,7 @@ export const getAllProductsAxios = (category) => {
 }
 
 export const addProductAxios = (data) => {
-    return api.post("/addProduct", data);
+    return api.post("/addProduct", data, { headers: { "Content-Type": "multipart/form-data" }});
 }
 
 export const getAllCategoriesAxios = () => {

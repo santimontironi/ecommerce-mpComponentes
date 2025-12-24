@@ -32,7 +32,7 @@ export const productById = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
-        const { name, price, description } = req.body
+        const { name, price, description, category } = req.body
 
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
@@ -42,6 +42,7 @@ export const addProduct = async (req, res) => {
             name,
             image: result.secure_url,
             price,
+            category,
             description
         })
 
