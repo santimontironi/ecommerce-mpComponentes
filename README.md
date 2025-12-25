@@ -1,4 +1,4 @@
-### MpComponentes - Tienda Online E-commerce desarrollado con stack MERN para la venta de componentes de hardware (en desarrollo)
+### MpComponentes - E-commerce desarrollado con stack MERN para la venta de componentes de hardware (en desarrollo)
 
 ## Stack Tecnológico
 - Frontend: React + TailwindCSS
