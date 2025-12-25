@@ -52,11 +52,13 @@ function App() {
 
 
         <Route path="/categoria/:categoryId" element={<AdminProvider>
-          <ProductsProvider>
+          <CategoriesProvider>
+            <ProductsProvider>
               <SecurityRoutes>
                 <Products />
               </SecurityRoutes>
-          </ProductsProvider>
+            </ProductsProvider>
+          </CategoriesProvider>
         </AdminProvider>} />
 
 

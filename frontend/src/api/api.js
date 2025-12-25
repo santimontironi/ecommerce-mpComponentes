@@ -36,7 +36,3 @@ export const addCategoryAxios = (data) => {
 export const deleteCategoryAxios = (id) => {
     return api.delete(`/deleteCategory/${id}`);
 }
-
-export const getProductsAdminAxios = (category) => {
-    return api.get("/getAllProductsAdmin", { params: { category } });
-}
