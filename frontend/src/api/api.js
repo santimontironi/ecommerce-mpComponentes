@@ -36,3 +36,7 @@ export const addCategoryAxios = (data) => {
 export const deleteCategoryAxios = (id) => {
     return api.delete(`/deleteCategory/${id}`);
 }
+
+export const deleteProductAxios = (id) => {
+    return api.delete(`/deleteProduct/${id}`);
+}

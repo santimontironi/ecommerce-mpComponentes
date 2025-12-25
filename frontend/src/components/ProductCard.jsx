@@ -1,4 +1,4 @@
-const ProductCard = ({ product, isAdmin }) => {
+const ProductCard = ({ product, isAdmin, handleDelete }) => {
     return (
         <div className="relative bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl overflow-hidden shadow-lg shadow-black/40 hover:shadow-blue-500/20 hover:-translate-y-1 transition-all duration-300 group">
             <div className="relative w-full h-56 bg-black overflow-hidden">
@@ -25,7 +25,7 @@ const ProductCard = ({ product, isAdmin }) => {
                             Agregar
                         </button>
                     ) : (
-                        <button
+                        <button onClick={() => handleDelete(product._id)}
                             className="px-4 py-2 text-sm font-semibold bg-red-600/90 text-white rounded-lg hover:bg-red-600 active:scale-95 transition-all">
                             Eliminar
                         </button>

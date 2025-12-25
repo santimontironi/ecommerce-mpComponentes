@@ -57,9 +57,9 @@ export const addProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
-        const { productId } = req.params
+        const { id } = req.params
 
-        const product = await Product.findByIdAndUpdate(productId, { active: false })
+        const product = await Product.findByIdAndUpdate(id, { active: false })
 
         res.status(200).json({ message: 'Producto eliminado correctamente', product: product })
     }

@@ -8,7 +8,7 @@ import Loader from "../components/Loader"
 
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
-  const { getProducts, products, loadingGetProducts } = useContext(ContextProducts)
+  const { getProducts, products, loadingGetProducts, deleteProduct, loadingDeleteProduct } = useContext(ContextProducts)
   const { categoryId } = useParams()
 
   useEffect(() => {
@@ -19,9 +19,13 @@ const Products = () => {
 
   const actualCategory = categories.find((c) => c._id === categoryId)
 
+  const onDeleteProduct = async (id) => {
+    await deleteProduct(id)
+  }
+
   return (
     <section className="min-h-screen w-full bg-linear-to-br from-black via-slate-900 to-black px-4 py-14">
-      {loadingGetProducts ? (
+      {loadingGetProducts || loadingDeleteProduct ? (
         <div className="flex justify-center items-center h-64">
           <Loader />
         </div>
@@ -45,6 +49,7 @@ const Products = () => {
                 key={product._id}
                 product={product}
                 isAdmin={isAdmin}
+                handleDelete={onDeleteProduct}
               />
             ))}
           </div>
