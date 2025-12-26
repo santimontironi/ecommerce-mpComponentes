@@ -17,6 +17,10 @@ export const dashboardAdminAxios = () => {
     return api.get("/dashboard");
 }
 
+export const getAllProductsAdminAxios = (category) => {
+    return api.get("/getAllProductsAdmin", { params: { category } });
+}
+
 export const getAllProductsAxios = (category) => {
     return api.get("/getAllProducts", { params: { category } });
 }

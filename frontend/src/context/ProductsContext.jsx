@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAllProductsAxios, addProductAxios, deleteProductAxios } from "../api/api";
+import { getAllProductsAdminAxios, addProductAxios, deleteProductAxios } from "../api/api";
 
 export const ContextProducts = createContext();
 
@@ -12,7 +12,7 @@ export const ProductsProvider = ({ children }) => {
 
     async function getProducts(categoryId) {
         try {
-            const res = await getAllProductsAxios(categoryId)
+            const res = await getAllProductsAdminAxios(categoryId)
             setProducts(res.data.products)
         }
         catch (error) {
