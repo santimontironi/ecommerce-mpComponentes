@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios } from "../api/api";
+import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios } from "../api/api";
 import { useContext } from "react";
 import { ContextAdmin } from "./AdminContext";
 
@@ -8,10 +8,12 @@ export const ContextProducts = createContext();
 export const ProductsProvider = ({ children }) => {
 
     const [products, setProducts] = useState([]);
+    const [productById, setProductById] = useState([]);
     const [loadingGetProducts, setLoadingGetProducts] = useState(true);
     const [loadingAddProduct, setLoadingAddProduct] = useState(false);
     const [loadingDeleteProduct, setLoadingDeleteProduct] = useState(false);
     const [loadingEditProduct, setLoadingEditProduct] = useState(false);
+    const [loadingGetProduct, setLoadingGetProduct] = useState(false);
 
     const { isAdmin } = useContext(ContextAdmin);
 
@@ -63,6 +65,23 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
+    async function getProduct(id) {
+        setLoadingGetProduct(true);
+        try {
+            const res = await getProductAxios(id)
+            setProductById(res.data.product)
+            return res.data
+        }
+        catch (error) {
+            throw error
+        }
+        finally {
+            setTimeout(() => {
+                setLoadingGetProduct(false);
+            }, 2000)
+        }
+    }
+
     async function editProduct(id, data) {
         setLoadingEditProduct(true);
         try {
@@ -80,7 +99,7 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct, editProduct, loadingEditProduct }}>
+    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById }}>
         {children}
     </ContextProducts.Provider>;
 };

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginAdmin } from "./pages/LoginAdmin";
-import AdminProvider from "./context/adminContext";
+import AdminProvider from "./context/AdminContext";
 import SecurityRoutes from "./components/SecurityRoutes";
 import Home from "./pages/Home";
 import DashboardAdmin from "./pages/DashboardAdmin";
@@ -8,6 +8,7 @@ import CategoriesProvider from "./context/CategoryContext";
 import AddCategory from "./pages/AddCategory";
 import AddProduct from "./pages/AddProduct";
 import { ProductsProvider } from "./context/ProductsContext";
+import ProductById from "./pages/ProductById";
 import Products from "./pages/Products";
 
 function App() {
@@ -68,6 +69,17 @@ function App() {
             </CategoriesProvider>
           </ProductsProvider>
         </AdminProvider>} />
+
+
+        <Route path="/producto/:productId" element={<AdminProvider>
+          <SecurityRoutes>
+            <ProductsProvider>
+              <CategoriesProvider>
+                <ProductById/>
+              </CategoriesProvider>
+            </ProductsProvider>
+          </SecurityRoutes>
+        </AdminProvider>}/>
 
 
       </Routes>

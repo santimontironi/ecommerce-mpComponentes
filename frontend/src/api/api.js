@@ -7,7 +7,7 @@ export const api = axios.create({
 
 export const loginAdminAxios = (data) => {
     return api.post("/login", data );    
-};
+}
 
 export const logoutAdminAxios = () => {
     return api.post("/logout", {});
@@ -23,6 +23,10 @@ export const getAllProductsAxios = (categoryId) => {
 
 export const getAllProductsAdminAxios = (categoryId) => {
   return api.get(`/getAllProductsAdmin/${categoryId}`)
+}
+
+export const getProductAxios = (id) => {
+    return api.get(`/getProduct/${id}`)
 }
 
 export const addProductAxios = (data) => {

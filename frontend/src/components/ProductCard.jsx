@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom"
+
 const ProductCard = ({ product, isAdmin, handleDelete }) => {
+
     return (
-        <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl overflow-hidden transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">
+        <section className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">
 
             <div className="relative w-full h-56 bg-slate-950 overflow-hidden">
                 <img
@@ -42,14 +45,14 @@ const ProductCard = ({ product, isAdmin, handleDelete }) => {
                             >
                                 Eliminar
                             </button>
-                            <button className="px-5 py-2.5 cursor-pointer bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
+                            <Link to={`/producto/${product._id}`} className="px-5 py-2.5 cursor-pointer bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
                                 Editar
-                            </button>
+                            </Link>
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
