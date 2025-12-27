@@ -5,10 +5,10 @@ export const products = async (req, res) => {
     try {
         const { category } = req.query
 
-        if(!category){
+        if (!category) {
             return res.status(400).json({ message: 'La categoria es requerida' })
         }
-        
+
         const products = await Product.find({ active: true, category: category }).sort({ createdAt: -1 })
         res.status(200).json({ message: 'Productos obtenidos correctamente', products: products })
     }
@@ -68,26 +68,33 @@ export const deleteProduct = async (req, res) => {
     }
 }
 
-export const editProduct = async (req,res) => {
+export const editProduct = async (req, res) => {
     try {
-        const { id } = req.params
-        const { name, price, description, category } = req.body
+        const { id } = req.params;
 
-        const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+        const updateData = { ...req.body };
 
-        const result = await cloudinary.uploader.upload(fileBase64);
+        if (req.file) {
+            const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+            const result = await cloudinary.uploader.upload(fileBase64);
+            updateData.image = result.secure_url;
+        }
 
-        const product = await Product.findByIdAndUpdate(id, {
-            name,
-            image: result.secure_url,
-            price,
-            category,
-            description
-        })
+        const product = await Product.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true }
+        );
 
-        res.status(200).json({ message: 'Producto editado correctamente', product: product })
+        res.status(200).json({
+            message: "Producto editado correctamente",
+            product
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al editar producto",
+            error: error.message
+        });
     }
-    catch (error) {
-        res.status(500).json({ message: 'Error al editar producto', error: error.message })
-    }
-}
+};

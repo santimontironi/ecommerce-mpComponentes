@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, addProductAxios, deleteProductAxios } from "../api/api";
+import { getAllProductsAdminAxios, addProductAxios, deleteProductAxios, editProductAxios } from "../api/api";
 
 export const ContextProducts = createContext();
 
@@ -9,6 +9,7 @@ export const ProductsProvider = ({ children }) => {
     const [loadingGetProducts, setLoadingGetProducts] = useState(true);
     const [loadingAddProduct, setLoadingAddProduct] = useState(false);
     const [loadingDeleteProduct, setLoadingDeleteProduct] = useState(false);
+    const [loadingEditProduct, setLoadingEditProduct] = useState(false);
 
     async function getProducts(categoryId) {
         try {
@@ -58,7 +59,24 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct }}>
+    async function editProduct(id, data) {
+        setLoadingEditProduct(true);
+        try {
+            const productEdited = await editProductAxios(id, data)
+            setProducts((prev) => prev.map((product) => product._id === id ? productEdited.data.product : product))
+            return productEdited.data
+        }
+        catch (error) {
+            throw error
+        }
+        finally {
+            setTimeout(() => {
+                setLoadingEditProduct(false);
+            }, 2000)
+        }
+    }
+
+    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct, editProduct, loadingEditProduct }}>
         {children}
     </ContextProducts.Provider>;
 };
