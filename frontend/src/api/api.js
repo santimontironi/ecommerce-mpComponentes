@@ -29,6 +29,10 @@ export const getProductAxios = (id) => {
     return api.get(`/getProduct/${id}`)
 }
 
+export const getProductAdminAxios = (id) => {
+    return api.get(`/getProductAdmin/${id}`)
+}
+
 export const addProductAxios = (data) => {
     return api.post("/addProduct", data, { headers: { "Content-Type": "multipart/form-data" }});
 }

@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios } from "../api/api";
+import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios } from "../api/api";
 import { useContext } from "react";
 import { ContextAdmin } from "./AdminContext";
 
@@ -68,7 +68,7 @@ export const ProductsProvider = ({ children }) => {
     async function getProduct(id) {
         setLoadingGetProduct(true);
         try {
-            const res = await getProductAxios(id)
+            const res = isAdmin ? await getProductAdminAxios(id) : await getProductAxios(id)
             setProductById(res.data.product)
             return res.data
         }
