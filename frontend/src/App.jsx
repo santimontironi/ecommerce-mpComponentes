@@ -71,15 +71,23 @@ function App() {
         </AdminProvider>} />
 
 
-        <Route path="/producto/:productId" element={<AdminProvider>
+        <Route path="/editar-producto/:productId" element={<AdminProvider>
           <SecurityRoutes>
             <ProductsProvider>
               <CategoriesProvider>
-                <ProductById/>
+                <ProductById />
               </CategoriesProvider>
             </ProductsProvider>
           </SecurityRoutes>
-        </AdminProvider>}/>
+        </AdminProvider>} />
+
+        <Route path="/producto/:productId" element={<AdminProvider>
+            <ProductsProvider>
+              <CategoriesProvider>
+                <ProductById />
+              </CategoriesProvider>
+            </ProductsProvider>
+        </AdminProvider>} />
 
 
       </Routes>

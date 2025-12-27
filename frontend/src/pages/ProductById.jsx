@@ -1,14 +1,19 @@
 import { useContext } from "react"
-import { ContextCategories } from "../context/CategoryContext"
-import { ContextProducts } from "../context/ProductsContext"
+import { ContextAdmin } from "../context/AdminContext"
+import { useParams } from "react-router-dom"
+import ProductDetail from "../components/ProductDetail"
+import ProductEdited from "../components/ProductEdited"
 
 const ProductById = () => {
 
-  const {} = useContext(ContextCategories)
-  const {} = useContext(ContextProducts)
+  const {isAdmin} = useContext(ContextAdmin)
+
+  const { productId } = useParams()
 
   return (
-    <div>ProductById</div>
+    <>
+      {isAdmin ? <ProductEdited id={productId} /> : <ProductDetail id={productId} />}
+    </>
   )
 }
 
