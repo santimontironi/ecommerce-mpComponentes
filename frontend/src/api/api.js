@@ -17,12 +17,12 @@ export const dashboardAdminAxios = () => {
     return api.get("/dashboard");
 }
 
-export const getAllProductsAdminAxios = (category) => {
-    return api.get("/getAllProductsAdmin", { params: { category } });
+export const getAllProductsAxios = (categoryId) => {
+  return api.get(`/getAllProducts/${categoryId}`)
 }
 
-export const getAllProductsAxios = (category) => {
-    return api.get("/getAllProducts", { params: { category } });
+export const getAllProductsAdminAxios = (categoryId) => {
+  return api.get(`/getAllProductsAdmin/${categoryId}`)
 }
 
 export const addProductAxios = (data) => {

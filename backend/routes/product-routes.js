@@ -5,8 +5,8 @@ import { Router } from "express";
 
 export const router = Router()
 
-router.get("/getAllProductsAdmin", verifyToken, products)
-router.get("/getAllProducts", products)
+router.get("/getAllProductsAdmin/:categoryId", verifyToken, products)
+router.get("/getAllProducts/:categoryId", products)
 router.get("/getProduct/:id", productById)
 router.post("/addProduct", verifyToken, upload.single("image"), addProduct)
 router.delete("/deleteProduct/:id", verifyToken, deleteProduct)

@@ -1,7 +1,7 @@
 const ProductCard = ({ product, isAdmin, handleDelete }) => {
     return (
         <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl overflow-hidden transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">
-            
+
             <div className="relative w-full h-56 bg-slate-950 overflow-hidden">
                 <img
                     src={product.image}
@@ -35,12 +35,17 @@ const ProductCard = ({ product, isAdmin, handleDelete }) => {
                             Agregar al carrito
                         </button>
                     ) : (
-                        <button
-                            onClick={() => handleDelete(product._id)}
-                            className="px-5 py-2.5 cursor-pointer bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95"
-                        >
-                            Eliminar
-                        </button>
+                        <div className="flex flex-row items-center gap-3">
+                            <button
+                                onClick={() => handleDelete(product._id)}
+                                className="px-5 py-2.5 cursor-pointer bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95"
+                            >
+                                Eliminar
+                            </button>
+                            <button className="px-5 py-2.5 cursor-pointer bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
+                                Editar
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

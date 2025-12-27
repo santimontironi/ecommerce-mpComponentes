@@ -1,5 +1,7 @@
 import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, addProductAxios, deleteProductAxios, editProductAxios } from "../api/api";
+import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios } from "../api/api";
+import { useContext } from "react";
+import { ContextAdmin } from "./AdminContext";
 
 export const ContextProducts = createContext();
 
@@ -11,9 +13,11 @@ export const ProductsProvider = ({ children }) => {
     const [loadingDeleteProduct, setLoadingDeleteProduct] = useState(false);
     const [loadingEditProduct, setLoadingEditProduct] = useState(false);
 
+    const { isAdmin } = useContext(ContextAdmin);
+
     async function getProducts(categoryId) {
         try {
-            const res = await getAllProductsAdminAxios(categoryId)
+            const res = isAdmin ? await getAllProductsAdminAxios(categoryId) : await getAllProductsAxios(categoryId)
             setProducts(res.data.products)
         }
         catch (error) {
