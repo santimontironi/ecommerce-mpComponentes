@@ -61,6 +61,14 @@ function App() {
           </CategoriesProvider>
         </AdminProvider>} />
 
+        <Route path="/productos/:categoryId" element={<AdminProvider>
+          <ProductsProvider>
+            <CategoriesProvider>
+              <Products />
+            </CategoriesProvider>
+          </ProductsProvider>
+        </AdminProvider>} />
+
 
       </Routes>
     </BrowserRouter>

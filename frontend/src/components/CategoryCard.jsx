@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom"
+
 const CategoryCard = ({ category, index }) => {
   return (
-    <div
+    <Link to={`/productos/${category._id}`}
       className="group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-cyan-400/50 transition-all duration-500 cursor-pointer transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/20"
       style={{
         animationDelay: `${index * 100}ms`,
@@ -45,7 +47,7 @@ const CategoryCard = ({ category, index }) => {
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
         <div className="absolute inset-0 rounded-2xl border-2 border-cyan-400/50" />
       </div>
-    </div>
+    </Link>
   )
 }
 
