@@ -67,3 +67,27 @@ export const deleteProduct = async (req, res) => {
         res.status(500).json({ message: 'Error al eliminar producto', error: error.message })
     }
 }
+
+export const editProduct = async (req,res) => {
+    try {
+        const { id } = req.params
+        const { name, price, description, category } = req.body
+
+        const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+
+        const result = await cloudinary.uploader.upload(fileBase64);
+
+        const product = await Product.findByIdAndUpdate(id, {
+            name,
+            image: result.secure_url,
+            price,
+            category,
+            description
+        })
+
+        res.status(200).json({ message: 'Producto editado correctamente', product: product })
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error al editar producto', error: error.message })
+    }
+}

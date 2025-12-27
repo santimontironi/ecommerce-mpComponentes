@@ -44,3 +44,7 @@ export const deleteCategoryAxios = (id) => {
 export const deleteProductAxios = (id) => {
     return api.delete(`/deleteProduct/${id}`);
 }
+
+export const editProductAxios = (id, data) => {
+    return api.patch(`/editProduct/${id}`, data, { headers: { "Content-Type": "multipart/form-data" }});
+}
