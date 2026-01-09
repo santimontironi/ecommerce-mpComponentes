@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { ContextAdmin } from "../context/AdminContext"
+import { ContextAdmin } from "../context/adminContext"
 import { useParams } from "react-router-dom"
 import ProductDetail from "../components/ProductDetail"
 import ProductEdited from "../components/ProductEdited"

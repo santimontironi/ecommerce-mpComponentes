@@ -51,7 +51,7 @@ export const loginAdmin = async (req, res) => {
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         });
 
-        res.status(200).json({ message: "Inicio de sesión exitoso", admin });
+        res.status(200).json({ message: "Inicio de sesión exitoso", admin: { id: admin._id, username: admin.username } });
     } catch (error) {
         res.status(500).json({ message: "Error al iniciar sesión", error: error.message });
     }
@@ -66,7 +66,7 @@ export const dashboardAdmin = async (req,res) => {
             return res.status(401).json({authorized: false});
         }
 
-        res.status(200).json({message:"Dashboard obtenido correctamente", admin: admin})
+        res.status(200).json({message:"Dashboard obtenido correctamente", admin: {id: admin._id, username: admin.username}});
     }
     catch(error){
         res.status(500).json({message:"Error al obtener el dashboard", error: error.message});

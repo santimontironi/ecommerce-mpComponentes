@@ -75,13 +75,7 @@ export const LoginAdmin = () => {
               <label className="block text-sm text-gray-300 mb-2">
                 Contraseña
               </label>
-              <input
-                type="password"
-                {...register("password", { required: "La contraseña es obligatoria" })}
-                className="w-full rounded-lg bg-black/40 border border-white/10
-                px-4 py-2.5 text-white placeholder-gray-400
-                focus:outline-none focus:ring-2 focus:ring-blue-600/60"
-              />
+              <input type="password" {...register("password", { required: "La contraseña es obligatoria" })} className="w-full rounded-lg bg-black/40 border border-white/10 px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600/60" />
               {errors.password && (
                 <p className="mt-1 text-xs text-red-400">
                   {errors.password.message}
@@ -89,15 +83,7 @@ export const LoginAdmin = () => {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-linear-to-r from-blue-600 to-cyan-500
-              py-2.5 text-white font-medium
-              hover:from-blue-500 hover:to-cyan-400
-              transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-blue-600/60
-              cursor-pointer"
-            >
+            <button type="submit" className="w-full rounded-lg bg-linear-to-r from-blue-600 to-cyan-500 py-2.5 text-white font-medium hover:from-blue-500 hover:to-cyan-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600/60 cursor-pointer">
               Iniciar sesión
             </button>
           </form>
