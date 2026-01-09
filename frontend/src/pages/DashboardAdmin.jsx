@@ -28,10 +28,13 @@ const DashboardAdmin = () => {
             </div>
 
             <div className="flex flex-col md:flex-row gap-6">
-              <Link to="/agregar-categoria" className=" inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-20" >
+              <button className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-green-600 to-green-400 text-white font-medium shadow-lg shadow-green-500/30 hover:scale-[1.02] hover:shadow-green-500/50 transition-all duration-20 cursor-pointer">
+                Cargar productos por CSV
+              </button>
+              <Link to="/agregar-categoria" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-yellow-300 to-yellow-400 text-black font-medium shadow-lg shadow-yellow-500/30 hover:scale-[1.02] hover:shadow-yellow-500/50 transition-all duration-20" >
                 + Agregar categoría
               </Link>
-              <Link to="/agregar-producto" className=" inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-20" >
+              <Link to="/agregar-producto" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-20" >
                 + Agregar producto
               </Link>
             </div>
