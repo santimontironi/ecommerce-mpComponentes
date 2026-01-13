@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios } from "../api/api";
+import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios } from "../api/api";
 import { useContext } from "react";
 import { ContextAdmin } from "./adminContext";
 
@@ -14,6 +14,7 @@ export const ProductsProvider = ({ children }) => {
     const [loadingDeleteProduct, setLoadingDeleteProduct] = useState(false);
     const [loadingEditProduct, setLoadingEditProduct] = useState(false);
     const [loadingGetProduct, setLoadingGetProduct] = useState(false);
+    const [loadingImportProducts, setLoadingImportProducts] = useState(false);
 
     const { isAdmin } = useContext(ContextAdmin);
 
@@ -31,7 +32,7 @@ export const ProductsProvider = ({ children }) => {
             }, 2000)
         }
     }
-    
+
     async function addProduct(data) {
         setLoadingAddProduct(true);
         try {
@@ -49,16 +50,36 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    async function deleteProduct(id){
+    async function importProducts(data) {
+        setLoadingImportProducts(true);
+        try {
+
+            const result = await importProductsAxios(data)
+
+            if (result.data.detalles && result.data.detalles.success) {
+                setProducts((prev) => [...prev, ...result.data.productos])
+            }
+        }
+        catch (error) {
+            throw error
+        }
+        finally {
+            setTimeout(() => {
+                setLoadingImportProducts(false);
+            }, 2000)
+        }
+    }
+
+    async function deleteProduct(id) {
         setLoadingDeleteProduct(true);
-        try{
+        try {
             await deleteProductAxios(id)
             setProducts((prev) => prev.filter((product) => product._id !== id));
         }
-        catch(error){
+        catch (error) {
             throw error
         }
-        finally{
+        finally {
             setTimeout(() => {
                 setLoadingDeleteProduct(false);
             }, 2000)
@@ -99,7 +120,7 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById }}>
+    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts }}>
         {children}
     </ContextProducts.Provider>;
 };

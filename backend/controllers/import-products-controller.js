@@ -31,7 +31,8 @@ export const importProducts = async (req, res) => {
 
         const results = {
             success: [],
-            errors: []
+            errors: [],
+            products: [] // ⬅️ NUEVO: Array para productos completos
         };
 
         // Procesar cada fila
@@ -64,6 +65,8 @@ export const importProducts = async (req, res) => {
                     product: product.name
                 });
 
+                results.products.push(product); // ⬅️ AGREGAR el producto completo
+
             } catch (error) {
                 results.errors.push({
                     row: i + 2,
@@ -83,7 +86,8 @@ export const importProducts = async (req, res) => {
             total: data.length,
             exitosos: results.success.length,
             errores: results.errors.length,
-            detalles: results
+            detalles: results,
+            products: results.products // ⬅️ DEVOLVER los productos
         });
 
     } catch (error) {

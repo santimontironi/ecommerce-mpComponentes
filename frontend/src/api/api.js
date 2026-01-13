@@ -56,3 +56,7 @@ export const deleteProductAxios = (id) => {
 export const editProductAxios = (id, data) => {
     return api.patch(`/editProduct/${id}`, data, { headers: { "Content-Type": "multipart/form-data" }});
 }
+
+export const importProductsAxios = (data) => {
+    return api.post("/importProducts", data, { headers: { "Content-Type": "multipart/form-data" }});
+}
