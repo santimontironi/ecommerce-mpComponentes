@@ -1,4 +1,4 @@
-import XLSX from 'xlsx';
+import XLSX from 'xlsx'; //libreria para leer archivos excel
 import cloudinary from "../config/cloudinary.js";
 import axios from 'axios';
 import Product from '../models/Product.js';
@@ -18,10 +18,10 @@ export const importProducts = async (req, res) => {
         });
 
         // Procesar el archivo
-        const workbook = XLSX.read(response.data, { type: 'buffer' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const data = XLSX.utils.sheet_to_json(sheet);
+        const workbook = XLSX.read(response.data, { type: 'buffer' }); //se lee el contenido del archivo Excel desde el buffer
+        const sheetName = workbook.SheetNames[0]; //se obtiene el nombre de la primera hoja
+        const sheet = workbook.Sheets[sheetName]; //se obtiene la hoja
+        const data = XLSX.utils.sheet_to_json(sheet); //se convierte la hoja en un array
 
         if (data.length === 0) {
             return res.status(400).json({
@@ -32,7 +32,7 @@ export const importProducts = async (req, res) => {
         const results = {
             success: [],
             errors: [],
-            products: [] // ⬅️ NUEVO: Array para productos completos
+            products: [] 
         };
 
         // Procesar cada fila
@@ -65,7 +65,7 @@ export const importProducts = async (req, res) => {
                     product: product.name
                 });
 
-                results.products.push(product); // ⬅️ AGREGAR el producto completo
+                results.products.push(product); 
 
             } catch (error) {
                 results.errors.push({
@@ -87,7 +87,7 @@ export const importProducts = async (req, res) => {
             exitosos: results.success.length,
             errores: results.errors.length,
             detalles: results,
-            products: results.products // ⬅️ DEVOLVER los productos
+            products: results.products 
         });
 
     } catch (error) {

@@ -14,9 +14,7 @@ const ProductCard = ({ product, isAdmin, handleDelete }) => {
                         className="w-full h-full object-cover"
                     />
 
-
                     <div className="absolute inset-0 bg-linear-to-t from-slate-900/80 via-transparent to-transparent" />
-
                 </div>
             </Link>
 
@@ -29,7 +27,7 @@ const ProductCard = ({ product, isAdmin, handleDelete }) => {
                     {product.description}
                 </p>
 
-                <div className="pt-3 flex items-center justify-between border-t border-slate-700/30">
+                <div className="pt-3 flex items-start gap-4 flex-col border-t border-slate-700/30">
                     <div className="flex flex-col">
                         <span className="text-xs text-slate-500 font-medium">Precio</span>
                         <span className="text-xl font-bold text-blue-400">

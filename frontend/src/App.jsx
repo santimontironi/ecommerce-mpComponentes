@@ -10,6 +10,7 @@ import AddProduct from "./pages/AddProduct";
 import { ProductsProvider } from "./context/ProductsContext";
 import ProductById from "./pages/ProductById";
 import Products from "./pages/Products";
+import ImportProducts from "./pages/ImportProducts";
 
 function App() {
 
@@ -82,14 +83,20 @@ function App() {
         </AdminProvider>} />
 
         <Route path="/producto/:productId" element={<AdminProvider>
-            <ProductsProvider>
-              <CategoriesProvider>
-                <ProductById />
-              </CategoriesProvider>
-            </ProductsProvider>
+          <ProductsProvider>
+            <CategoriesProvider>
+              <ProductById />
+            </CategoriesProvider>
+          </ProductsProvider>
         </AdminProvider>} />
 
-
+        <Route path="/importar-productos" element={<AdminProvider>
+          <SecurityRoutes>
+            <ProductsProvider>
+              <ImportProducts />
+            </ProductsProvider>
+          </SecurityRoutes>
+        </AdminProvider>} />
       </Routes>
     </BrowserRouter>
   )

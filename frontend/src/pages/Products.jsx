@@ -10,7 +10,7 @@ import Swal from "sweetalert2"
 
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
-  const { getProducts, products, loadingGetProducts, deleteProduct, loadingDeleteProduct } = useContext(ContextProducts)
+  const { getProducts, products, loadingGetProducts, deleteProduct } = useContext(ContextProducts)
   const { categoryId } = useParams()
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Products = () => {
 
   return (
     <section className="min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
-      {loadingGetProducts || loadingDeleteProduct ? (
+      {loadingGetProducts ? (
         <div className="flex justify-center items-center h-[60vh]">
           <Loader />
         </div>

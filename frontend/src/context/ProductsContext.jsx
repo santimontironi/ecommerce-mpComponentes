@@ -11,7 +11,6 @@ export const ProductsProvider = ({ children }) => {
     const [productById, setProductById] = useState([]);
     const [loadingGetProducts, setLoadingGetProducts] = useState(true);
     const [loadingAddProduct, setLoadingAddProduct] = useState(false);
-    const [loadingDeleteProduct, setLoadingDeleteProduct] = useState(false);
     const [loadingEditProduct, setLoadingEditProduct] = useState(false);
     const [loadingGetProduct, setLoadingGetProduct] = useState(false);
     const [loadingImportProducts, setLoadingImportProducts] = useState(false);
@@ -57,7 +56,7 @@ export const ProductsProvider = ({ children }) => {
             const result = await importProductsAxios(data)
 
             if (result.data.detalles && result.data.detalles.success) {
-                setProducts((prev) => [...prev, ...result.data.productos])
+                setProducts((prev) => [...prev, ...result.data.products])
             }
         }
         catch (error) {
@@ -71,18 +70,12 @@ export const ProductsProvider = ({ children }) => {
     }
 
     async function deleteProduct(id) {
-        setLoadingDeleteProduct(true);
         try {
             await deleteProductAxios(id)
             setProducts((prev) => prev.filter((product) => product._id !== id));
         }
         catch (error) {
             throw error
-        }
-        finally {
-            setTimeout(() => {
-                setLoadingDeleteProduct(false);
-            }, 2000)
         }
     }
 
@@ -120,7 +113,7 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, loadingDeleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts }}>
+    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts }}>
         {children}
     </ContextProducts.Provider>;
 };
