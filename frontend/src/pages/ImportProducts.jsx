@@ -1,35 +1,41 @@
 import { useContext, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { ContextProducts } from "../context/ProductsContext"
+import Swal from "sweetalert2"
 import Loader from "../components/Loader"
 
 const ImportProducts = () => {
 
     const { loadingImportProducts, importProducts } = useContext(ContextProducts)
     const [result, setResult] = useState(null)
+   
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm()
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm()
+    const navigate = useNavigate()
+
+    const selectedFile = watch('file')?.[0]
 
     const onSubmit = async (data) => {
-        if (!data.file || data.file.length === 0) {
-            alert('Por favor selecciona un archivo')
-            return
-        }
-
+        
         const formData = new FormData()
         formData.append('file', data.file[0])
 
         try {
             const response = await importProducts(formData)
             setResult(response)
-            reset()
+            Swal.fire({
+                icon: 'success',
+                title: 'Productos importados',
+                text: 'Los productos se importaron correctamente',
+                timer: 2000,
+                showConfirmButton: false
+            })
+            navigate('/panel-admin')
         } catch (error) {
             console.error('Error al importar:', error)
-            if (error?.response?.data?.message) {
-                alert(error.response.data.message)
-            } else {
-                alert('Error al importar productos')
+            if(error?.response?.data?.message) {
+                console.log(error.response.data.message)
             }
         }
     }
@@ -48,7 +54,6 @@ const ImportProducts = () => {
             {loadingImportProducts ? <Loader /> : (
                 <div className="2xl:w-340 xl:w-280 md:w-[90%] w-[95%] bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl shadow-black/40 p-10 flex flex-col gap-8 relative z-10">
 
-                    {/* Header */}
                     <header className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <Link
@@ -90,12 +95,10 @@ const ImportProducts = () => {
                     {/* Área de carga */}
                     {!result && (
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="block text-white text-sm font-medium mb-2">
-                                    Selecciona el archivo
-                                </label>
+                            <div className="border-2 border-dashed border-white/30 hover:border-white/50 bg-white/5 rounded-xl p-12 text-center transition-all duration-200">
                                 <input
                                     type="file"
+                                    id="file-upload"
                                     accept=".csv,.xlsx,.xls"
                                     {...register('file', {
                                         required: 'Debes seleccionar un archivo',
@@ -116,96 +119,61 @@ const ImportProducts = () => {
                                             }
                                         }
                                     })}
-                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-500/20 file:text-blue-400 file:cursor-pointer hover:file:bg-blue-500/30"
+                                    className="hidden"
                                 />
+
+                                {!selectedFile ? (
+                                    <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center gap-4">
+                                        <div className="text-6xl">📄</div>
+                                        <div>
+                                            <p className="text-white font-medium mb-2">
+                                                Haz clic para seleccionar un archivo
+                                            </p>
+                                            <p className="text-white/60 text-sm">
+                                                Formatos soportados: CSV, XLSX, XLS
+                                            </p>
+                                        </div>
+                                    </label>
+                                ) : (
+                                    <div className="flex flex-col items-center gap-4">
+                                        <div className="text-6xl">✅</div>
+                                        <div>
+                                            <p className="text-white font-medium mb-1">
+                                                {selectedFile.name}
+                                            </p>
+                                            <p className="text-white/60 text-sm">
+                                                {(selectedFile.size / 1024).toFixed(2)} KB
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={handleReset}
+                                            className="text-red-400 hover:text-red-300 text-sm underline"
+                                        >
+                                            Cambiar archivo
+                                        </button>
+                                    </div>
+                                )}
+
                                 {errors.file && (
-                                    <p className="text-red-400 text-sm mt-2">
+                                    <p className="text-red-400 text-sm mt-4">
                                         {errors.file.message}
                                     </p>
                                 )}
                             </div>
 
-                            <button
-                                type="submit"
-                                className="w-full py-4 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-200"
-                            >
-                                Importar Productos
-                            </button>
+                            {selectedFile && (
+                                <button
+                                    type="submit"
+                                    className="w-full py-4 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-200"
+                                >
+                                    Importar Productos
+                                </button>
+                            )}
                         </form>
                     )}
 
-                    {/* Resultados */}
-                    {result && (
-                        <div className="space-y-6">
-                            {/* Resumen */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6">
-                                    <p className="text-blue-400 text-sm font-medium mb-2">Total</p>
-                                    <p className="text-white text-3xl font-bold">{result.total}</p>
-                                </div>
-                                <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
-                                    <p className="text-green-400 text-sm font-medium mb-2">✓ Exitosos</p>
-                                    <p className="text-white text-3xl font-bold">{result.exitosos}</p>
-                                </div>
-                                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6">
-                                    <p className="text-red-400 text-sm font-medium mb-2">✗ Errores</p>
-                                    <p className="text-white text-3xl font-bold">{result.errores}</p>
-                                </div>
-                            </div>
-
-                            {/* Lista de productos exitosos */}
-                            {result.exitosos > 0 && result.products && result.products.length > 0 && (
-                                <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 max-h-64 overflow-y-auto">
-                                    <h3 className="text-green-400 font-semibold mb-4">Productos importados exitosamente:</h3>
-                                    <div className="space-y-2">
-                                        {result.products.map((product, index) => (
-                                            <div key={index} className="bg-black/20 rounded-lg p-3">
-                                                <p className="text-white/90 text-sm">
-                                                    {product.name} - ${product.price}
-                                                </p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Lista de errores */}
-                            {result.errores > 0 && result.detalles && result.detalles.errors && (
-                                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6 max-h-64 overflow-y-auto">
-                                    <h3 className="text-red-400 font-semibold mb-4">Productos con errores:</h3>
-                                    <div className="space-y-3">
-                                        {result.detalles.errors.map((error, index) => (
-                                            <div key={index} className="bg-black/20 rounded-lg p-4">
-                                                <p className="text-white/90 text-sm mb-1">
-                                                    Fila {error.row}: <span className="text-red-400">{error.error}</span>
-                                                </p>
-                                                <p className="text-white/60 text-xs">
-                                                    {JSON.stringify(error.data)}
-                                                </p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Botones */}
-                            <div className="flex gap-4">
-                                <button
-                                    onClick={handleReset}
-                                    className="flex-1 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium transition-all duration-200"
-                                >
-                                    Importar otro archivo
-                                </button>
-                                <Link
-                                    to='/panel-admin'
-                                    className="flex-1 py-4 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 text-white font-medium shadow-lg shadow-blue-500/30 hover:scale-[1.02] hover:shadow-blue-500/50 transition-all duration-200 flex items-center justify-center"
-                                >
-                                    Volver al Dashboard
-                                </Link>
-                            </div>
-                        </div>
-                    )}
-
+                    
                 </div>
             )}
         </section>
