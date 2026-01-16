@@ -10,7 +10,7 @@ const CategoryList = () => {
 
   const navigate = useNavigate()
 
-  async function handleDelete(id,e) {
+  async function handleDelete(id, e) {
     e.stopPropagation()
     try {
       const result = await Swal.fire({
@@ -45,7 +45,7 @@ const CategoryList = () => {
   async function handleCategoryClick(categoryId) {
     try {
       const subcategories = await getSubCategories(categoryId);
-      
+
       if (subcategories && subcategories.length > 0) {
         navigate(`/categoria/${categoryId}/subcategorias`);
       } else {
@@ -69,10 +69,10 @@ const CategoryList = () => {
                 key={category._id}
                 className="group cursor-pointer bg-linear-to-r from-blue-600 to-cyan-500 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/50 transition-all duration-300">
 
-                  <div className="relative h-40 overflow-hidden">
-                    <img src={category.image} alt={category.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  </div>
-                
+                <div className="relative h-40 overflow-hidden">
+                  <img src={category.image} alt={category.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                </div>
+
 
                 <button
                   onClick={(e) => handleDelete(category._id, e)} className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-red-600 transition-colors duration-200 cursor-pointer">

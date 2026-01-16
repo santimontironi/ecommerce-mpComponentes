@@ -55,13 +55,9 @@ export const addCategory = async (req, res) => {
 
         await category.save()
 
-        const populatedCategory = await Category
-            .findById(category._id)
-            .populate("parent", "name");
-
         res.status(201).json({
             message: 'Categoria agregada correctamente',
-            category: populatedCategory
+            category: category
         });
 
     }

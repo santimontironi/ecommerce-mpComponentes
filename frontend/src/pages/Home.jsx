@@ -3,6 +3,7 @@ import { useContext } from "react"
 import { ContextCategories } from "../context/CategoryContext"
 import Loader from "../components/Loader"
 import Header from "../components/Header"
+import { Link } from "react-router-dom"
 
 const Home = () => {
 
@@ -22,7 +23,7 @@ const Home = () => {
       ) : (
         <div className="relative z-10 w-full max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4 animate-fade-in">
-            <h1 className="text-5xl md:text-7xl font-bold bg-linear-to-r py-10 from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-2xl">
+            <h1 className="text-4xl md:text-7xl font-bold bg-linear-to-r py-10 from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-2xl">
               Bienvenido a <span className="text-white/70">MpComponentes</span>
             </h1>
             <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
@@ -57,6 +58,12 @@ const Home = () => {
           )}
         </div>
       )}
+
+      <a className="z-50 underline-0" href="https://wa.me/+5493416085684?text=Hola%2C%20quiero%20más%20información">
+        <div className="fixed bottom-5 right-5 xl:right-10 xl:bottom-10 xl:w-20 xl:h-20 w-12 h-12 flex items-center justify-center cursor-pointer transform transale-y-0 hover:-translate-y-2 transition-all duration-300">
+          <img src="https://img.icons8.com/?size=100&id=DUEq8l5qTqBE&format=png&color=000000" alt="icon whatsapp" />
+        </div>
+      </a>
     </section>
   )
 }

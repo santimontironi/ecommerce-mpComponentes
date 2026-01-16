@@ -22,7 +22,7 @@ const Header = () => {
             <Link 
               to="/ingresar"
               target='_blank'
-              className="group relative px-3 py-2 md:px-6 md:py-2.5 overflow-hidden rounded-lg bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50"
+              className="group relative w-53 xl:w-70 py-4 px-5 md:px-6 md:py-2.5 xl:py-5 xl:px-6 flex items-center justify-center overflow-hidden rounded-lg bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50"
             >
               <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               
@@ -35,7 +35,7 @@ const Header = () => {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                Ingresar como administrador
+                Ingreso de admin
               </span>
             </Link>
           </nav>
