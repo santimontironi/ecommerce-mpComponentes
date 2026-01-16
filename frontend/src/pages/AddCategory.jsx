@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import Loader from "../components/Loader";
 import Swal from 'sweetalert2'
 import Back from "../components/Back";
+import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
-    const { addCategory, loadingAddCategory } = useContext(ContextCategories);
+    const { addCategory, loadingAddCategory, categories } = useContext(ContextCategories);
 
     const {
         register,
@@ -15,14 +16,18 @@ const AddCategory = () => {
         formState: { errors }
     } = useForm();
 
+    const navigate = useNavigate()
+
     async function onSubmit(data) {
         try {
             const formData = new FormData();
 
             formData.append("image", data.image[0]);
             formData.append("name", data.name);
+            formData.append("parent", data.parent);
 
             await addCategory(formData);
+            navigate("/panel-admin")
 
             Swal.fire({
                 icon: "success",
@@ -34,7 +39,7 @@ const AddCategory = () => {
 
             setErrorAddCategory(null);
 
-            reset();
+            
         }
         catch (error) {
             if (error?.response?.data?.message) {
@@ -53,9 +58,9 @@ const AddCategory = () => {
     return (
         <section className="relative w-full h-screen overflow-hidden bg-linear-120 from-[#101010] to-[#001b48] flex flex-col gap-2 items-center justify-center containerAddCategory">
 
-        
+
             <Back url="/panel-admin" />
-          
+
 
             {loadingAddCategory ? <Loader /> : (
 
@@ -88,6 +93,24 @@ const AddCategory = () => {
                                 </p>
                             )}
                         </div>
+
+                        {categories.length > 0 && (
+                            <div>
+                                <label htmlFor="parent" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Categoría padre
+                                </label>
+                                <select
+                                    id="parent"
+                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    {...register("parent")}
+                                >
+                                    <option value="">Seleccionar categoría</option>
+                                    {categories.map((category) => (
+                                        <option key={category._id} value={category._id}>{category.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <div className="flex flex-col gap-1">
                             <label className="text-sm font-medium text-gray-700">

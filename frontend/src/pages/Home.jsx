@@ -22,7 +22,7 @@ const Home = () => {
       ) : (
         <div className="relative z-10 w-full max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4 animate-fade-in">
-            <h1 className="text-5xl md:text-7xl font-bold bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-2xl">
+            <h1 className="text-5xl md:text-7xl font-bold bg-linear-to-r py-10 from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-2xl">
               Bienvenido a <span className="text-white/70">MpComponentes</span>
             </h1>
             <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">

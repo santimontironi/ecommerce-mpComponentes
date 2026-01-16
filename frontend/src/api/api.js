@@ -41,6 +41,10 @@ export const getAllCategoriesAxios = () => {
     return api.get("/getAllCategories");
 }
 
+export const getSubCategoriesAxios = (id) => {
+    return api.get(`/getSubCategories/${id}`);
+}
+
 export const addCategoryAxios = (data) => {
     return api.post("/addCategory", data, { headers: { "Content-Type": "multipart/form-data" }});
 }

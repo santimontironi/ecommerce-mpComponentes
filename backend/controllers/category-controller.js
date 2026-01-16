@@ -3,17 +3,43 @@ import cloudinary from "../config/cloudinary.js";
 
 export const categories = async (req, res) => {
     try {
-        const categories = await Category.find({ active: true })
-        res.status(200).json({ message: 'Categorias obtenidas correctamente', categories: categories })
+        const categories = await Category
+            .find({ active: true, parent: null })
+
+        res.status(200).json({
+            message: "Categorias obtenidas correctamente",
+            categories: categories
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al obtener categorias",
+            error: error.message
+        });
     }
-    catch (error) {
-        res.status(500).json({ message: 'Error al obtener categorias', error: error.message })
+};
+
+export const getSubCategories = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const categories = await Category
+            .find({ active: true, parent: id })
+
+        res.status(200).json({
+            message: "Categorias obtenidas correctamente",
+            categories: categories
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al obtener categorias",
+            error: error.message
+        });
     }
-}
+};
 
 export const addCategory = async (req, res) => {
     try {
-        const { name } = req.body
+        const { name, parent } = req.body
 
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
@@ -25,11 +51,19 @@ export const addCategory = async (req, res) => {
             return res.status(400).json({ message: 'La categoria ya existe' })
         }
 
-        const category = new Category({ image: result.secure_url, name })
+        const category = new Category({ image: result.secure_url, name, parent: parent || null })
 
         await category.save()
 
-        res.status(201).json({ message: 'Categoria agregada correctamente', category: category })
+        const populatedCategory = await Category
+            .findById(category._id)
+            .populate("parent", "name");
+
+        res.status(201).json({
+            message: 'Categoria agregada correctamente',
+            category: populatedCategory
+        });
+
     }
     catch (error) {
         res.status(500).json({ message: 'Error al agregar categoria', error: error.message })

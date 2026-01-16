@@ -12,6 +12,11 @@ const categorySchema = mongoose.Schema({
     active: {
         type: Boolean,
         default: true
+    },
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        default: null
     }
 }, {
     timestamps: true

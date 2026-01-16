@@ -1,18 +1,21 @@
 import { createContext, useState, useEffect } from "react";
-import { addCategoryAxios, getAllCategoriesAxios, deleteCategoryAxios } from "../api/api";
+import { addCategoryAxios, getAllCategoriesAxios, deleteCategoryAxios, getSubCategoriesAxios } from "../api/api";
 
 export const ContextCategories = createContext();
 
 const CategoriesProvider = ({ children }) => {
 
     const[categories,setCategories] = useState([]);
+    const[subcategories, setSubcategories] = useState([]);
     const[loadingGetCategories,setLoadingGetCategories] = useState(true);
     const[loadingAddCategory,setLoadingAddCategory] = useState(false);
+    const[loadingGetSubCategories,setLoadingGetSubCategories] = useState(false);
 
     useEffect(() => {
         async function getCategories() {
             try {
                 const res = await getAllCategoriesAxios();
+                console.log(res.data.categories)
                 setCategories(res.data.categories);
             } catch (error) {
                 throw error;
@@ -26,18 +29,35 @@ const CategoriesProvider = ({ children }) => {
         getCategories();
     }, []);
 
-    async function addCategory(data) {
-        setLoadingAddCategory(true);
+    async function getSubCategories(id) {
         try {
-            const categoryAdded = await addCategoryAxios(data);
-            setCategories((prev) => [...prev, categoryAdded.data.category]);
+            const res = await getSubCategoriesAxios(id);
+            setSubcategories(res.data.categories);
+            return res.data.categories;
         } catch (error) {
             throw error;
         }
         finally{
-            setTimeout(() => {
-                setLoadingAddCategory(false);
-            },2000)
+            setLoadingGetSubCategories(false);
+        }
+    }
+
+    async function addCategory(data) {
+        setLoadingAddCategory(true);
+        try {
+            const categoryAdded = await addCategoryAxios(data);
+            const newCategory = categoryAdded.data.category;
+            if(!newCategory.parent){
+                setCategories((prev) => [...prev, categoryAdded.data.category]);
+            }
+            else{
+                setSubcategories((prev) => [...prev, categoryAdded.data.category]);
+            }
+        } catch (error) {
+            throw error;
+        }
+        finally{
+            setLoadingAddCategory(false);
         }
     }
 
@@ -52,7 +72,7 @@ const CategoriesProvider = ({ children }) => {
     }
 
 
-    return <ContextCategories.Provider value={{addCategory,categories,loadingGetCategories,loadingAddCategory,deleteCategory}}>
+    return <ContextCategories.Provider value={{addCategory,categories,loadingGetCategories,loadingAddCategory,deleteCategory, getSubCategories, loadingGetSubCategories, subcategories}}>
         {children}
     </ContextCategories.Provider>
 };
