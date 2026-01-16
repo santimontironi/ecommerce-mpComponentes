@@ -64,11 +64,9 @@ function App() {
         </AdminProvider>} />
 
         <Route path="/categoria/:categoryId/subcategorias" element={<AdminProvider>
-          <SecurityRoutes>
-            <CategoriesProvider>
-              <SubCategories />
-            </CategoriesProvider>
-          </SecurityRoutes>
+          <CategoriesProvider>
+            <SubCategories />
+          </CategoriesProvider>
         </AdminProvider>} />
 
         <Route path="/productos/:categoryId" element={<AdminProvider>

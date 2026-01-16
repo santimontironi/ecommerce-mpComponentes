@@ -11,13 +11,14 @@ import Swal from "sweetalert2"
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
   const { getProducts, products, loadingGetProducts, deleteProduct } = useContext(ContextProducts)
-  const { categories } = useContext(ContextCategories)
+  const { categories, getAllCategories, allCategories } = useContext(ContextCategories)
   const { categoryId } = useParams()
 
-  const actualCategory = categories.find((c) => c._id === categoryId)
+  const actualCategory = categories.find((c) => c._id === categoryId) || allCategories.find((c) => c._id === categoryId)
   
   useEffect(() => {
     getProducts(categoryId)
+    getAllCategories()
   }, [categoryId])
 
   const onDeleteProduct = async (id) => {

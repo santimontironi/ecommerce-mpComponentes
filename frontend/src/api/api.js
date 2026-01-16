@@ -41,6 +41,10 @@ export const getAllCategoriesAxios = () => {
     return api.get("/getAllCategories");
 }
 
+export const getAllCategoriesWithoutParentsAxios = () => {
+    return api.get("/getAllCategoriesWithoutParents");
+}
+
 export const getSubCategoriesAxios = (id) => {
     return api.get(`/getSubCategories/${id}`);
 }

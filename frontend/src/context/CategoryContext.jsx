@@ -1,21 +1,32 @@
 import { createContext, useState, useEffect } from "react";
-import { addCategoryAxios, getAllCategoriesAxios, deleteCategoryAxios, getSubCategoriesAxios } from "../api/api";
+import { getAllCategoriesAxios,addCategoryAxios, getAllCategoriesWithoutParentsAxios, deleteCategoryAxios, getSubCategoriesAxios } from "../api/api";
 
 export const ContextCategories = createContext();
 
 const CategoriesProvider = ({ children }) => {
 
+    const[allCategories, setAllCategories] = useState([]);
     const[categories,setCategories] = useState([]);
     const[subcategories, setSubcategories] = useState([]);
+    
     const[loadingGetCategories,setLoadingGetCategories] = useState(true);
     const[loadingAddCategory,setLoadingAddCategory] = useState(false);
     const[loadingGetSubCategories,setLoadingGetSubCategories] = useState(false);
 
+    async function getAllCategories() {
+        try {
+            const res = await getAllCategoriesAxios();
+            setAllCategories(res.data.categories);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
     useEffect(() => {
-        async function getCategories() {
+        async function getCategoriesWithoutParents() {
             try {
-                const res = await getAllCategoriesAxios();
-                console.log(res.data.categories)
+                const res = await getAllCategoriesWithoutParentsAxios();
                 setCategories(res.data.categories);
             } catch (error) {
                 throw error;
@@ -26,7 +37,7 @@ const CategoriesProvider = ({ children }) => {
                 },2000)
             }
         }
-        getCategories();
+        getCategoriesWithoutParents();
     }, []);
 
     async function getSubCategories(id) {
@@ -72,7 +83,7 @@ const CategoriesProvider = ({ children }) => {
     }
 
 
-    return <ContextCategories.Provider value={{addCategory,categories,loadingGetCategories,loadingAddCategory,deleteCategory, getSubCategories, loadingGetSubCategories, subcategories}}>
+    return <ContextCategories.Provider value={{getAllCategories, allCategories, addCategory,categories,loadingGetCategories,loadingAddCategory,deleteCategory, getSubCategories, loadingGetSubCategories, subcategories}}>
         {children}
     </ContextCategories.Provider>
 };

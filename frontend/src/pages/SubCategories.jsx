@@ -113,10 +113,10 @@ const SubcategoryList = () => {
                             {subcategories.map((subcategory) => (
                                 <article
                                     key={subcategory._id}
-                                    onClick={() => navigate(`/categoria/${subcategory._id}`)}
+                                    onClick={() => navigate(`/productos/${subcategory._id}`)}
                                     className="group cursor-pointer bg-linear-to-r from-blue-600 to-cyan-500 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/50 transition-all duration-300"
                                 >
-                                    <div className="relative h-56 overflow-hidden">
+                                    <div className="relative h-80 overflow-hidden">
                                         <img
                                             src={subcategory.image}
                                             alt={subcategory.name}
@@ -140,8 +140,8 @@ const SubcategoryList = () => {
                                         </div>
                                     </div>
 
-                                    <div className="p-4">
-                                        <h3 className="text-lg font-semibold text-white">
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-semibold text-white">
                                             {subcategory.name}
                                         </h3>
                                     </div>

@@ -3,11 +3,27 @@ import { useContext } from "react"
 import { ContextCategories } from "../context/CategoryContext"
 import Loader from "../components/Loader"
 import Header from "../components/Header"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const Home = () => {
 
-  const { categories, loadingGetCategories } = useContext(ContextCategories);
+  const { categories, loadingGetCategories, getSubCategories } = useContext(ContextCategories);
+
+  const navigate = useNavigate();
+
+  async function handleCategoryClick(categoryId) {
+    try {
+      const subcategories = await getSubCategories(categoryId);
+
+      if (subcategories && subcategories.length > 0) {
+        navigate(`/categoria/${categoryId}/subcategorias`);
+      } else {
+        navigate(`/productos/${categoryId}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] flex flex-col items-center justify-center py-45 md:py-32 xl:py-30 px-4">
@@ -52,6 +68,7 @@ const Home = () => {
                   key={category._id}
                   category={category}
                   index={index}
+                  handleCategoryClick={handleCategoryClick}
                 />
               ))}
             </div>
