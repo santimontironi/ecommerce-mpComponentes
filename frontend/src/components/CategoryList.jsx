@@ -42,10 +42,14 @@ const CategoryList = () => {
     }
   }
 
+  //esta funcion es como preguntar ¿esta categoría tiene hijas?
   async function handleCategoryClick(categoryId) {
     try {
+
+      // se buscan subcategorías donde parent === categoryId
       const subcategories = await getSubCategories(categoryId);
 
+      //si hay subcategorias se redirige a subcategorias, ya que categoryId es el padre
       if (subcategories && subcategories.length > 0) {
         navigate(`/categoria/${categoryId}/subcategorias`);
       } else {

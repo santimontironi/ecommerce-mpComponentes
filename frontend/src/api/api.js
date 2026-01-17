@@ -54,6 +54,10 @@ export const importProductsAxios = (data) => {
     return api.post("/importProducts", data, { headers: { "Content-Type": "multipart/form-data" }});
 }
 
+export const getProductsWithoutStockAxios = () => {
+    return api.get("/getAllProductsWithoutStock");
+}
+
 /* -------------------------CATEGORIES-------------------------------- */
 
 export const getAllCategoriesAxios = () => {

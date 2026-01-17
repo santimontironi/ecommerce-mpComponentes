@@ -8,5 +8,7 @@ export const router = Router()
 router.get("/getAllCategories", allCategories)
 router.get("/getAllCategoriesWithoutParents", categoriesWithoutParents)
 router.get("/getSubCategories/:id", getSubCategories)
+
 router.post("/addCategory", upload.single("image"), verifyToken, addCategory)
+
 router.delete("/deleteCategory/:id", verifyToken, deleteCategory)

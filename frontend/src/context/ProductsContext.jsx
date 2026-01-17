@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios } from "../api/api";
+import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios, getProductsWithoutStockAxios } from "../api/api";
 import { useContext } from "react";
 import { ContextAdmin } from "./adminContext";
 
@@ -9,6 +9,8 @@ export const ProductsProvider = ({ children }) => {
 
     const [products, setProducts] = useState([]);
     const [productById, setProductById] = useState([]);
+    const [productsWithoutStock, setProductsWithoutStock] = useState([]);
+
     const [loadingGetProducts, setLoadingGetProducts] = useState(true);
     const [loadingAddProduct, setLoadingAddProduct] = useState(false);
     const [loadingEditProduct, setLoadingEditProduct] = useState(false);
@@ -113,7 +115,17 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts }}>
+    async function getProductsWithoutStock() {
+        try {
+            const res = await getProductsWithoutStockAxios()
+            setProductsWithoutStock(res.data.products)
+        }
+        catch (error) {
+            throw error
+        }
+    }
+
+    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts, productsWithoutStock, getProductsWithoutStock }}>
         {children}
     </ContextProducts.Provider>;
 };

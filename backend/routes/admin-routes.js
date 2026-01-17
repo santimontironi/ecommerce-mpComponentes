@@ -6,4 +6,5 @@ export const router = Router();
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
+
 router.get("/dashboard", verifyToken, dashboardAdmin);
