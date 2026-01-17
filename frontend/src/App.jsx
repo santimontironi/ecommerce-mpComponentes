@@ -12,12 +12,15 @@ import ProductById from "./pages/ProductById";
 import Products from "./pages/Products";
 import SubCategories from "./pages/SubCategories";
 import ImportProducts from "./pages/ImportProducts";
+import Contact from "./pages/Contact";
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
+
+        <Route path="/contacto" element={<Contact />} />
 
         <Route path="/" element={<CategoriesProvider>
           <Home />

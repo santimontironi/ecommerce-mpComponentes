@@ -26,7 +26,7 @@ const Home = () => {
   }
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] flex flex-col items-center justify-center py-45 md:py-32 xl:py-30 px-4">
+    <section className="relative min-h-screen w-full overflow-hidden bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] flex flex-col items-center justify-center py-30 md:py-32 xl:py-30 px-4">
 
       <Header />
 

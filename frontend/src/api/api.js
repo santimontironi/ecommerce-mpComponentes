@@ -5,6 +5,9 @@ export const api = axios.create({
     withCredentials: true
 });
 
+
+/* -------------------------AUTH-------------------------------- */ 
+
 export const loginAdminAxios = (data) => {
     return api.post("/login", data );    
 }
@@ -16,6 +19,8 @@ export const logoutAdminAxios = () => {
 export const dashboardAdminAxios = () => {
     return api.get("/dashboard");
 }
+
+/* -------------------------PRODUCTS-------------------------------- */ 
 
 export const getAllProductsAxios = (categoryId) => {
   return api.get(`/getAllProducts/${categoryId}`)
@@ -37,6 +42,20 @@ export const addProductAxios = (data) => {
     return api.post("/addProduct", data, { headers: { "Content-Type": "multipart/form-data" }});
 }
 
+export const deleteProductAxios = (id) => {
+    return api.delete(`/deleteProduct/${id}`);
+}
+
+export const editProductAxios = (id, data) => {
+    return api.patch(`/editProduct/${id}`, data, { headers: { "Content-Type": "multipart/form-data" }});
+}
+
+export const importProductsAxios = (data) => {
+    return api.post("/importProducts", data, { headers: { "Content-Type": "multipart/form-data" }});
+}
+
+/* -------------------------CATEGORIES-------------------------------- */
+
 export const getAllCategoriesAxios = () => {
     return api.get("/getAllCategories");
 }
@@ -57,14 +76,8 @@ export const deleteCategoryAxios = (id) => {
     return api.delete(`/deleteCategory/${id}`);
 }
 
-export const deleteProductAxios = (id) => {
-    return api.delete(`/deleteProduct/${id}`);
-}
+/* -------------------------CONTACT-------------------------------- */
 
-export const editProductAxios = (id, data) => {
-    return api.patch(`/editProduct/${id}`, data, { headers: { "Content-Type": "multipart/form-data" }});
-}
-
-export const importProductsAxios = (data) => {
-    return api.post("/importProducts", data, { headers: { "Content-Type": "multipart/form-data" }});
+export const sendContactMessageAxios = (data) => {
+    return api.post("/sendContactMessage", data);
 }
