@@ -33,7 +33,9 @@ function App() {
         <Route path="/panel-admin" element={<AdminProvider>
           <SecurityRoutes>
             <CategoriesProvider>
-              <DashboardAdmin />
+              <ProductsProvider>
+                <DashboardAdmin />
+              </ProductsProvider>
             </CategoriesProvider>
           </SecurityRoutes>
         </AdminProvider>} />

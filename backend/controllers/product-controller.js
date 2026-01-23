@@ -37,12 +37,12 @@ export const productById = async (req, res) => {
 
 export const productsWithoutStock  = async (req, res) => {
     try{
-        const product = await Product.find({
+        const products = await Product.find({
             active: true,
-            stock: 0
+            stock: { $lt: 5 }
         })
 
-        return res.status(200).json({ message: 'Productos sin stock obtenidos correctamente', product: product })
+        return res.status(200).json({ message: 'Productos sin stock obtenidos correctamente', products: products })
     }
     catch(error){
         return res.status(500).json({ message: 'Error al obtener productos sin stock', error: error.message })
