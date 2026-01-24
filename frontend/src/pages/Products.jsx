@@ -7,6 +7,7 @@ import ProductCard from "../components/ProductCard"
 import Loader from "../components/Loader"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
+import CartIcon from "../components/CartIcon"
 
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
@@ -15,7 +16,7 @@ const Products = () => {
   const { categoryId } = useParams()
 
   const actualCategory = categories.find((c) => c._id === categoryId) || allCategories.find((c) => c._id === categoryId)
-  
+
   useEffect(() => {
     getProducts(categoryId)
     getAllCategories()
@@ -34,7 +35,7 @@ const Products = () => {
       cancelButtonText: 'Cancelar'
     })
 
-    if(result.isConfirmed) {
+    if (result.isConfirmed) {
 
       await Swal.fire({
         icon: 'success',
@@ -55,13 +56,18 @@ const Products = () => {
 
   return (
     <section className="min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
+      
+      <div className="fixed top-17 right-20 z-40">
+        <CartIcon />
+      </div>
+
       {loadingGetProducts ? (
         <div className="flex justify-center items-center h-[60vh]">
           <Loader />
         </div>
       ) : (
         <div className="max-w-7xl mx-auto">
-        
+
           <div className="mb-12 space-y-4">
             <h1 className="text-5xl sm:text-6xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
               {actualCategory?.name}

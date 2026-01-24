@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import logo from '../img/logo.jpg'
+import CartIcon from './CartIcon'
 
 const Header = () => {
   return (
@@ -19,6 +20,9 @@ const Header = () => {
           </Link>
 
           <nav className="flex items-center gap-2 sm:gap-4 lg:gap-6">
+           
+            <CartIcon />
+
             <Link
               to="/contacto"
               target='_blank'

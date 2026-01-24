@@ -1,4 +1,4 @@
-import stripe from '../config/stripe.js'
+import stripe from '../config/stripeConfig.js'
 import Product from '../models/Product.js'
 import { sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
 import { sendPurchaseNotificationToStore } from '../services/emailService.js'
@@ -57,14 +57,17 @@ export const createCheckout = async (req, res) => {
 
         // Crear sesión de Stripe, Stripe crea una sesión temporal de pago
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'], // Solo tarjetas
-            line_items: lineItems, // Solo tarjetas
-            mode: 'payment', // Pago único (no suscripción)
-            success_url: `${process.env.FRONTEND_URL}/pay-correct?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.FRONTEND_URL}/pay-fail`,
+            payment_method_types: ['card'],
+            line_items: lineItems,
+            mode: 'payment',
+
+            // URLs temporales (pueden no existir aún)
+            success_url: 'http://localhost:5173/pay-correct?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'http://localhost:5173/pay-fail',
+
             customer_email: buyer_email,
             metadata: {
-                items: JSON.stringify(items) // Guardamos los items como string
+                items: JSON.stringify(items)
             }
         })
 

@@ -12,6 +12,7 @@ import ProductById from "./pages/ProductById";
 import Products from "./pages/Products";
 import SubCategories from "./pages/SubCategories";
 import ImportProducts from "./pages/ImportProducts";
+import { CartProvider } from "./context/CartContext";
 import Contact from "./pages/Contact";
 
 function App() {
@@ -23,7 +24,9 @@ function App() {
         <Route path="/contacto" element={<Contact />} />
 
         <Route path="/" element={<CategoriesProvider>
-          <Home />
+          <CartProvider>
+            <Home />
+          </CartProvider>
         </CategoriesProvider>} />
 
         <Route path="/ingresar" element={<AdminProvider>
@@ -77,7 +80,9 @@ function App() {
         <Route path="/productos/:categoryId" element={<AdminProvider>
           <ProductsProvider>
             <CategoriesProvider>
-              <Products />
+              <CartProvider>
+                <Products />
+              </CartProvider>
             </CategoriesProvider>
           </ProductsProvider>
         </AdminProvider>} />
