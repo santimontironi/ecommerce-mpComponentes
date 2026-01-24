@@ -1,5 +1,7 @@
 import stripe from '../config/stripe.js'
 import Product from '../models/Product.js'
+import { sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
+import { sendPurchaseNotificationToStore } from '../services/emailService.js'
 
 // Crear checkout con múltiples productos
 export const createCheckout = async (req, res) => {
@@ -21,10 +23,10 @@ export const createCheckout = async (req, res) => {
         // Verificar stock
         for (const item of items) {
             const product = products.find(p => p._id.toString() === item.product_id)
-            
+
             if (product.stock < item.quantity) {
-                return res.status(400).json({ 
-                    error: `Stock insuficiente para ${product.name}. Disponible: ${product.stock}` 
+                return res.status(400).json({
+                    error: `Stock insuficiente para ${product.name}. Disponible: ${product.stock}`
                 })
             }
         }
@@ -32,7 +34,7 @@ export const createCheckout = async (req, res) => {
         // Crear line_items para Stripe
         const lineItems = items.map(item => {
             const product = products.find(p => p._id.toString() === item.product_id)
-            
+
             return {
                 price_data: {
                     currency: 'ars',
@@ -70,7 +72,6 @@ export const createCheckout = async (req, res) => {
     }
 }
 
-// Webhook actualizado
 export const handleWebhook = async (req, res) => {
     const sig = req.headers['stripe-signature']
     let event
@@ -88,14 +89,15 @@ export const handleWebhook = async (req, res) => {
 
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object
-        
-        console.log('✅ Pago completado:', session.id)
-        
-        try {
-            // Parsear los items del metadata
-            const items = JSON.parse(session.metadata.items)
 
-            // Decrementar stock de cada producto
+        console.log('✅ Pago completado:', session.id)
+
+        try {
+            const items = JSON.parse(session.metadata.items)
+            const purchasedItems = []
+            let total = 0
+
+            // Decrementar stock y recopilar info de productos
             for (const item of items) {
                 const product = await Product.findByIdAndUpdate(
                     item.product_id,
@@ -104,9 +106,32 @@ export const handleWebhook = async (req, res) => {
                 )
 
                 console.log(`📦 Stock actualizado: ${product.name} - Nuevo stock: ${product.stock}`)
+
+                // Guardar info para el email
+                purchasedItems.push({
+                    product_name: product.name,
+                    quantity: item.quantity,
+                    price: product.price
+                })
+
+                total += product.price * item.quantity
             }
 
             console.log('🎉 Compra procesada exitosamente')
+
+            // Preparar datos para emails
+            const purchaseData = {
+                items: purchasedItems,
+                buyer_email: session.customer_email,
+                total: total,
+                payment_id: session.id
+            }
+
+            // 📧 Enviar email a la tienda
+            await sendPurchaseNotificationToStore(purchaseData)
+
+            // 📧 Enviar email de confirmación al cliente (opcional)
+            await sendPurchaseConfirmationToCustomer(purchaseData)
 
         } catch (error) {
             console.error('❌ Error procesando pago:', error)
