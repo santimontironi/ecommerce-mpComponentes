@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { ContextProducts } from "../context/ProductsContext"
-import Loader from "./Loader"
+import Loader from "../components/Loader"
 
 const ProductDetail = ({ id }) => {
   const { getProduct, productById, loadingGetProduct } = useContext(ContextProducts)

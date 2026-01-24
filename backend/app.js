@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import {router as adminRouter} from "./routes/admin-routes.js";
 import {router as productRouter} from "./routes/product-routes.js";
-import {router as preferenceRouter} from "./routes/preference-routes.js";
+import { router as purchaseRouter, webhookRouter } from "./routes/purchase-routes.js";
 import {router as categoryRouter} from "./routes/category-routes.js";
 import { router as contactRouter } from "./routes/contact-routes.js";
 
@@ -25,7 +25,8 @@ app.use(cors({
 
 app.use('', adminRouter)
 app.use('', productRouter)
-app.use('', preferenceRouter)
+app.use('', purchaseRouter)
+app.use('', webhookRouter)
 app.use('', categoryRouter)
 app.use('', contactRouter)
 
