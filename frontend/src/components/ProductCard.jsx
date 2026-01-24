@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const ProductCard = ({ product, isAdmin, handleDelete }) => {
+const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }) => {
 
     return (
         <section className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">
@@ -36,7 +36,7 @@ const ProductCard = ({ product, isAdmin, handleDelete }) => {
                     </div>
 
                     {!isAdmin ? (
-                        <button className="px-5 py-2.5 cursor-pointer bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
+                        <button onClick={() => addProductToCart(product)} className="px-5 py-2.5 cursor-pointer bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
                             Agregar al carrito
                         </button>
                     ) : (

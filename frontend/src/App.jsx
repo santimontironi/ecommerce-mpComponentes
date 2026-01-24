@@ -13,6 +13,7 @@ import Products from "./pages/Products";
 import SubCategories from "./pages/SubCategories";
 import ImportProducts from "./pages/ImportProducts";
 import { CartProvider } from "./context/CartContext";
+import CartPage from "./pages/CartPage";
 import Contact from "./pages/Contact";
 
 function App() {
@@ -114,6 +115,9 @@ function App() {
           </SecurityRoutes>
         </AdminProvider>} />
 
+        <Route path="/carrito" element={<CartProvider>
+          <CartPage />
+        </CartProvider>} />
 
       </Routes>
 

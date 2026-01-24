@@ -6,7 +6,7 @@ const CartIcon = () => {
     const { getCartCount } = useContext(ContextCart);
 
     return (
-        <Link to={'/carrito'}>
+        <Link to={'/carrito'} target="_blank">
             <div className="relative cursor-pointer group">
                 <svg
                     className="w-6 h-6 sm:w-7 sm:h-7 text-white hover:text-cyan-400 transition-all duration-300 group-hover:scale-110"

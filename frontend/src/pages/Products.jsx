@@ -3,6 +3,7 @@ import { ContextAdmin } from "../context/adminContext"
 import { ContextProducts } from "../context/ProductsContext"
 import { useParams } from "react-router-dom"
 import { ContextCategories } from "../context/CategoryContext"
+import { ContextCart } from "../context/CartContext"
 import ProductCard from "../components/ProductCard"
 import Loader from "../components/Loader"
 import { Link } from "react-router-dom"
@@ -11,8 +12,13 @@ import CartIcon from "../components/CartIcon"
 
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
+
   const { getProducts, products, loadingGetProducts, deleteProduct } = useContext(ContextProducts)
+
   const { categories, getAllCategories, allCategories } = useContext(ContextCategories)
+
+  const {addProductToCart} = useContext(ContextCart)
+
   const { categoryId } = useParams()
 
   const actualCategory = categories.find((c) => c._id === categoryId) || allCategories.find((c) => c._id === categoryId)
@@ -56,10 +62,12 @@ const Products = () => {
 
   return (
     <section className="min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
-      
-      <div className="fixed top-17 right-20 z-40">
-        <CartIcon />
-      </div>
+
+      {!isAdmin && (
+        <div className="fixed top-17 right-20 z-40">
+          <CartIcon />
+        </div>
+      )}
 
       {loadingGetProducts ? (
         <div className="flex justify-center items-center h-[60vh]">
@@ -86,6 +94,7 @@ const Products = () => {
                   product={product}
                   isAdmin={isAdmin}
                   handleDelete={onDeleteProduct}
+                  addProductToCart={addProductToCart}
                 />
               ))}
             </div>
