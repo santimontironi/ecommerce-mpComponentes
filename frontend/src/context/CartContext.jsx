@@ -4,13 +4,13 @@ export const ContextCart = createContext();
 
 export const CartProvider = ({ children }) => {
 
-    // Inicializar el carrito desde localStorage
+    // cart se inicializa con lo que haya en localStorage
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    // Guardar en localStorage cada vez que el carrito cambie
+    // Guardar en localStorage cada vez que el carrito cambie, para setItem se necesita convertir a string
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);

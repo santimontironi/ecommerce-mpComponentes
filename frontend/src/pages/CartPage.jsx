@@ -8,9 +8,14 @@ const CartPage = () => {
     console.log(cart)
 
     return (
-        <section className="min-h-screen bg-linear-to-br from-blue-400 via-blue-500 to-blue-700 py-12 px-4 sm:px-6 lg:px-8">
+        <section className="relative min-h-screen bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] py-12 px-4 sm:px-6 lg:px-8">
+
+            <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
+            <div className="absolute top-1/3 right-20 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+
             <div className="max-w-7xl mx-auto">
-                
+
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">Carrito de Compras</h1>
                     <p className="text-blue-100">
