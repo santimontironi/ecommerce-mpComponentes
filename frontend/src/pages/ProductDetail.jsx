@@ -3,7 +3,7 @@ import { ContextProducts } from "../context/ProductsContext"
 import Loader from "../components/Loader"
 
 const ProductDetail = ({ id }) => {
-  const { getProduct, productById, loadingGetProduct } = useContext(ContextProducts)
+  const { getProduct, productById, loading } = useContext(ContextProducts)
 
   useEffect(() => {
     getProduct(id)
@@ -11,7 +11,7 @@ const ProductDetail = ({ id }) => {
 
   return (
     <section className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6 lg:p-8">
-      {loadingGetProduct ? (
+      {loading.loadingGetProduct ? (
         <Loader />
       ) : (
         <article className="max-w-6xl w-full bg-slate-800/30 backdrop-blur-md border border-slate-700/30 rounded-3xl overflow-hidden shadow-2xl shadow-black/50">

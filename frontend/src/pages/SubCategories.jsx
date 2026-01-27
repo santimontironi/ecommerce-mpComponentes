@@ -8,7 +8,7 @@ import Swal from "sweetalert2"
 const SubcategoryList = () => {
     const { categoryId } = useParams()
 
-    const { getSubCategories, deleteCategory, loadingGetSubCategories } = useContext(ContextCategories)
+    const { getSubCategories, deleteCategory, loading } = useContext(ContextCategories)
 
     const { isAdmin } = useContext(ContextAdmin)
 
@@ -71,7 +71,7 @@ const SubcategoryList = () => {
             <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/50 rounded-full blur-3xl" />
             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/50 rounded-full blur-3xl" />
 
-            {loadingGetSubCategories ? (
+            {loading.loadingGetSubCategories ? (
                 <Loader />
             ) : (
                 <div className="relative z-10 max-w-7xl mx-auto space-y-10">

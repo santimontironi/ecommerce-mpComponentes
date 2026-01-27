@@ -7,7 +7,7 @@ import Loader from "../components/Loader"
 
 const ImportProducts = () => {
 
-    const { loadingImportProducts, importProducts } = useContext(ContextProducts)
+    const { loading, importProducts } = useContext(ContextProducts)
     const [result, setResult] = useState(null)
    
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm()
@@ -51,7 +51,7 @@ const ImportProducts = () => {
             <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/50 rounded-full blur-3xl" />
             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/50 rounded-full blur-3xl" />
 
-            {loadingImportProducts ? <Loader /> : (
+            {loading.loadingImportProducts ? <Loader /> : (
                 <div className="2xl:w-340 xl:w-280 md:w-[90%] w-[95%] bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl shadow-black/40 p-10 flex flex-col gap-8 relative z-10">
 
                     <header className="flex items-center justify-between">

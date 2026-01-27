@@ -6,7 +6,7 @@ import ProductCard from "./ProductCard"
 import Loader from "./Loader"
 
 const SearchResults = () => {
-    const { productsFilter, loadingProductsFilter } = useContext(ContextProducts)
+    const { productsFilter, loading } = useContext(ContextProducts)
     const { addProductToCart } = useContext(ContextCart)
     const { isAdmin } = useContext(ContextAdmin)
 
@@ -16,7 +16,7 @@ const SearchResults = () => {
 
     return (
         <div>
-            {loadingProductsFilter && <Loader />}
+            {loading.loadingProductsFilter && <Loader />}
             <div className="text-center mb-16 space-y-4 animate-fade-in">
                 <p className="text-gray-300 text-lg md:text-xl">
                     Encontramos <span className="text-cyan-400 font-semibold">{productsFilter.length}</span> resultado{productsFilter.length !== 1 ? 's' : ''}

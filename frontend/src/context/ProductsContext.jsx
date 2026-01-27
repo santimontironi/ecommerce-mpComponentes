@@ -12,12 +12,14 @@ export const ProductsProvider = ({ children }) => {
     const [productById, setProductById] = useState([]);
     const [productsWithoutStock, setProductsWithoutStock] = useState([]);
 
-    const [loadingGetProducts, setLoadingGetProducts] = useState(true);
-    const [loadingAddProduct, setLoadingAddProduct] = useState(false);
-    const [loadingEditProduct, setLoadingEditProduct] = useState(false);
-    const [loadingGetProduct, setLoadingGetProduct] = useState(false);
-    const [loadingImportProducts, setLoadingImportProducts] = useState(false);
-    const [loadingProductsFilter, setLoadingProductsFilter] = useState(false);
+    const [loading, setLoading] = useState({
+        loadingGetProducts: true,
+        loadingAddProduct: false,
+        loadingEditProduct: false,
+        loadingGetProduct: false,
+        loadingImportProducts: false,
+        loadingProductsFilter: false
+    })
 
     const { isAdmin } = useContext(ContextAdmin);
 
@@ -32,7 +34,7 @@ export const ProductsProvider = ({ children }) => {
             }
             finally {
                 setTimeout(() => {
-                    setLoadingGetProducts(false);
+                    setLoading((prev) => ({ ...prev, loadingGetProducts: false }));
                 }, 2000)
             }
         }
@@ -49,13 +51,13 @@ export const ProductsProvider = ({ children }) => {
         }
         finally {
             setTimeout(() => {
-                setLoadingGetProducts(false);
+                setLoading((prev) => ({ ...prev, loadingGetProducts: false }));
             }, 2000)
         }
     }
 
     async function addProduct(data) {
-        setLoadingAddProduct(true);
+        setLoading((prev) => ({ ...prev, loadingAddProduct: true }));
         try {
             const productAdded = await addProductAxios(data)
             setProducts((prev) => [...prev, productAdded.data.product])
@@ -66,13 +68,13 @@ export const ProductsProvider = ({ children }) => {
         }
         finally {
             setTimeout(() => {
-                setLoadingAddProduct(false);
+                setLoading((prev) => ({ ...prev, loadingAddProduct: false }));
             }, 2000)
         }
     }
 
     async function importProducts(data) {
-        setLoadingImportProducts(true);
+        setLoading((prev) => ({ ...prev, loadingImportProducts: true }));
         try {
 
             const result = await importProductsAxios(data)
@@ -86,7 +88,7 @@ export const ProductsProvider = ({ children }) => {
         }
         finally {
             setTimeout(() => {
-                setLoadingImportProducts(false);
+                setLoading((prev) => ({ ...prev, loadingImportProducts: false }));
             }, 2000)
         }
     }
@@ -102,7 +104,7 @@ export const ProductsProvider = ({ children }) => {
     }
 
     async function getProduct(id) {
-        setLoadingGetProduct(true);
+        setLoading((prev) => ({ ...prev, loadingGetProduct: true }));
         try {
             const res = isAdmin ? await getProductAdminAxios(id) : await getProductAxios(id)
             setProductById(res.data.product)
@@ -113,13 +115,13 @@ export const ProductsProvider = ({ children }) => {
         }
         finally {
             setTimeout(() => {
-                setLoadingGetProduct(false);
+                setLoading((prev) => ({ ...prev, loadingGetProduct: false }));
             }, 2000)
         }
     }
 
     async function editProduct(id, data) {
-        setLoadingEditProduct(true);
+        setLoading((prev) => ({ ...prev, loadingEditProduct: true }));
         try {
             const productEdited = await editProductAxios(id, data)
             setProducts((prev) => prev.map((product) => product._id === id ? productEdited.data.product : product))
@@ -130,7 +132,7 @@ export const ProductsProvider = ({ children }) => {
         }
         finally {
             setTimeout(() => {
-                setLoadingEditProduct(false);
+                setLoading((prev) => ({ ...prev, loadingEditProduct: false }));
             }, 2000)
         }
     }
@@ -146,7 +148,7 @@ export const ProductsProvider = ({ children }) => {
     }
 
     async function searchProducts(name) {
-        setProductsFilter(true)
+        setLoading((prev) => ({ ...prev, loadingProductsFilter: true }))
         try {
 
             if (!name.trim()) {
@@ -164,11 +166,11 @@ export const ProductsProvider = ({ children }) => {
             throw error
         }
         finally {
-            setLoadingProductsFilter(false)
+            setLoading((prev) => ({ ...prev, loadingProductsFilter: false }))
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts, loadingProductsFilter }}>
+    return <ContextProducts.Provider value={{ products, loading, setLoading, addProduct, getProducts, deleteProduct, editProduct, getProduct, productById, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts}}>
         {children}
     </ContextProducts.Provider>;
 };

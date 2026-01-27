@@ -9,7 +9,7 @@ import Back from "../components/Back"
 const AddProduct = () => {
 
   const { categories } = useContext(ContextCategories)
-  const { addProduct, loadingAddProduct } = useContext(ContextProducts)
+  const { addProduct, loading } = useContext(ContextProducts)
 
   const { handleSubmit, register, reset, formState: { errors } } = useForm()
 
@@ -47,7 +47,7 @@ const AddProduct = () => {
 
       <Back url="/panel-admin" />
 
-      {loadingAddProduct ? <Loader /> : (
+      {loading.loadingAddProduct ? <Loader /> : (
         <div className="w-full max-w-xl bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
 
           <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">

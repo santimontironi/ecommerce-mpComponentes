@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 const CategoryList = () => {
 
-  const { categories, loadingGetCategories, deleteCategory, getSubCategories } = useContext(ContextCategories)
+  const { categories, loading, deleteCategory, getSubCategories } = useContext(ContextCategories)
 
   const navigate = useNavigate()
 
@@ -63,7 +63,7 @@ const CategoryList = () => {
 
   return (
     <>
-      {loadingGetCategories ? <Loader /> : (
+      {loading.loadingGetCategories ? <Loader /> : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {categories.map((category) => {

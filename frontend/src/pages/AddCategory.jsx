@@ -7,7 +7,7 @@ import Back from "../components/Back";
 import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
-    const { addCategory, loadingAddCategory, categories } = useContext(ContextCategories);
+    const { addCategory, loading, categories } = useContext(ContextCategories);
 
     const {
         register,
@@ -62,7 +62,7 @@ const AddCategory = () => {
             <Back url="/panel-admin" />
 
 
-            {loadingAddCategory ? <Loader /> : (
+            {loading.loadingAddCategory ? <Loader /> : (
 
                 <div className="w-95 md:w-105 2xl:w-200 bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
 

@@ -1,6 +1,6 @@
 import CategoryCard from "../components/CategoryCard"
 import SearchResults from "../components/SearchResults"
-import NoSearchResults from "../components/NoSearchResults"
+import NoSearchResults from "../components/noSearchResults"
 import { useContext } from "react"
 import { ContextCategories } from "../context/CategoryContext"
 import { ContextProducts } from "../context/ProductsContext"
@@ -11,7 +11,7 @@ import { useEffect } from "react"
 
 const Home = () => {
 
-  const { categories, loadingGetCategories, getSubCategories } = useContext(ContextCategories);
+  const { categories, loading, getSubCategories } = useContext(ContextCategories);
   const { productsFilter } = useContext(ContextProducts);
 
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Home = () => {
       <div className="absolute top-1/3 right-20 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
 
-      {loadingGetCategories ? (
+      {loading.loadingGetCategories ? (
         <Loader />
       ) : (
         <div className="relative z-10 w-full max-w-7xl mx-auto">

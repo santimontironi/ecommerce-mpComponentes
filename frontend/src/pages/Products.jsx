@@ -13,7 +13,7 @@ import CartIcon from "../components/CartIcon"
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
 
-  const { getProducts, products, loadingGetProducts, deleteProduct } = useContext(ContextProducts)
+  const { getProducts, products, loading, deleteProduct } = useContext(ContextProducts)
 
   const { categories, getAllCategories, allCategories } = useContext(ContextCategories)
 
@@ -69,7 +69,7 @@ const Products = () => {
         </div>
       )}
 
-      {loadingGetProducts ? (
+      {loading.loadingGetProducts ? (
         <div className="flex justify-center items-center h-[60vh]">
           <Loader />
         </div>
