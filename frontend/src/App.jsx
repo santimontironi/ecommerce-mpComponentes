@@ -31,13 +31,13 @@ const AppProviders = ({ children }) => (
 
 const AdminProviders = ({ children }) => (
   <AdminProvider>
-    <SecurityRoutes>
+    <CategoriesProvider>
       <ProductsProvider>
-        <CategoriesProvider>
+        <SecurityRoutes>
           {children}
-        </CategoriesProvider>
+        </SecurityRoutes>
       </ProductsProvider>
-    </SecurityRoutes>
+    </CategoriesProvider>
   </AdminProvider>
 );
 
@@ -45,7 +45,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        
+
         <Route path="/contacto" element={<Contact />} />
 
         <Route
@@ -103,11 +103,11 @@ function App() {
         />
 
         <Route
-          path="/categoria/:categoryId/subcategorias"
+          path="/admin/categoria/:categoryId/subcategorias"
           element={
-            <AppProviders>
+            <AdminProvider>
               <SubCategories />
-            </AppProviders>
+            </AdminProvider>
           }
         />
 
@@ -117,6 +117,15 @@ function App() {
             <AppProviders>
               <Products />
             </AppProviders>
+          }
+        />
+
+        <Route
+          path="/admin/categoria/:categoryId"
+          element={
+            <AdminProviders>
+              <Products />
+            </AdminProviders>
           }
         />
 

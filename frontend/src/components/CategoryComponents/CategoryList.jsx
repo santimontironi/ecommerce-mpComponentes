@@ -51,9 +51,9 @@ export const CategoryList = () => {
 
       //si hay subcategorias se redirige a subcategorias, ya que categoryId es el padre
       if (subcategories && subcategories.length > 0) {
-        navigate(`/categoria/${categoryId}/subcategorias`);
+        navigate(`/admin/categoria/${categoryId}/subcategorias`);
       } else {
-        navigate(`/categoria/${categoryId}`);
+        navigate(`/admin/categoria/${categoryId}`);
       }
     } catch (error) {
       console.error('Error:', error);

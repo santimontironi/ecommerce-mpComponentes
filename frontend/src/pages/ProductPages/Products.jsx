@@ -4,7 +4,7 @@ import { ContextProducts } from "../../context/ProductsContext"
 import { useParams } from "react-router-dom"
 import { ContextCategories } from "../../context/CategoryContext"
 import { ContextCart } from "../../context/CartContext"
-import { ProductCard } from "../../components/ProductComponents/ProductCard"
+import ProductCard from "../../components/ProductComponents/ProductCard"
 import { Loader } from "../../components/UIComponents/Loader"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
@@ -17,7 +17,8 @@ const Products = () => {
 
   const { categories, getAllCategories, allCategories } = useContext(ContextCategories)
 
-  const {addProductToCart} = useContext(ContextCart)
+  const cartContext = useContext(ContextCart) || {}
+  const { addProductToCart } = cartContext
 
   const { categoryId } = useParams()
 
