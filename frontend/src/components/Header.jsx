@@ -1,14 +1,36 @@
 import { Link } from 'react-router-dom'
 import logo from '../img/logo.jpg'
 import CartIcon from './CartIcon'
+import { useContext, useState } from 'react'
+import { ContextProducts } from '../context/ProductsContext'
 
 const Header = () => {
+
+  const { searchProducts } = useContext(ContextProducts)
+  const [search, setSearch] = useState('')
+
+  const handleSearch = (e) => {
+    const value = e.target.value
+    setSearch(value)
+    searchProducts(value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
+  const clearSearch = () => {
+    setSearch('')
+    searchProducts('')
+  }
+
   return (
     <header className="fixed p-4 top-0 left-0 right-0 z-50 bg-linear-to-r from-slate-950/95 via-blue-950/95 to-slate-950/95 backdrop-blur-xl border-b border-cyan-400/20 shadow-lg shadow-black/50">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between gap-4 h-16 sm:h-20">
 
-          <Link to="/" className="group flex items-center gap-3 shrink-0">
+          {/* Logo - Izquierda */}
+          <Link to="/" onClick={clearSearch} className="group flex items-center gap-3 shrink-0">
             <div className="relative">
               <img
                 src={logo}
@@ -19,8 +41,42 @@ const Header = () => {
             </div>
           </Link>
 
-          <nav className="flex items-center gap-2 sm:gap-4 lg:gap-6">
-           
+          {/* Buscador - Centro */}
+          <form
+            onSubmit={handleSubmit}
+            className="hidden md:flex flex-1 max-w-md mx-4 items-center gap-2 bg-slate-800/50 border border-slate-700 px-4 py-2.5 rounded-lg hover:border-cyan-500/40 focus-within:border-cyan-500 focus-within:ring-2 focus-within:ring-cyan-500/20 transition-all"
+          >
+            <svg
+              className="w-5 h-5 text-slate-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Buscar productos..."
+              value={search}
+              onChange={handleSearch}
+              className="flex-1 bg-transparent outline-none text-white placeholder-slate-400"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="text-slate-400 hover:text-white transition-colors shrink-0"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </form>
+
+          {/* Botones - Derecha */}
+          <nav className="flex items-center gap-2 sm:gap-3 lg:gap-4">
+
             <CartIcon />
 
             <Link
@@ -37,7 +93,7 @@ const Header = () => {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="sm:inline">Contacto</span>
+                <span className="hidden sm:inline">Contacto</span>
               </span>
             </Link>
 

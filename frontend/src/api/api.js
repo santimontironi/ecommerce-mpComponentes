@@ -22,12 +22,16 @@ export const dashboardAdminAxios = () => {
 
 /* -------------------------PRODUCTS-------------------------------- */ 
 
-export const getAllProductsAxios = (categoryId) => {
-  return api.get(`/getAllProducts/${categoryId}`)
+export const getProductsAxios = (categoryId) => {
+  return api.get(`/getProducts/${categoryId}`)
 }
 
-export const getAllProductsAdminAxios = (categoryId) => {
-  return api.get(`/getAllProductsAdmin/${categoryId}`)
+export const getProductsAdminAxios = (categoryId) => {
+  return api.get(`/getProductsAdmin/${categoryId}`)
+}
+
+export const getAllProductsAxios = () => {
+    return api.get("/getAllProducts");
 }
 
 export const getProductAxios = (id) => {

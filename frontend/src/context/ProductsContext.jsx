@@ -1,5 +1,5 @@
-import { createContext, useState } from "react";
-import { getAllProductsAdminAxios, getAllProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios, getProductsWithoutStockAxios } from "../api/api";
+import { createContext, useState, useEffect } from "react";
+import { getProductsAdminAxios, getAllProductsAxios, getProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios, getProductsWithoutStockAxios } from "../api/api";
 import { useContext } from "react";
 import { ContextAdmin } from "./adminContext";
 
@@ -8,6 +8,7 @@ export const ContextProducts = createContext();
 export const ProductsProvider = ({ children }) => {
 
     const [products, setProducts] = useState([]);
+    const [productsFilter, setProductsFilter] = useState(null);
     const [productById, setProductById] = useState([]);
     const [productsWithoutStock, setProductsWithoutStock] = useState([]);
 
@@ -16,12 +17,31 @@ export const ProductsProvider = ({ children }) => {
     const [loadingEditProduct, setLoadingEditProduct] = useState(false);
     const [loadingGetProduct, setLoadingGetProduct] = useState(false);
     const [loadingImportProducts, setLoadingImportProducts] = useState(false);
+    const [loadingProductsFilter, setLoadingProductsFilter] = useState(false);
 
     const { isAdmin } = useContext(ContextAdmin);
 
+    useEffect(() => {
+        async function getProducts() {
+            try {
+                const res = await getAllProductsAxios()
+                setProducts(res.data.products)
+            }
+            catch (error) {
+                throw error
+            }
+            finally {
+                setTimeout(() => {
+                    setLoadingGetProducts(false);
+                }, 2000)
+            }
+        }
+        getProducts()
+    },[])
+
     async function getProducts(categoryId) {
         try {
-            const res = isAdmin ? await getAllProductsAdminAxios(categoryId) : await getAllProductsAxios(categoryId)
+            const res = isAdmin ? await getProductsAdminAxios(categoryId) : await getProductsAxios(categoryId)
             setProducts(res.data.products)
         }
         catch (error) {
@@ -125,7 +145,30 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts, productsWithoutStock, getProductsWithoutStock }}>
+    async function searchProducts(name) {
+        setProductsFilter(true)
+        try {
+
+            if (!name.trim()) {
+                setProductsFilter(null)
+                return
+            }
+
+            const productsFiltered = products.filter(product => product.name.toLowerCase().includes(name.toLowerCase()))
+            setProductsFilter(productsFiltered)
+
+            return productsFiltered
+        }
+        catch (error) {
+            console.log(error)
+            throw error
+        }
+        finally {
+            setLoadingProductsFilter(false)
+        }
+    }
+
+    return <ContextProducts.Provider value={{ products, loadingGetProducts, loadingAddProduct, addProduct, getProducts, deleteProduct, editProduct, loadingEditProduct, getProduct, loadingGetProduct, productById, loadingImportProducts, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts, loadingProductsFilter }}>
         {children}
     </ContextProducts.Provider>;
 };

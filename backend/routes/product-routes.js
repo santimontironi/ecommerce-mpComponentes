@@ -6,8 +6,9 @@ import { Router } from "express";
 
 export const router = Router()
 
-router.get("/getAllProductsAdmin/:categoryId", verifyToken, products)
-router.get("/getAllProducts/:categoryId", products)
+router.get("/getProductsAdmin/:categoryId", verifyToken, products)
+router.get("/getProducts/:categoryId", products)
+router.get('/getAllProducts', products)
 router.get("/getProduct/:id", productById)
 router.get("/getProductAdmin/:id", verifyToken, productById)
 router.get("/getAllProductsWithoutStock", verifyToken, productsWithoutStock)

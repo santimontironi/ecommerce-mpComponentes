@@ -5,15 +5,22 @@ export const products = async (req, res) => {
     try {
         const { categoryId } = req.params
 
-        const products = await Product.find({
-            active: true,
-            category: categoryId
-        }).sort({ createdAt: -1 })
+        // Filtro base
+        const filter = { active: true }
+
+        // Si viene categoryId → filtramos por categoría
+        if (categoryId) {
+            filter.category = categoryId
+        }
+
+        const products = await Product.find(filter)
+            .sort({ createdAt: -1 })
 
         res.status(200).json({
             message: "Productos obtenidos correctamente",
-            products
+            products: products
         })
+
     } catch (error) {
         res.status(500).json({
             message: "Error al obtener productos",
@@ -21,6 +28,7 @@ export const products = async (req, res) => {
         })
     }
 }
+
 
 export const productById = async (req, res) => {
     try {
@@ -35,8 +43,8 @@ export const productById = async (req, res) => {
     }
 }
 
-export const productsWithoutStock  = async (req, res) => {
-    try{
+export const productsWithoutStock = async (req, res) => {
+    try {
         const products = await Product.find({
             active: true,
             stock: { $lt: 5 }
@@ -44,7 +52,7 @@ export const productsWithoutStock  = async (req, res) => {
 
         return res.status(200).json({ message: 'Productos sin stock obtenidos correctamente', products: products })
     }
-    catch(error){
+    catch (error) {
         return res.status(500).json({ message: 'Error al obtener productos sin stock', error: error.message })
     }
 }

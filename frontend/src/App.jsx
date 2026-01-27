@@ -24,11 +24,17 @@ function App() {
 
         <Route path="/contacto" element={<Contact />} />
 
-        <Route path="/" element={<CategoriesProvider>
-          <CartProvider>
-            <Home />
-          </CartProvider>
-        </CategoriesProvider>} />
+        <Route path="/" element={
+          <AdminProvider>
+            <ProductsProvider>
+              <CategoriesProvider>
+                <CartProvider>
+                  <Home />
+                </CartProvider>
+              </CategoriesProvider>
+            </ProductsProvider>
+          </AdminProvider>
+        } />
 
         <Route path="/ingresar" element={<AdminProvider>
           <LoginAdmin />
