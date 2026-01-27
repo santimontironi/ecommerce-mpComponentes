@@ -1,11 +1,11 @@
-import { useContext, useEffect } from "react"
-import { ContextProducts } from "../context/ProductsContext"
-import { ContextCart } from "../context/CartContext"
-import { ContextAdmin } from "../context/adminContext"
-import ProductCard from "./ProductCard"
-import Loader from "./Loader"
+import { useContext } from "react"
+import { ContextProducts } from "../../context/ProductsContext"
+import { ContextCart } from "../../context/CartContext"
+import { ContextAdmin } from "../../context/adminContext"
+import { ProductCard } from "./ProductCard"
+import { Loader } from "../UIComponents/Loader"
 
-const SearchResults = () => {
+export const SearchResults = () => {
     const { productsFilter, loading } = useContext(ContextProducts)
     const { addProductToCart } = useContext(ContextCart)
     const { isAdmin } = useContext(ContextAdmin)

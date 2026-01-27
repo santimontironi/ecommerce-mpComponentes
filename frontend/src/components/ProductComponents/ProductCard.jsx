@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }) => {
+export const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }) => {
 
     return (
         <section className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">

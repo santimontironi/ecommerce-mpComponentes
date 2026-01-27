@@ -1,136 +1,163 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginAdmin } from "./pages/LoginAdmin";
 import AdminProvider from "./context/AdminContext";
-import SecurityRoutes from "./components/SecurityRoutes";
-import Home from "./pages/Home";
-import DashboardAdmin from "./pages/DashboardAdmin";
-import CategoriesProvider from "./context/CategoryContext";
-import AddCategory from "./pages/AddCategory";
-import AddProduct from "./pages/AddProduct";
 import { ProductsProvider } from "./context/ProductsContext";
-import ProductById from "./pages/ProductById";
-import Products from "./pages/Products";
-import SubCategories from "./pages/SubCategories";
-import ImportProducts from "./pages/ImportProducts";
+import CategoriesProvider from "./context/CategoryContext";
 import { CartProvider } from "./context/CartContext";
-import CartPage from "./pages/CartPage";
-import Contact from "./pages/Contact";
+import { SecurityRoutes } from "./components/SecurityComponents/SecurityRoutes";
+import { LoginAdmin } from "./pages/AuthPages/LoginAdmin";
+import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
+import AddCategory from "./pages/CategoryPages/AddCategory";
+import AddProduct from "./pages/ProductPages/AddProduct";
+import ImportProducts from "./pages/ProductPages/ImportProducts";
+import ProductById from "./pages/ProductPages/ProductById";
+import Products from "./pages/ProductPages/Products";
+import { ProductDetail } from "./pages/ProductPages/ProductDetail";
+import Home from "./pages/UserPages/Home";
+import CartPage from "./pages/UserPages/CartPage";
+import Contact from "./pages/UserPages/Contact";
+import SubCategories from "./pages/CategoryPages/SubCategories";
+
+const AppProviders = ({ children }) => (
+  <AdminProvider>
+    <ProductsProvider>
+      <CategoriesProvider>
+        <CartProvider>
+          {children}
+        </CartProvider>
+      </CategoriesProvider>
+    </ProductsProvider>
+  </AdminProvider>
+);
+
+const AdminProviders = ({ children }) => (
+  <AdminProvider>
+    <SecurityRoutes>
+      <ProductsProvider>
+        <CategoriesProvider>
+          {children}
+        </CategoriesProvider>
+      </ProductsProvider>
+    </SecurityRoutes>
+  </AdminProvider>
+);
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
-
+        
         <Route path="/contacto" element={<Contact />} />
 
-        <Route path="/" element={
-          <AdminProvider>
-            <ProductsProvider>
-              <CategoriesProvider>
-                <CartProvider>
-                  <Home />
-                </CartProvider>
-              </CategoriesProvider>
-            </ProductsProvider>
-          </AdminProvider>
-        } />
+        <Route
+          path="/"
+          element={
+            <AppProviders>
+              <Home />
+            </AppProviders>
+          }
+        />
 
-        <Route path="/ingresar" element={<AdminProvider>
-          <LoginAdmin />
-        </AdminProvider>} />
+        <Route
+          path="/ingresar"
+          element={
+            <AdminProvider>
+              <LoginAdmin />
+            </AdminProvider>
+          }
+        />
 
-        <Route path="/panel-admin" element={<AdminProvider>
-          <SecurityRoutes>
-            <CategoriesProvider>
-              <ProductsProvider>
-                <DashboardAdmin />
-              </ProductsProvider>
-            </CategoriesProvider>
-          </SecurityRoutes>
-        </AdminProvider>} />
+        <Route
+          path="/panel-admin"
+          element={
+            <AdminProviders>
+              <DashboardAdmin />
+            </AdminProviders>
+          }
+        />
 
-        <Route path="/agregar-categoria" element={<AdminProvider>
-          <SecurityRoutes>
-            <CategoriesProvider>
+        <Route
+          path="/agregar-categoria"
+          element={
+            <AdminProviders>
               <AddCategory />
-            </CategoriesProvider>
-          </SecurityRoutes>
-        </AdminProvider>} />
+            </AdminProviders>
+          }
+        />
 
-        <Route path="/agregar-producto" element={<AdminProvider>
-          <SecurityRoutes>
-            <ProductsProvider>
-              <CategoriesProvider>
-                <AddProduct />
-              </CategoriesProvider>
-            </ProductsProvider>
-          </SecurityRoutes>
-        </AdminProvider>} />
+        <Route
+          path="/agregar-producto"
+          element={
+            <AdminProviders>
+              <AddProduct />
+            </AdminProviders>
+          }
+        />
 
-        <Route path="/categoria/:categoryId" element={<AdminProvider>
-          <CategoriesProvider>
-            <ProductsProvider>
-              <SecurityRoutes>
-                <Products />
-              </SecurityRoutes>
-            </ProductsProvider>
-          </CategoriesProvider>
-        </AdminProvider>} />
-
-        <Route path="/categoria/:categoryId/subcategorias" element={<AdminProvider>
-          <CategoriesProvider>
-            <SubCategories />
-          </CategoriesProvider>
-        </AdminProvider>} />
-
-        <Route path="/productos/:categoryId" element={<AdminProvider>
-          <ProductsProvider>
-            <CategoriesProvider>
-              <CartProvider>
-                <Products />
-              </CartProvider>
-            </CategoriesProvider>
-          </ProductsProvider>
-        </AdminProvider>} />
-
-
-        <Route path="/editar-producto/:productId" element={<AdminProvider>
-          <SecurityRoutes>
-            <ProductsProvider>
-              <CategoriesProvider>
-                <ProductById />
-              </CategoriesProvider>
-            </ProductsProvider>
-          </SecurityRoutes>
-        </AdminProvider>} />
-
-        <Route path="/producto/:productId" element={<AdminProvider>
-          <ProductsProvider>
-            <CategoriesProvider>
-              <ProductById />
-            </CategoriesProvider>
-          </ProductsProvider>
-        </AdminProvider>} />
-
-        <Route path="/importar-productos" element={<AdminProvider>
-          <SecurityRoutes>
-            <ProductsProvider>
+        <Route
+          path="/importar-productos"
+          element={
+            <AdminProviders>
               <ImportProducts />
-            </ProductsProvider>
-          </SecurityRoutes>
-        </AdminProvider>} />
+            </AdminProviders>
+          }
+        />
 
-        <Route path="/carrito" element={<CartProvider>
-          <CartPage />
-        </CartProvider>} />
+        <Route
+          path="/categoria/:categoryId/subcategorias"
+          element={
+            <AppProviders>
+              <SubCategories />
+            </AppProviders>
+          }
+        />
 
+        <Route
+          path="/productos/:categoryId"
+          element={
+            <AppProviders>
+              <Products />
+            </AppProviders>
+          }
+        />
+
+        <Route
+          path="/producto/:productId"
+          element={
+            <AppProviders>
+              <ProductDetail />
+            </AppProviders>
+          }
+        />
+
+        <Route
+          path="/editar-producto/:productId"
+          element={
+            <AdminProviders>
+              <ProductById />
+            </AdminProviders>
+          }
+        />
+
+        <Route
+          path="/producto/:productId"
+          element={
+            <AppProviders>
+              <ProductById />
+            </AppProviders>
+          }
+        />
+
+        <Route
+          path="/carrito"
+          element={
+            <CartProvider>
+              <CartPage />
+            </CartProvider>
+          }
+        />
       </Routes>
-
-
-
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

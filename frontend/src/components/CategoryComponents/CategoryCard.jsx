@@ -1,4 +1,4 @@
-const CategoryCard = ({ category, index, handleCategoryClick }) => {
+export const CategoryCard = ({ category, index, handleCategoryClick }) => {
   return (
     <article onClick={() => handleCategoryClick(category._id)} className="group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:border-cyan-400/50 transition-all duration-500 cursor-pointer transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/20" style={{ animationDelay: `${index * 100}ms`, animation: 'fadeInUp 0.6s ease-out forwards' }}>
       <div className="relative h-64 overflow-hidden">

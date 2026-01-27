@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react"
-import { ContextProducts } from "../context/ProductsContext"
-import Loader from "../components/Loader"
+import { ContextProducts } from "../../context/ProductsContext"
+import { Loader } from "../../components/UIComponents/Loader"
 
-const ProductDetail = ({ id }) => {
+export const ProductDetail = ({ id }) => {
   const { getProduct, productById, loading } = useContext(ContextProducts)
 
   useEffect(() => {
@@ -79,5 +79,3 @@ const ProductDetail = ({ id }) => {
     </section>
   )
 }
-
-export default ProductDetail

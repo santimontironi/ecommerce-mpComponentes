@@ -1,6 +1,6 @@
 import { ToastContainer, toast } from 'react-toastify';
 import { useForm } from 'react-hook-form'
-import { sendContactMessageAxios } from '../api/api';
+import { sendContactMessageAxios } from '../../api/api';
 
 const Contact = () => {
 

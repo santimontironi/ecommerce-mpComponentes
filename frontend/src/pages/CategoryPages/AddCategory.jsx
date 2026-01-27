@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { ContextCategories } from "../context/CategoryContext";
+import { ContextCategories } from "../../context/CategoryContext";
 import { useForm } from "react-hook-form";
-import Loader from "../components/Loader";
+import { Loader } from "../../components/UIComponents/Loader";
 import Swal from 'sweetalert2'
-import Back from "../components/Back";
+import { Back } from "../../components/UIComponents/Back";
 import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {

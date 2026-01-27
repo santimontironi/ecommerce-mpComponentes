@@ -1,6 +1,6 @@
-const NoSearchResults = () => {
+export const NoSearchResults = () => {
   return (
-    <div className="text-center py-20 animate-fade-in">
+    <div className="text-center py-2 animate-fade-in">
       <div className="inline-block p-10 bg-white/5 backdrop-blur-sm rounded-2xl border border-cyan-400/20 max-w-2xl">
         <svg
           className="w-20 h-20 mx-auto mb-6 text-cyan-400/50"

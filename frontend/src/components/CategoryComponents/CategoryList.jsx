@@ -1,10 +1,10 @@
 import { useContext } from "react"
-import { ContextCategories } from "../context/CategoryContext"
-import Loader from "./Loader"
+import { ContextCategories } from "../../context/CategoryContext"
+import { Loader } from "../UIComponents/Loader"
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 
-const CategoryList = () => {
+export const CategoryList = () => {
 
   const { categories, loading, deleteCategory, getSubCategories } = useContext(ContextCategories)
 

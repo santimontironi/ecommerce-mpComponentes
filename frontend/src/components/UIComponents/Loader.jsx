@@ -1,6 +1,6 @@
 import { CircularProgress } from "react-loader-spinner";
 
-const Loader = () => {
+export const Loader = () => {
     return (
         <div className="w-full h-full flex justify-center items-center">
             <CircularProgress

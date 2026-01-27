@@ -1,15 +1,15 @@
 import { useContext, useEffect } from "react"
-import { ContextProducts } from "../context/ProductsContext"
-import Loader from "../components/Loader"
+import { ContextProducts } from "../../context/ProductsContext"
+import { Loader } from "../UIComponents/Loader"
 import Swal from "sweetalert2"
-import Back from "../components/Back"
-import { ContextCategories } from "../context/CategoryContext"
+import { Back } from "../UIComponents/Back"
+import { ContextCategories } from "../../context/CategoryContext"
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
 
-const ProductEdited = ({ id }) => {
+export const ProductEdited = ({ id }) => {
 
-  const { editProduct, loadingEditProduct, productById, getProduct } = useContext(ContextProducts)
+  const { editProduct, loading, productById, getProduct } = useContext(ContextProducts)
   const { categories } = useContext(ContextCategories)
 
   const { handleSubmit, register, reset } = useForm()
@@ -74,7 +74,7 @@ const ProductEdited = ({ id }) => {
 
       <Back url="/panel-admin" />
 
-      {loadingEditProduct ? <Loader /> : (
+      {loading.loadingEditProduct ? <Loader /> : (
         <div className="w-full max-w-xl bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8 mt-20 mb-10">
 
           <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">

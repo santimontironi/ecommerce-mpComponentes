@@ -1,14 +1,14 @@
 import { useContext, useEffect } from "react"
-import { ContextAdmin } from "../context/adminContext"
-import { ContextProducts } from "../context/ProductsContext"
+import { ContextAdmin } from "../../context/adminContext"
+import { ContextProducts } from "../../context/ProductsContext"
 import { useParams } from "react-router-dom"
-import { ContextCategories } from "../context/CategoryContext"
-import { ContextCart } from "../context/CartContext"
-import ProductCard from "../components/ProductCard"
-import Loader from "../components/Loader"
+import { ContextCategories } from "../../context/CategoryContext"
+import { ContextCart } from "../../context/CartContext"
+import { ProductCard } from "../../components/ProductComponents/ProductCard"
+import { Loader } from "../../components/UIComponents/Loader"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import CartIcon from "../components/CartIcon"
+import { CartIcon } from "../../components/UIComponents/CartIcon"
 
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)

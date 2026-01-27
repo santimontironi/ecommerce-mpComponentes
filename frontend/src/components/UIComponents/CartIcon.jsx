@@ -1,8 +1,8 @@
 import { useContext } from "react"
-import { ContextCart } from "../context/CartContext"
+import { ContextCart } from "../../context/CartContext"
 import { Link } from "react-router-dom";
 
-const CartIcon = () => {
+export const CartIcon = () => {
     const { getCartCount } = useContext(ContextCart);
 
     return (
@@ -23,7 +23,7 @@ const CartIcon = () => {
                 </svg>
 
                 {getCartCount() > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-cyan-500/50 animate-pulse">
+                    <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-cyan-500/50">
                         {getCartCount()}
                     </span>
                 )}

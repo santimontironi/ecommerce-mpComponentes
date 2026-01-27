@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { ContextAdmin } from "../context/adminContext";
-import Loader from "./Loader";
+import { ContextAdmin } from "../../context/adminContext";
+import { Loader } from "../UIComponents/Loader";
 import { Navigate } from "react-router-dom";
 
-const SecurityRoutes = ({children}) => {
+export const SecurityRoutes = ({children}) => {
 
     const {admin, loading} = useContext(ContextAdmin);
 

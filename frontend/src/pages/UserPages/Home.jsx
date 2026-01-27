@@ -1,13 +1,12 @@
-import CategoryCard from "../components/CategoryCard"
-import SearchResults from "../components/SearchResults"
-import NoSearchResults from "../components/noSearchResults"
+import { CategoryCard } from "../../components/CategoryComponents/CategoryCard"
+import { SearchResults } from "../../components/ProductComponents/SearchResults"
+import { NoSearchResults } from "../../components/ProductComponents/noSearchResults"
 import { useContext } from "react"
-import { ContextCategories } from "../context/CategoryContext"
-import { ContextProducts } from "../context/ProductsContext"
-import Loader from "../components/Loader"
-import Header from "../components/Header"
+import { ContextCategories } from "../../context/CategoryContext"
+import { ContextProducts } from "../../context/ProductsContext"
+import { Loader } from "../../components/UIComponents/Loader"
+import { Header } from "../../components/UIComponents/Header"
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
 
 const Home = () => {
 
@@ -48,7 +47,6 @@ const Home = () => {
       ) : (
         <div className="relative z-10 w-full max-w-7xl mx-auto">
 
-          {/* TÍTULO PRINCIPAL */}
           <div className="text-center mb-16 space-y-4 animate-fade-in">
             <h1 className="text-4xl md:text-7xl font-bold bg-linear-to-r py-10 from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-2xl">
               Bienvenido a <span className="text-white/70">MpComponentes</span>
@@ -68,13 +66,10 @@ const Home = () => {
             )}
           </div>
 
-          {/* RESULTADOS DE BÚSQUEDA */}
           {showSearchResults && <SearchResults />}
 
-          {/* SIN RESULTADOS */}
           {showNoResults && <NoSearchResults />}
 
-          {/* CATEGORÍAS */}
           {showCategories && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
               {categories.map((category, index) => (
@@ -91,7 +86,6 @@ const Home = () => {
         </div>
       )}
 
-      {/* WHATSAPP */}
       <a className="z-50 underline-0" href="https://wa.me/+5493416085684?text=Hola%2C%20quiero%20más%20información">
         <div className="fixed bottom-5 right-5 xl:right-10 xl:bottom-10 xl:w-20 xl:h-20 w-12 h-12 flex items-center justify-center cursor-pointer transform hover:-translate-y-2 transition-all duration-300">
           <img src="https://img.icons8.com/?size=100&id=DUEq8l5qTqBE&format=png&color=000000" alt="icon whatsapp" />

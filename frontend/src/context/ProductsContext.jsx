@@ -156,7 +156,7 @@ export const ProductsProvider = ({ children }) => {
                 return
             }
 
-            const productsFiltered = products.filter(product => product.name.toLowerCase().includes(name.toLowerCase()))
+            const productsFiltered = products.filter(product => product.name.toLowerCase().startsWith(name.toLowerCase()))
             setProductsFilter(productsFiltered)
 
             return productsFiltered

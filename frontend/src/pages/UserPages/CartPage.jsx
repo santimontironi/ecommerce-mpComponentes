@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { ContextCart } from "../context/CartContext"
+import { ContextCart } from "../../context/CartContext"
 import { Link } from "react-router-dom"
 
 const CartPage = () => {
@@ -8,7 +8,7 @@ const CartPage = () => {
     console.log(cart)
 
     return (
-        <section className="relative min-h-screen bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] py-12 px-4 sm:px-6 lg:px-8">
+        <section className="relative w-full overflow-hidden min-h-screen bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] py-12 px-4 sm:px-6 lg:px-8">
 
             <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
             <div className="absolute top-1/3 right-20 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl" />
@@ -62,7 +62,7 @@ const CartPage = () => {
                                                 </div>
                                                 <button
                                                     onClick={() => removeProductFromCart(item._id)}
-                                                    className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors duration-200"
+                                                    className="text-red-500 hover:text-red-700 cursor-pointer hover:bg-red-50 p-2 rounded-lg transition-colors duration-200"
                                                     aria-label="Eliminar producto"
                                                 >
                                                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,7 +75,7 @@ const CartPage = () => {
                                                 <div className="flex items-center gap-3 bg-linear-to-r from-blue-50 to-blue-100 rounded-lg p-1">
                                                     <button
                                                         onClick={() => decreaseQuantity(item._id)}
-                                                        className="w-8 h-8 flex items-center justify-center bg-white hover:bg-linear-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white text-slate-700 rounded-md transition-all duration-200 shadow-sm"
+                                                        className="w-8 h-8 flex items-center cursor-pointer justify-center bg-white hover:bg-linear-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white text-slate-700 rounded-md transition-all duration-200 shadow-sm"
                                                         aria-label="Disminuir cantidad"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,7 +87,7 @@ const CartPage = () => {
                                                     </span>
                                                     <button
                                                         onClick={() => incrementQuantity(item._id)}
-                                                        className="w-8 h-8 flex items-center justify-center bg-white hover:bg-linear-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white text-slate-700 rounded-md transition-all duration-200 shadow-sm"
+                                                        className="w-8 h-8 flex items-center cursor-pointer justify-center bg-white hover:bg-linear-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white text-slate-700 rounded-md transition-all duration-200 shadow-sm"
                                                         aria-label="Aumentar cantidad"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,7 +112,7 @@ const CartPage = () => {
 
                             <button
                                 onClick={clearCart}
-                                className="w-full bg-white hover:bg-linear-to-r hover:from-red-50 hover:to-red-100 text-slate-700 hover:text-red-600 font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md"
+                                className="w-full cursor-pointer bg-white hover:bg-linear-to-r hover:from-red-50 hover:to-red-100 text-slate-700 hover:text-red-600 font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md"
                             >
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -146,7 +146,7 @@ const CartPage = () => {
                                     </div>
                                 </div>
 
-                                <button className="w-full bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mb-3">
+                                <button className="w-full cursor-pointer bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mb-3">
                                     Proceder al Pago
                                 </button>
 

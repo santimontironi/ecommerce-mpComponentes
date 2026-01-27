@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { ContextProducts } from "../context/ProductsContext"
+import { ContextProducts } from "../../context/ProductsContext"
 import Swal from "sweetalert2"
-import Loader from "../components/Loader"
+import { Loader } from "../../components/UIComponents/Loader"
 
 const ImportProducts = () => {
 
