@@ -16,6 +16,7 @@ import Home from "./pages/UserPages/Home";
 import CartPage from "./pages/UserPages/CartPage";
 import Contact from "./pages/UserPages/Contact";
 import SubCategories from "./pages/CategoryPages/SubCategories";
+import OrderProduct from "./pages/ProductPages/OrderProduct";
 
 const AppProviders = ({ children }) => (
   <AdminProvider>
@@ -152,6 +153,15 @@ function App() {
           element={
             <AppProviders>
               <ProductById />
+            </AppProviders>
+          }
+        />
+
+        <Route 
+          path="/formulario-pedido"
+          element={
+            <AppProviders>
+              <OrderProduct />
             </AppProviders>
           }
         />

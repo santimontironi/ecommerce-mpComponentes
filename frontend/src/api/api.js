@@ -62,6 +62,10 @@ export const getProductsWithoutStockAxios = () => {
     return api.get("/getAllProductsWithoutStock");
 }
 
+export const orderProductAxios = (data) => {
+    return api.post("/orderProduct", data);
+}
+
 /* -------------------------CATEGORIES-------------------------------- */
 
 export const getAllCategoriesAxios = () => {

@@ -1,4 +1,4 @@
-import { addProduct, deleteProduct, products, productById, editProduct, productsWithoutStock } from "../controllers/product-controller.js";
+import { addProduct, deleteProduct, products, productById, editProduct, productsWithoutStock, orderProduct } from "../controllers/product-controller.js";
 import { importProducts } from "../controllers/import-products-controller.js";
 import { verifyToken } from "../middlewares/verify-token.js";
 import { upload } from "../middlewares/multer.js";
@@ -15,6 +15,7 @@ router.get("/getAllProductsWithoutStock", verifyToken, productsWithoutStock)
 
 router.post("/addProduct", verifyToken, upload.single("image"), addProduct)
 router.post("/importProducts", verifyToken, upload.single("file"), importProducts)
+router.post("/orderProduct", orderProduct)
 
 router.delete("/deleteProduct/:id", verifyToken, deleteProduct)
 

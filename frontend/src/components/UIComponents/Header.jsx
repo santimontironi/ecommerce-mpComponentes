@@ -3,7 +3,7 @@ import logo from '../../img/logo.jpg'
 import { CartIcon } from './CartIcon'
 import { ContactButton } from './ContactButton'
 import { LoginAdminButton } from '../SecurityComponents/LoginAdminButton'
-import { FormSearch } from '../ProductComponents/FormSearch'
+import { FormSearch } from './FormSearch'
 
 export const Header = () => {
 

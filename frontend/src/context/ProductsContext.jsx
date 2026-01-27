@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getProductsAdminAxios, getAllProductsAxios, getProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios, getProductsWithoutStockAxios } from "../api/api";
+import { getProductsAdminAxios, getAllProductsAxios, getProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios, getProductsWithoutStockAxios, orderProductAxios } from "../api/api";
 import { useContext } from "react";
 import { ContextAdmin } from "./adminContext";
 
@@ -18,7 +18,8 @@ export const ProductsProvider = ({ children }) => {
         loadingEditProduct: false,
         loadingGetProduct: false,
         loadingImportProducts: false,
-        loadingProductsFilter: false
+        loadingProductsFilter: false,
+        loadingOrderProduct: false
     })
 
     const { isAdmin } = useContext(ContextAdmin);
@@ -170,7 +171,21 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loading, setLoading, addProduct, getProducts, deleteProduct, editProduct, getProduct, productById, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts}}>
+    async function orderProduct(data){
+        setLoading((prev) => ({ ...prev, loadingOrderProduct: true }));
+        try {
+            const res = await orderProductAxios(data)
+            return res.data
+        }
+        catch (error) {
+            throw error
+        }
+        finally {
+            setLoading((prev) => ({ ...prev, loadingOrderProduct: false }));
+        }
+    }
+
+    return <ContextProducts.Provider value={{ products, loading, setLoading, addProduct, getProducts, deleteProduct, editProduct, getProduct, productById, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts, orderProduct}}>
         {children}
     </ContextProducts.Provider>;
 };
