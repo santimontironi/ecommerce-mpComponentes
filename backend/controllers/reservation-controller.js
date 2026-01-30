@@ -146,22 +146,25 @@ export const handleReservationWebhook = async (req, res) => {
 
             console.log(`🎉 Reserva creada: ${reservation._id}`)
 
-            // Preparar datos para emails
+            // Preparar datos para emails (solo primer producto, ya que es reserva de uno solo)
+            const item = reservedItems[0];
             const reservationData = {
-                items: reservedItems,
-                buyer_email: session.customer_email,
+                product_name: item.product_name,
+                quantity: item.quantity,
+                unit_price: item.price,
                 total_amount: totalAmount,
                 deposit_amount: depositAmount,
+                buyer_email: session.customer_email,
                 reservation_id: reservation._id,
                 expiration_date: reservation.expiration_date,
                 payment_id: session.id
-            }
+            };
 
             // 📧 Enviar email a la tienda
-            await sendReservationNotificationToStore(reservationData)
+            await sendReservationNotificationToStore(reservationData);
 
             // 📧 Enviar email de confirmación al cliente
-            await sendReservationConfirmationToCustomer(reservationData)
+            await sendReservationConfirmationToCustomer(reservationData);
 
         } catch (error) {
             console.error('❌ Error procesando reserva:', error)
@@ -297,18 +300,23 @@ export const handleFinalPaymentWebhook = async (req, res) => {
 
                 console.log(`🎉 Reserva completada: ${reservationId}`)
 
-                // Preparar datos para email
+                // Preparar datos para email (solo primer producto)
+                const item = reservation.products[0];
                 const completionData = {
-                    items: reservation.products,
-                    buyer_email: reservation.user_email,
+                    product_name: item.product_name,
+                    quantity: item.quantity,
+                    unit_price: item.price,
                     total_amount: reservation.total_amount,
+                    deposit_amount: reservation.deposit_amount,
+                    buyer_email: reservation.user_email,
                     reservation_id: reservation._id,
+                    expiration_date: reservation.expiration_date,
                     payment_id: session.id
-                }
+                };
 
                 // 📧 Enviar emails
-                await sendReservationConfirmationToCustomer(completionData)
-                await sendReservationNotificationToStore(completionData)
+                await sendReservationConfirmationToCustomer(completionData);
+                await sendReservationNotificationToStore(completionData);
 
             } catch (error) {
                 console.error('❌ Error procesando pago final:', error)
