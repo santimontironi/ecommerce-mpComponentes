@@ -3,6 +3,7 @@ import AdminProvider from "./context/AdminContext";
 import { ProductsProvider } from "./context/ProductsContext";
 import CategoriesProvider from "./context/CategoryContext";
 import { CartProvider } from "./context/CartContext";
+import { ReservationProvider } from "./context/ReservationContext";
 import { SecurityRoutes } from "./components/SecurityComponents/SecurityRoutes";
 import { LoginAdmin } from "./pages/AuthPages/LoginAdmin";
 import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
@@ -17,13 +18,14 @@ import CartPage from "./pages/UserPages/CartPage";
 import Contact from "./pages/UserPages/Contact";
 import SubCategories from "./pages/CategoryPages/SubCategories";
 import OrderProduct from "./pages/ProductPages/OrderProduct";
+import ReservProduct from "./pages/ProductPages/ReservProduct";
 
 const AppProviders = ({ children }) => (
   <AdminProvider>
     <ProductsProvider>
       <CategoriesProvider>
         <CartProvider>
-          {children}
+            {children}
         </CartProvider>
       </CategoriesProvider>
     </ProductsProvider>
@@ -41,6 +43,12 @@ const AdminProviders = ({ children }) => (
     </CategoriesProvider>
   </AdminProvider>
 );
+
+const ReservProductProvider = ({ children }) => (
+  <ReservationProvider>
+    {children}
+  </ReservationProvider>
+)
 
 function App() {
   return (
@@ -163,6 +171,15 @@ function App() {
             <AppProviders>
               <OrderProduct />
             </AppProviders>
+          }
+        />
+        
+        <Route 
+          path="/reservar/:productId"
+          element={
+            <ReservProductProvider>
+              <ReservProduct />
+            </ReservProductProvider>
           }
         />
 

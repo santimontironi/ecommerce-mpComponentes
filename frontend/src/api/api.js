@@ -66,6 +66,42 @@ export const orderProductAxios = (data) => {
     return api.post("/orderProduct", data);
 }
 
+export const reserveProductAxios = (data) => {
+    return api.post("/reserve", data);
+}
+
+/* -------------------------RESERVATIONS-------------------------------- */
+
+export const createReservationCheckoutAxios = (data) => {
+    return api.post("/reservation/checkout", data);
+}
+
+export const getReservationByIdAxios = (reservationId) => {
+    return api.get(`/reservation/${reservationId}`);
+}
+
+export const getUserReservationsAxios = (userEmail) => {
+    return api.get(`/reservations/user/${userEmail}`);
+}
+
+export const cancelReservationAxios = (reservationId) => {
+    return api.patch(`/reservation/${reservationId}/cancel`);
+}
+
+export const confirmReservationAxios = (reservationId) => {
+    return api.patch(`/reservation/${reservationId}/confirm`);
+}
+
+export const payRemainingAmountAxios = (reservationId) => {
+    return api.post(`/reservation/${reservationId}/pay-remaining`);
+}
+
+/* -------------------------PURCHASES-------------------------------- */
+
+export const createCheckoutAxios = (data) => {
+    return api.post("/purchase/checkout", data);
+}
+
 /* -------------------------CATEGORIES-------------------------------- */
 
 export const getAllCategoriesAxios = () => {
