@@ -175,7 +175,8 @@ const ReservProduct = () => {
 
                                         <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mt-4">
                                             <p className="text-xs text-blue-300">
-                                                La reserva tiene una validez de 30 días desde el pago de la seña
+                                                📌 <strong>¿Cómo funciona?</strong> Pagas el 30% de seña ahora para reservar el producto. 
+                                                El 70% restante se coordina por WhatsApp cuando el producto esté listo para ser entregado.
                                             </p>
                                         </div>
                                     </div>

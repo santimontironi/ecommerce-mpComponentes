@@ -5,30 +5,31 @@ const reservationSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    products: [
-        {
-            product_id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Product",
-                required: true
-            },
-            product_name: String,
-            quantity: {
-                type: Number,
-                required: true,
-                min: 1
-            },
-            price: Number,
-            deposit_paid: Number // 30% del precio total del producto
-        }
-    ],
-    total_amount: {
+    product_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true
+    },
+    product_name: {
+        type: String,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 1
+    },
+    price: {
         type: Number,
         required: true
     },
+    total_amount: {
+        type: Number,
+        required: true // precio * cantidad
+    },
     deposit_amount: {
         type: Number,
-        required: true // 30% del total
+        required: true // 30% del total_amount
     },
     status: {
         type: String,

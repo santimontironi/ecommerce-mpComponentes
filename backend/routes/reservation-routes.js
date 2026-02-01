@@ -1,18 +1,12 @@
 import express from 'express';
-import { createReservationCheckout, handleReservationWebhook, confirmReservation, handleFinalPaymentWebhook } from '../controllers/reservation-controller.js';
+import { createReservationCheckout, handleReservationWebhook } from '../controllers/reservation-controller.js';
 
 const router = express.Router();
 
-// Crear reserva (checkout de seña)
+// Crear reserva (checkout de seña - 30%)
 router.post('/reserve', createReservationCheckout);
 
 // Webhook Stripe para pago de seña
 router.post('/webhook', handleReservationWebhook);
-
-// Confirmar reserva (pago final)
-router.post('/confirm', confirmReservation);
-
-// Webhook Stripe para pago final
-router.post('/final-webhook', handleFinalPaymentWebhook);
 
 export default router;

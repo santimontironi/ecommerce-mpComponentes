@@ -72,28 +72,9 @@ export const reserveProductAxios = (data) => {
 
 /* -------------------------RESERVATIONS-------------------------------- */
 
+// Crear checkout de reserva (30% de seña)
 export const createReservationCheckoutAxios = (data) => {
-    return api.post("/reservation/checkout", data);
-}
-
-export const getReservationByIdAxios = (reservationId) => {
-    return api.get(`/reservation/${reservationId}`);
-}
-
-export const getUserReservationsAxios = (userEmail) => {
-    return api.get(`/reservations/user/${userEmail}`);
-}
-
-export const cancelReservationAxios = (reservationId) => {
-    return api.patch(`/reservation/${reservationId}/cancel`);
-}
-
-export const confirmReservationAxios = (reservationId) => {
-    return api.patch(`/reservation/${reservationId}/confirm`);
-}
-
-export const payRemainingAmountAxios = (reservationId) => {
-    return api.post(`/reservation/${reservationId}/pay-remaining`);
+    return api.post("/reservation/reserve", data);
 }
 
 /* -------------------------PURCHASES-------------------------------- */
