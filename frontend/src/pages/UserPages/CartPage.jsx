@@ -1,9 +1,10 @@
 import { useContext } from "react"
 import { ContextCart } from "../../context/CartContext"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const CartPage = () => {
     const { cart, removeProductFromCart, incrementQuantity, decreaseQuantity, getCartMoney, clearCart } = useContext(ContextCart);
+    const navigate = useNavigate();
 
     console.log(cart)
 
@@ -16,11 +17,23 @@ const CartPage = () => {
 
             <div className="max-w-7xl mx-auto">
 
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold text-white mb-2">Carrito de Compras</h1>
-                    <p className="text-blue-100">
-                        {cart.length === 0 ? "Tu carrito está vacío" : `${cart.length} producto${cart.length !== 1 ? 's' : ''} en tu carrito`}
-                    </p>
+                <div className="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-4xl font-bold text-white mb-2">Carrito de Compras</h1>
+                        <p className="text-blue-100">
+                            {cart.length === 0 ? "Tu carrito está vacío" : `${cart.length} producto${cart.length !== 1 ? 's' : ''} en tu carrito`}
+                        </p>
+                    </div>
+
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-linear-to-r cursor-pointer from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg border border-slate-600/50"
+                    >
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span>Volver</span>
+                    </button>
                 </div>
 
                 {cart.length === 0 ? (

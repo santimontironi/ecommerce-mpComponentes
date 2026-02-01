@@ -6,7 +6,7 @@ export const CartIcon = () => {
     const { getCartCount } = useContext(ContextCart);
 
     return (
-        <Link to={'/carrito'} target="_blank">
+        <Link to={'/carrito'}>
             <div className="relative cursor-pointer group">
                 <div className="absolute inset-0 bg-linear-to-br from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300" />
 

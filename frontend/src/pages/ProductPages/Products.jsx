@@ -65,7 +65,7 @@ const Products = () => {
     <section className="min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
 
       {!isAdmin && (
-        <div className="fixed top-17 right-20 z-40">
+        <div className="absolute top-17 right-8 xl:top-17 xl:right-20 z-40">
           <CartIcon />
         </div>
       )}
