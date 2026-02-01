@@ -37,10 +37,10 @@ export const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }
 
                     {!isAdmin ? (
                         <div className="flex items-center gap-4">
-                            <button onClick={() => addProductToCart(product)} className="px-5 py-2.5 cursor-pointer bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
+                            <button onClick={() => addProductToCart(product)} className="px-2 py-2.5 cursor-pointer bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95 text-sm">
                                 Agregar al carrito
                             </button>
-                            <Link to={`/reservar-${product._id}`} className="px-5 py-2.5 cursor-pointer bg-green-700 hover:bg-green-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95">
+                            <Link to={`/reservar/${product._id}`} className="px-2 py-2.5 cursor-pointer bg-green-700 hover:bg-green-500 text-white font-semibold rounded-lg transition-colors duration-200 active:scale-95 text-sm text-center">
                                 Reservar producto
                             </Link>
                         </div>

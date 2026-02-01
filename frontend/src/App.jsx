@@ -25,7 +25,7 @@ const AppProviders = ({ children }) => (
     <ProductsProvider>
       <CategoriesProvider>
         <CartProvider>
-            {children}
+          {children}
         </CartProvider>
       </CategoriesProvider>
     </ProductsProvider>
@@ -45,9 +45,13 @@ const AdminProviders = ({ children }) => (
 );
 
 const ReservProductProvider = ({ children }) => (
-  <ReservationProvider>
-    {children}
-  </ReservationProvider>
+  <AdminProvider>
+    <ProductsProvider>
+      <ReservationProvider>
+        {children}
+      </ReservationProvider>
+    </ProductsProvider>
+  </AdminProvider>
 )
 
 function App() {
@@ -165,7 +169,7 @@ function App() {
           }
         />
 
-        <Route 
+        <Route
           path="/formulario-pedido"
           element={
             <AppProviders>
@@ -173,8 +177,8 @@ function App() {
             </AppProviders>
           }
         />
-        
-        <Route 
+
+        <Route
           path="/reservar/:productId"
           element={
             <ReservProductProvider>

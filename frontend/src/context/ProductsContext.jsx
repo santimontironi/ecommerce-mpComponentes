@@ -7,6 +7,7 @@ export const ContextProducts = createContext();
 
 export const ProductsProvider = ({ children }) => {
 
+    const [allProducts, setAllProducts] = useState([]);
     const [products, setProducts] = useState([]);
     const [productsFilter, setProductsFilter] = useState(null);
     const [productById, setProductById] = useState([]);
@@ -28,7 +29,7 @@ export const ProductsProvider = ({ children }) => {
         async function getProducts() {
             try {
                 const res = await getAllProductsAxios()
-                setProducts(res.data.products)
+                setAllProducts(res.data.products)
             }
             catch (error) {
                 throw error
@@ -43,6 +44,8 @@ export const ProductsProvider = ({ children }) => {
     },[])
 
     async function getProducts(categoryId) {
+        setLoading((prev) => ({ ...prev, loadingGetProducts: true }));
+        setProducts([]);
         try {
             const res = isAdmin ? await getProductsAdminAxios(categoryId) : await getProductsAxios(categoryId)
             setProducts(res.data.products)
@@ -157,7 +160,7 @@ export const ProductsProvider = ({ children }) => {
                 return
             }
 
-            const productsFiltered = products.filter(product => product.name.toLowerCase().startsWith(name.toLowerCase()))
+            const productsFiltered = allProducts.filter(product => product.name.toLowerCase().startsWith(name.toLowerCase()))
             setProductsFilter(productsFiltered)
 
             return productsFiltered
@@ -185,7 +188,7 @@ export const ProductsProvider = ({ children }) => {
         }
     }
 
-    return <ContextProducts.Provider value={{ products, loading, setLoading, addProduct, getProducts, deleteProduct, editProduct, getProduct, productById, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts, orderProduct}}>
+    return <ContextProducts.Provider value={{ products, allProducts, loading, setLoading, addProduct, getProducts, deleteProduct, editProduct, getProduct, productById, importProducts, productsWithoutStock, getProductsWithoutStock, productsFilter, searchProducts, orderProduct}}>
         {children}
     </ContextProducts.Provider>;
 };
