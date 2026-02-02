@@ -57,14 +57,10 @@ export const getSubCategories = async (req, res) => {
 export const addCategory = async (req, res) => {
     try {
         const { name, parent } = req.body
-
-        console.log(name, parent);        
-
+       
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
         const result = await cloudinary.uploader.upload(fileBase64);
-
-        console.log(req.file);
 
         const categoryRepeated = await Category.findOne({ name, active: true })
 
@@ -72,7 +68,7 @@ export const addCategory = async (req, res) => {
             return res.status(400).json({ message: 'La categoria ya existe' })
         }
 
-        const category = new Category({ image: result.secure_url, name, parent: parent || null })
+        const category = new Category({ image: result.secure_url, name, parent: (parent && parent !== 'undefined' && parent !== '') ? parent : null })
 
         await category.save()
 
@@ -83,7 +79,6 @@ export const addCategory = async (req, res) => {
 
     }
     catch (error) {
-        console.log(error);
         res.status(500).json({ message: 'Error al agregar categoria', error: error.message })
     }
 }
