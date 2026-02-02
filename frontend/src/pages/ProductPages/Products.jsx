@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react"
-import { ContextAdmin } from "../../context/adminContext"
+import { ContextAdmin } from "../../context/AdminContext"
 import { ContextProducts } from "../../context/ProductsContext"
 import { useParams } from "react-router-dom"
 import { ContextCategories } from "../../context/CategoryContext"

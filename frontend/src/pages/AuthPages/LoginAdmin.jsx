@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { ContextAdmin } from "../../context/adminContext"
+import { ContextAdmin } from "../../context/AdminContext";
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";

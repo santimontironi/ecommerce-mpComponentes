@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { ContextProducts } from "../../context/ProductsContext"
 import { ContextCart } from "../../context/CartContext"
-import { ContextAdmin } from "../../context/adminContext"
+import { ContextAdmin } from "../../context/AdminContext"
 import { ProductCard } from "./ProductCard"
 import { Loader } from "../UIComponents/Loader"
 
