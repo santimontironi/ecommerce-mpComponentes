@@ -44,9 +44,13 @@ export const createCheckout = async (req, res) => {
             const product = products.find(p => p._id.toString() === item.product_id)
 
             return {
+                id: product._id.toString(),
                 title: product.name,
-                unit_price: Number(product.price),
+                description: product.description || 'Producto',
+                picture_url: product.image || undefined,
+                category_id: 'electronics',
                 quantity: Number(item.quantity),
+                unit_price: Number(product.price),
                 currency_id: 'ARS'
             }
         })
@@ -58,18 +62,30 @@ export const createCheckout = async (req, res) => {
                 items: mpItems,
 
                 payer: {
-                    email: buyer_email
+                    email: buyer_email,
+                    name: 'Cliente',
+                    surname: 'MP Componentes'
                 },
 
                 back_urls: {
-                    success: `${process.env.FRONTEND_URL}/pay-success`,
-                    failure: `${process.env.FRONTEND_URL}/pay-failure`,
-                    pending: `${process.env.FRONTEND_URL}/pay-pending`
+                    success: `${process.env.FRONTEND_URL}/pay-correct`,
+                    failure: `${process.env.FRONTEND_URL}/pay-fail`,
+                    pending: `${process.env.FRONTEND_URL}/pay-fail`
                 },
 
                 auto_return: 'approved',
 
                 statement_descriptor: 'MP COMPONENTES',
+
+                payment_methods: {
+                    excluded_payment_methods: [],
+                    excluded_payment_types: [],
+                    installments: 12
+                },
+
+                shipments: {
+                    mode: 'not_specified'
+                },
 
                 metadata: {
                     cart: items.map(i => ({
@@ -78,7 +94,7 @@ export const createCheckout = async (req, res) => {
                     }))
                 },
 
-                notification_url: `${process.env.BACKEND_URL}/webhook/mercadopago`
+                notification_url: `${process.env.BACKEND_URL || 'https://ecommerce-mp-componentes.vercel.app'}/webhook/mercadopago`
             }
         })
 
