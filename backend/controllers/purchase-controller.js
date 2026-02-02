@@ -83,61 +83,52 @@ export const createCheckout = async (req, res) => {
     }
 }
 
-//Cuando Stripe confirma que el pago fue exitoso, Stripe automáticamente hace un POST a tu servidor y se ejecuta el webhook.
+// Webhook de MercadoPago
 export const handleWebhook = async (req, res) => {
-
-    // firma de seguridad para verificar que viene de Stripe
-    const sig = req.headers['stripe-signature']
-    let event
-
     try {
-        event = stripe.webhooks.constructEvent(
-            req.body, // El cuerpo del mensaje
-            sig, // La firma
-            process.env.STRIPE_WEBHOOK_SECRET // Tu clave secreta
-        )
-    } catch (err) {
-        console.error('⚠️ Webhook error:', err.message)
-        return res.status(400).send(`Webhook Error: ${err.message}`)
-    }
+        console.log('📨 Webhook recibido:', req.method, req.query, req.body)
 
-    // Este evento significa: "El pago se completó exitosamente"
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object
+        // MercadoPago puede enviar la notificación por GET o POST
+        const paymentId = req.query['data.id'] || req.body?.data?.id
+        const topic = req.query.topic || req.body?.type
 
-        // session = {
-        //   id: 'cs_test_abc123',
-        //   customer_email: 'cliente@gmail.com',
-        //   amount_total: 12000000, // en centavos
-        //   metadata: {
-        //     items: '[{"product_id":"123abc","quantity":2},...]'
-        //   }
-        // }
+        // Verificar que sea una notificación de pago
+        if (!paymentId || topic !== 'payment') {
+            console.log('⚠️ Notificación ignorada - No es un pago')
+            return res.status(200).send('OK')
+        }
 
-        console.log('✅ Pago completado:', session.id)
+        console.log('💳 Procesando pago ID:', paymentId)
 
-        try {
-            const items = JSON.parse(session.metadata.items)
-            // items = [
-            //   { product_id: '123abc', quantity: 2 },
-            //   { product_id: '456def', quantity: 1 }
-            // ]
+        // Obtener los detalles del pago desde MercadoPago
+        const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+            headers: {
+                'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`
+            }
+        })
 
-            //Preparar array y variable para guardar info:
+        const payment = await response.json()
+
+        console.log('📋 Estado del pago:', payment.status)
+
+        // Solo procesar si el pago fue aprobado
+        if (payment.status === 'approved') {
+            console.log('✅ Pago aprobado:', payment.id)
+
+            const items = JSON.parse(payment.metadata.items)
             const purchasedItems = []
             let total = 0
 
             // Decrementar stock y recopilar info de productos
             for (const item of items) {
                 const product = await Product.findByIdAndUpdate(
-                    item.product_id, // Buscar el producto por su ID
-                    { $inc: { stock: -parseInt(item.quantity) } }, // Decrementar stock
-                    { new: true } // Devolver el producto actualizado
+                    item.product_id,
+                    { $inc: { stock: -parseInt(item.quantity) } },
+                    { new: true }
                 )
 
                 console.log(`📦 Stock actualizado: ${product.name} - Nuevo stock: ${product.stock}`)
 
-                // Guardar info para el email
                 purchasedItems.push({
                     product_name: product.name,
                     quantity: item.quantity,
@@ -152,23 +143,21 @@ export const handleWebhook = async (req, res) => {
             // Preparar datos para emails
             const purchaseData = {
                 items: purchasedItems,
-                buyer_email: session.customer_email,
-                buyer_phone: session.metadata.buyer_phone || '',
+                buyer_email: payment.payer.email,
+                buyer_phone: payment.metadata.buyer_phone || '',
                 total: total,
-                payment_id: session.id
+                payment_id: payment.id
             }
 
-            // 📧 Enviar email a la tienda
+            // 📧 Enviar emails
             await sendPurchaseNotificationToStore(purchaseData)
-
-            // 📧 Enviar email de confirmación al cliente (opcional)
             await sendPurchaseConfirmationToCustomer(purchaseData)
-
-        } catch (error) {
-            console.error('❌ Error procesando pago:', error)
         }
-    }
 
-    // Esto le dice a Stripe: "OK, ya lo procesé, no me lo vuelvas a enviar"
-    res.json({ received: true })
+        res.status(200).send('OK')
+
+    } catch (error) {
+        console.error('❌ Error en webhook:', error)
+        res.status(500).send('Error')
+    }
 }
