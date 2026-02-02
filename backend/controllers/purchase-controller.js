@@ -62,8 +62,8 @@ export const createCheckout = async (req, res) => {
             mode: 'payment',
 
             // URLs temporales (pueden no existir aún)
-            success_url: 'http://localhost:5173/pay-correct?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'http://localhost:5173/pay-fail',
+            success_url: `${process.env.FRONTEND_URL}/pay-correct?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.FRONTEND_URL}/pay-fail`,
 
             customer_email: buyer_email,
 
