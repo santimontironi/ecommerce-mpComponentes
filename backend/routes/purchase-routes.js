@@ -4,12 +4,22 @@ import {
     handleWebhook
 } from '../controllers/purchase-controller.js'
 
-// Router principal para compras
+// ===============================
+// ROUTER COMPRAS
+// ===============================
 export const router = Router()
 
-router.post('/purchase/create-preference', createPreference)
+router.post(
+    '/purchase/create-preference',
+    createPreference
+)
 
-// Router separado para webhook (sin JSON parsing en app.js)
+// ===============================
+// ROUTER WEBHOOK
+// ===============================
 export const webhookRouter = Router()
 
-webhookRouter.post('/mercadopago', handleWebhook)
+webhookRouter.post(
+    '/mercadopago',
+    handleWebhook
+)
