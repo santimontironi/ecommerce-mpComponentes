@@ -4,6 +4,7 @@ import { ProductsProvider } from "./context/ProductsContext";
 import CategoriesProvider from "./context/CategoryContext";
 import { CartProvider } from "./context/CartContext";
 import { ReservationProvider } from "./context/ReservationContext";
+import { PurchaseProvider } from "./context/PurchaseContext";
 import { SecurityRoutes } from "./components/SecurityComponents/SecurityRoutes";
 import { LoginAdmin } from "./pages/AuthPages/LoginAdmin";
 import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
@@ -16,6 +17,8 @@ import { ProductDetail } from "./pages/ProductPages/ProductDetail";
 import Home from "./pages/UserPages/Home";
 import CartPage from "./pages/UserPages/CartPage";
 import Contact from "./pages/UserPages/Contact";
+import PaymentSuccess from "./pages/UserPages/PaymentSuccess";
+import PaymentFailed from "./pages/UserPages/PaymentFailed";
 import SubCategories from "./pages/CategoryPages/SubCategories";
 import OrderProduct from "./pages/ProductPages/OrderProduct";
 import ReservProduct from "./pages/ProductPages/ReservProduct";
@@ -25,7 +28,9 @@ const AppProviders = ({ children }) => (
     <ProductsProvider>
       <CategoriesProvider>
         <CartProvider>
-          {children}
+          <PurchaseProvider>
+            {children}
+          </PurchaseProvider>
         </CartProvider>
       </CategoriesProvider>
     </ProductsProvider>
@@ -193,6 +198,31 @@ function App() {
             <CartProvider>
               <CartPage />
             </CartProvider>
+          }
+        />
+
+        <Route
+          path="/pay-correct"
+          element={
+            <AppProviders>
+              <PaymentSuccess />
+            </AppProviders>
+          }
+        />
+
+        <Route
+          path="/pay-fail"
+          element={
+            <PaymentFailed />
+          }
+        />
+
+        <Route
+          path="/checkout"
+          element={
+            <AppProviders>
+              <CartPage />
+            </AppProviders>
           }
         />
       </Routes>

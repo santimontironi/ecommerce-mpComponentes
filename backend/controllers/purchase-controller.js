@@ -8,7 +8,7 @@ export const createCheckout = async (req, res) => {
     try {
 
         //recibir los datos del frontend
-        const { items, buyer_email } = req.body
+        const { items, buyer_email, buyer_phone } = req.body
 
         if (!items || items.length === 0) {
             return res.status(400).json({ error: 'El carrito está vacío' })
@@ -67,7 +67,8 @@ export const createCheckout = async (req, res) => {
 
             customer_email: buyer_email,
             metadata: {
-                items: JSON.stringify(items)
+                items: JSON.stringify(items),
+                buyer_phone: buyer_phone || ''
             }
         })
 
