@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ContextAdmin } from "../../context/adminContext";
+import { ContextAdmin } from "../../context/AdminContext";
 import { Loader } from "../UIComponents/Loader";
 import { Navigate } from "react-router-dom";
 
