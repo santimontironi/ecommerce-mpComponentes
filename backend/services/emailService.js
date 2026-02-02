@@ -6,7 +6,7 @@ dotenv.config()
 // Enviar email a la tienda cuando hay una nueva compra
 export const sendPurchaseNotificationToStore = async (purchaseData) => {
     try {
-        const { items, buyer_email, total, payment_id } = purchaseData
+        const { items, buyer_email, buyer_phone, total, payment_id } = purchaseData
 
         // Crear HTML con los productos
         const itemsHTML = items.map(item => `
@@ -31,6 +31,7 @@ export const sendPurchaseNotificationToStore = async (purchaseData) => {
                     <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
                         <p><strong>ID de pago:</strong> ${payment_id}</p>
                         <p><strong>Cliente:</strong> ${buyer_email}</p>
+                        <p><strong>Teléfono:</strong> ${buyer_phone || 'No proporcionado'}</p>
                         <p><strong>Fecha:</strong> ${new Date().toLocaleString('es-AR')}</p>
                     </div>
 
