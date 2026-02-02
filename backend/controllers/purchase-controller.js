@@ -12,6 +12,8 @@ export const createPreference = async (req, res) => {
     try {
         const { items, buyer_email, buyer_phone } = req.body
 
+        console.log('🔴 VERSIÓN ACTUALIZADA - ' + new Date().toISOString())
+
         console.log('📥 req.body completo:', JSON.stringify(req.body));
         console.log('📥 typeof items:', typeof req.body.items);
         console.log('📥 isArray items:', Array.isArray(req.body.items));
