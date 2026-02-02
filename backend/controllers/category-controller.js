@@ -58,9 +58,13 @@ export const addCategory = async (req, res) => {
     try {
         const { name, parent } = req.body
 
+        console.log(name, parent);        
+
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
         const result = await cloudinary.uploader.upload(fileBase64);
+
+        console.log(req.file);
 
         const categoryRepeated = await Category.findOne({ name, active: true })
 
@@ -79,6 +83,7 @@ export const addCategory = async (req, res) => {
 
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Error al agregar categoria', error: error.message })
     }
 }
