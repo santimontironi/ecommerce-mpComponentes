@@ -71,16 +71,46 @@ const Home = () => {
           {showNoResults && <NoSearchResults />}
 
           {showCategories && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
-              {categories.map((category, index) => (
-                <CategoryCard
-                  key={category._id}
-                  category={category}
-                  index={index}
-                  handleCategoryClick={handleCategoryClick}
-                />
-              ))}
-            </div>
+            <>
+              {categories.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 px-4">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-linear-to-r from-blue-500/20 to-cyan-500/20 blur-3xl rounded-full" />
+                    <div className="relative bg-linear-to-br from-blue-900/40 to-cyan-900/40 backdrop-blur-sm border border-cyan-500/30 rounded-2xl p-12 max-w-md text-center shadow-2xl">
+                      <div className="mb-6">
+                        <div className="w-20 h-20 mx-auto bg-linear-to-br from-blue-500/20 to-cyan-500/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-cyan-400/30">
+                          <svg className="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                          </svg>
+                        </div>
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-3">
+                        No hay categorías disponibles
+                      </h3>
+                      <p className="text-gray-300 text-base leading-relaxed">
+                        Aún no se han agregado categorías al catálogo. Vuelve pronto para descubrir nuevos productos.
+                      </p>
+                      <div className="mt-6 flex items-center justify-center gap-1">
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse delay-150" />
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse delay-300" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
+                  {categories.map((category, index) => (
+                    <CategoryCard
+                      key={category._id}
+                      category={category}
+                      index={index}
+                      handleCategoryClick={handleCategoryClick}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
         </div>
