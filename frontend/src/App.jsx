@@ -13,7 +13,6 @@ import AddProduct from "./pages/ProductPages/AddProduct";
 import ImportProducts from "./pages/ProductPages/ImportProducts";
 import ProductById from "./pages/ProductPages/ProductById";
 import Products from "./pages/ProductPages/Products";
-import { ProductDetail } from "./pages/ProductPages/ProductDetail";
 import Home from "./pages/UserPages/Home";
 import CartPage from "./pages/UserPages/CartPage";
 import Contact from "./pages/UserPages/Contact";
@@ -148,29 +147,11 @@ function App() {
         />
 
         <Route
-          path="/producto/:productId"
-          element={
-            <AppProviders>
-              <ProductDetail />
-            </AppProviders>
-          }
-        />
-
-        <Route
           path="/editar-producto/:productId"
           element={
             <AdminProviders>
               <ProductById />
             </AdminProviders>
-          }
-        />
-
-        <Route
-          path="/producto/:productId"
-          element={
-            <AppProviders>
-              <ProductById />
-            </AppProviders>
           }
         />
 

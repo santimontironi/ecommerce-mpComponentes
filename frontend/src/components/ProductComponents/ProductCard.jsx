@@ -5,18 +5,14 @@ export const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }
     return (
         <section className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">
 
-            <Link target="_blank" to={`/producto/${product._id}`}>
-                <div className="relative w-full h-56 bg-slate-950 overflow-hidden">
-
-                    <img
-                        src={product.image}
-                        alt={`Imagen del producto ${product.name}`}
-                        className="w-full h-full object-cover"
-                    />
-
-                    <div className="absolute inset-0 bg-linear-to-t from-slate-900/80 via-transparent to-transparent" />
-                </div>
-            </Link>
+            <div className="relative w-full h-56 bg-slate-950 overflow-hidden">
+                <img
+                    src={product.image}
+                    alt={`Imagen del producto ${product.name}`}
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-slate-900/80 via-transparent to-transparent" />
+            </div>
 
             <div className="p-5 space-y-3">
                 <h2 className="text-lg font-semibold text-white line-clamp-1">
