@@ -1,13 +1,15 @@
-import { createCheckout, handleWebhook } from "../controllers/purchase-controller.js";
+import { Router } from 'express'
+import {
+    createPreference,
+    handleWebhook
+} from '../controllers/purchase-controller.js'
 
-import { Router } from "express";
-
+// Router principal para compras
 export const router = Router()
 
-router.post('/purchase/checkout', createCheckout)
+router.post('/purchase/create-preference', createPreference)
 
+// Router separado para webhook (sin JSON parsing en app.js)
 export const webhookRouter = Router()
 
-// MercadoPago envía notificaciones via GET con query params
 webhookRouter.post('/mercadopago', handleWebhook)
-webhookRouter.get('/mercadopago', handleWebhook)

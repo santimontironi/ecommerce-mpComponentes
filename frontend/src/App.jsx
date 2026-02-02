@@ -197,6 +197,13 @@ function App() {
             <PaymentFailed />
           }
         />
+
+        <Route
+          path="/pay-pending"
+          element={
+            <PaymentFailed />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -79,8 +79,9 @@ export const createReservationCheckoutAxios = (data) => {
 
 /* -------------------------PURCHASES-------------------------------- */
 
-export const createCheckoutAxios = (data) => {
-    return api.post("/purchase/checkout", data);
+// Crear preferencia de compra (carrito simple)
+export const createPreferenceAxios = (data) => {
+    return api.post("/purchase/create-preference", data);
 }
 
 /* -------------------------CATEGORIES-------------------------------- */

@@ -26,10 +26,11 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
 
+// Rutas principales
 app.use('', adminRouter)
 app.use('', productRouter)
-app.use('', purchaseRouter)
-app.use('/webhook', webhookRouter)
+app.use('', purchaseRouter) // Incluye /purchase/create-preference
+app.use('/webhook', webhookRouter) // Incluye /webhook/mercadopago
 app.use('', categoryRouter)
 app.use('', contactRouter)
 app.use('/reservation', reservationRouter)

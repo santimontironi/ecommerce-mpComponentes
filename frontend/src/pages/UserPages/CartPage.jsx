@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 
 const CartPage = () => {
     const { cart, removeProductFromCart, incrementQuantity, decreaseQuantity, getCartMoney, clearCart } = useContext(ContextCart);
-    const { createCheckout, loading, error } = useContext(ContextPurchase);
+    const { createPreference, loading, error } = useContext(ContextPurchase);
     const navigate = useNavigate();
     
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -21,7 +21,7 @@ const CartPage = () => {
         }
 
         try {
-            await createCheckout(buyerEmail, buyerPhone);
+            await createPreference(buyerEmail, buyerPhone);
         } catch (err) {
             alert(error || "Error al procesar la compra");
         }
