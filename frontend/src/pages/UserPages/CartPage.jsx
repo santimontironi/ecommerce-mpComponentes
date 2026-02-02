@@ -6,8 +6,6 @@ const CartPage = () => {
     const { cart, removeProductFromCart, incrementQuantity, decreaseQuantity, getCartMoney, clearCart } = useContext(ContextCart);
     const navigate = useNavigate();
 
-    console.log(cart)
-
     return (
         <section className="relative w-full overflow-hidden min-h-screen bg-linear-to-br from-[#0a0a0a] via-[#001b48] to-[#002855] py-12 px-4 sm:px-6 lg:px-8">
 

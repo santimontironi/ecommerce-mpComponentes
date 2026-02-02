@@ -9,7 +9,7 @@ const DEPOSIT_PERCENTAGE = 0.30 // 30% de seña
 // Crear checkout para reserva (cobrar solo el 30%)
 export const createReservationCheckout = async (req, res) => {
     try {
-        const { items, buyer_email } = req.body
+        const { items, phone, buyer_email } = req.body
 
         if (!items || items.length === 0) {
             return res.status(400).json({ error: 'El carrito de reserva está vacío' })
@@ -60,6 +60,8 @@ export const createReservationCheckout = async (req, res) => {
             cancel_url: 'http://localhost:5173/reservation-cancel',
 
             customer_email: buyer_email,
+            customer_phone: phone,
+            
             metadata: {
                 product_id: product_id,
                 quantity: quantity.toString(),
@@ -141,6 +143,7 @@ export const handleReservationWebhook = async (req, res) => {
                 total_amount: totalAmount,
                 deposit_amount: depositAmount,
                 buyer_email: session.customer_email,
+                buyer_phone: session.customer_phone,
                 reservation_id: reservation._id,
                 expiration_date: reservation.expiration_date,
                 payment_id: session.id

@@ -1,10 +1,13 @@
 import { ToastContainer, toast } from 'react-toastify';
 import { useForm } from 'react-hook-form'
 import { sendContactMessageAxios } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
+
+    const navigate = useNavigate()
 
     async function formSubmit(data) {
         const toastId = toast.loading("Enviando mensaje...")
@@ -31,9 +34,25 @@ const Contact = () => {
 
     return (
         <section className="min-h-screen bg-linear-to-br from-slate-950 via-blue-950 to-slate-950 py-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto pt-16">
+            <div className="max-w-4xl mx-auto pt-10">
 
                 <div className="text-center mb-12">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-lg bg-linear-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 hover:border-cyan-400/60 text-cyan-400 hover:text-cyan-300 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 hover:-translate-x-1 cursor-pointer absolute xl:left-20 top-6 left-8"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span className="text-sm font-medium">Volver atrás</span>
+                    </button>
+                    
                     <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
                         Contacta con
                         <span className="bg-linear-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"> Nosotros</span>
@@ -181,19 +200,11 @@ const Contact = () => {
                         <div className="pt-4">
                             <button
                                 type="submit"
-                                className="group relative w-full py-4 px-6 flex items-center justify-center gap-3 overflow-hidden rounded-lg bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:scale-[1.02]"
+                                className="group cursor-pointer relative w-full py-4 px-6 flex items-center justify-center gap-3 overflow-hidden rounded-lg bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 transform hover:scale-[1.02]"
                             >
                                 <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
 
                                 <span className="relative flex items-center gap-2 text-white font-semibold text-lg">
-                                    <svg
-                                        className="w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                    </svg>
                                     Enviar Mensaje
                                 </span>
                             </button>

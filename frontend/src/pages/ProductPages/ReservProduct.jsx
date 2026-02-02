@@ -37,13 +37,14 @@ const ReservProduct = () => {
                     product_id: productId,
                     quantity: parseInt(data.quantity)
                 }],
-                buyer_email: data.email
+                buyer_email: data.email,
+                buyer_phone: data.phone
             }
 
             const response = await createReservationCheckout(reservationData)
 
             if (response.url) {
-                window.location.href = response.url
+                window.location.href = response.url // Redirigir a la página de Stripe
             }
         } catch (error) {
             console.error('Error al crear reserva:', error)
@@ -132,6 +133,27 @@ const ReservProduct = () => {
 
                                     <div>
                                         <label className="block text-sm font-medium text-slate-300 mb-2">
+                                            Teléfono *
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            {...register("phone", {
+                                                required: "El teléfono es obligatorio",
+                                                pattern: {
+                                                    value: /^[0-9+\s()-]{8,}$/,
+                                                    message: "Teléfono inválido"
+                                                }
+                                            })}
+                                            className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                                            placeholder="+54 9 11 1234-5678"
+                                        />
+                                        {errors.phone && (
+                                            <p className="mt-1 text-sm text-red-400">{errors.phone.message}</p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-300 mb-2">
                                             Cantidad *
                                         </label>
                                         <input
@@ -151,7 +173,6 @@ const ReservProduct = () => {
                                         )}
                                     </div>
 
-                                    {/* Resumen de costos */}
                                     <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-700/30 space-y-3">
                                         <h3 className="text-lg font-semibold text-white mb-4">Resumen de Reserva</h3>
 

@@ -1,19 +1,9 @@
-import { CircularProgress } from "react-loader-spinner";
+import { ClipLoader } from "react-spinners";
 
 export const Loader = () => {
     return (
         <div className="w-full h-full flex justify-center items-center">
-            <CircularProgress
-                height="100"
-                width="100"
-                color="#fff"
-                ariaLabel="circular-progress-loading"
-                wrapperStyle={{}}
-                wrapperClass="wrapper-class"
-                visible={true}
-                strokeWidth={2}
-                animationDuration={1}
-            />
+            <ClipLoader size={50} color={"#fff"} loading={true} />
         </div>
     )
 }
