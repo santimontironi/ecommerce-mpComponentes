@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// Usar VITE_BACKEND_URL_PROD en producción o VITE_BACKEND_URL_DEV en desarrollo
+const backendURL = import.meta.env.VITE_BACKEND_URL_PROD || import.meta.env.VITE_BACKEND_URL_DEV;
+
 export const api = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL_DEV,
+    baseURL: backendURL,
     withCredentials: true
 });
 
