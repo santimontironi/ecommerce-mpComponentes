@@ -129,6 +129,8 @@ export const ProductsProvider = ({ children }) => {
         try {
             const productEdited = await editProductAxios(id, data)
             setProducts((prev) => prev.map((product) => product._id === id ? productEdited.data.product : product))
+
+            setProductById(productEdited.data.product)
             return productEdited.data
         }
         catch (error) {
