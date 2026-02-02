@@ -14,8 +14,6 @@ export const createPreference = async (req, res) => {
 
         console.log('🔴 VERSIÓN ACTUALIZADA - ' + new Date().toISOString())
 
-        console.log('🔑 Token usado (primeros 30 chars):', process.env.MERCADOPAGO_ACCESS_TOKEN?.substring(0, 30))
-
         console.log('📥 req.body completo:', JSON.stringify(req.body));
         console.log('📥 typeof items:', typeof req.body.items);
         console.log('📥 isArray items:', Array.isArray(req.body.items));
