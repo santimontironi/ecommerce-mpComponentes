@@ -16,15 +16,19 @@ export const PurchaseProvider = ({ children }) => {
         setError(null);
 
         try {
-            // Mapear cada ítem del carrito individualmente
             const items = cart.map(item => ({
                 title: item.name,
                 quantity: item.quantity,
                 unit_price: item.price
             }));
 
+            // ← AGREGA ESTO
+            console.log("🛒 Cart estado actual:", JSON.stringify(cart));
+            console.log("📦 Items que se mandan:", JSON.stringify(items));
+            console.log("📧 Email:", buyerEmail, "📱 Phone:", buyerPhone);
+
             const response = await createPreferenceAxios({
-                items,           // ← ahora mandas el array de ítems
+                items,
                 buyer_email: buyerEmail,
                 buyer_phone: buyerPhone
             });

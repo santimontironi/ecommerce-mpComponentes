@@ -12,6 +12,8 @@ export const createPreference = async (req, res) => {
   try {
     const { items, buyer_email, buyer_phone } = req.body
 
+    console.log('📥 req.body completo:', JSON.stringify(req.body));
+
     if (!buyer_email || !buyer_phone || !items || items.length === 0) {
       return res.status(400).json({
         error: 'Datos incompletos'
