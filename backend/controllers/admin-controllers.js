@@ -5,25 +5,25 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// export const createAdmin = async (req, res) => {
-//     try{
-//         const {username,password} = req.body
+export const createAdmin = async (req, res) => {
+    try{
+        const {username,password} = req.body
 
-//         const passwordHashed = await bcrypt.hash(password, 10);
+        const passwordHashed = await bcrypt.hash(password, 10);
 
-//         const admin = new Admin({
-//             username,
-//             password: passwordHashed
-//         })
+        const admin = new Admin({
+            username,
+            password: passwordHashed
+        })
 
-//         await admin.save();
+        await admin.save();
 
-//         res.status(201).json({message:"Admin creado correctamente"});
-//     }
-//     catch(error){
-//         res.status(500).json({message:"Error al crear el admin", error: error.message});
-//     }
-// }
+        res.status(201).json({message:"Admin creado correctamente"});
+    }
+    catch(error){
+        res.status(500).json({message:"Error al crear el admin", error: error.message});
+    }
+}
 
 export const loginAdmin = async (req, res) => {
     try {
