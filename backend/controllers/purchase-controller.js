@@ -4,14 +4,6 @@ import Product from '../models/Product.js'
 import { sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
 import { sendPurchaseNotificationToStore } from '../services/emailService.js'
 
-// Crear checkout con múltiples productos
-import client from '../config/mercadopagoConfig.js'
-import { Preference } from 'mercadopago'
-import Product from '../models/Product.js'
-import {
-    sendPurchaseConfirmationToCustomer,
-    sendPurchaseNotificationToStore
-} from '../services/emailService.js'
 
 // ===============================
 // CREATE CHECKOUT
