@@ -10,19 +10,11 @@ import {
 // ===============================
 export const createPreference = async (req, res) => {
   try {
-    console.log('📥 createPreference body:', req.body)
+    const { items, buyer_email, buyer_phone } = req.body
 
-    const {
-      title,
-      unit_price,
-      quantity,
-      buyer_email,
-      buyer_phone
-    } = req.body
-
-    if (!buyer_email || !buyer_phone) {
+    if (!buyer_email || !buyer_phone || !items || items.length === 0) {
       return res.status(400).json({
-        error: 'Email y teléfono requeridos'
+        error: 'Datos incompletos'
       })
     }
 
@@ -30,17 +22,20 @@ export const createPreference = async (req, res) => {
 
     const result = await preference.create({
       body: {
-        items: [
-          {
-            title,
-            quantity: Number(quantity),
-            unit_price: Number(unit_price),
-            currency_id: 'ARS'
-          }
-        ],
+        items: items.map(item => ({
+          title: item.title,
+          description: item.title,
+          quantity: parseInt(item.quantity),
+          unit_price: parseFloat(item.unit_price),
+          currency_id: 'ARS'
+        })),
 
         payer: {
-          email: buyer_email
+          email: buyer_email,
+          phone: {
+            area_code: '54',
+            number: buyer_phone.replace(/\D/g, '') // solo números
+          }
         },
 
         metadata: {
@@ -58,11 +53,6 @@ export const createPreference = async (req, res) => {
       }
     })
 
-    console.log('✅ Preferencia creada:', {
-      id: result.id,
-      init_point: result.init_point
-    })
-
     res.json({
       id: result.id,
       init_point: result.init_point
@@ -72,7 +62,7 @@ export const createPreference = async (req, res) => {
     console.error('❌ Error creando preferencia:', error)
     res.status(500).json({ error: 'Error creando preferencia' })
   }
-}
+} 
 
 // ===============================
 // WEBHOOK MERCADOPAGO

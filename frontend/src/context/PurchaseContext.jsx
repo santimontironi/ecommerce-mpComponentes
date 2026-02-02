@@ -14,32 +14,27 @@ export const PurchaseProvider = ({ children }) => {
     const createPreference = async (buyerEmail, buyerPhone) => {
         setLoading(true);
         setError(null);
-        
-        try {
-            // Calcular total del carrito
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            // Crear título descriptivo
-            const title = cart.length === 1 
-                ? cart[0].name 
-                : `Compra de ${cart.length} productos`;
 
-            // Llamar al endpoint para crear la preferencia
-            const response = await createPreferenceAxios({ 
-                title,
-                unit_price: total,
-                quantity: 1,
+        try {
+            // Mapear cada ítem del carrito individualmente
+            const items = cart.map(item => ({
+                title: item.name,
+                quantity: item.quantity,
+                unit_price: item.price
+            }));
+
+            const response = await createPreferenceAxios({
+                items,           // ← ahora mandas el array de ítems
                 buyer_email: buyerEmail,
                 buyer_phone: buyerPhone
             });
 
-            // Redirigir a la URL de pago de MercadoPago
             if (response.data.init_point) {
                 window.location.href = response.data.init_point;
             }
 
             return response.data;
-            
+
         } catch (err) {
             console.error("Error al crear preferencia:", err);
             setError(err.response?.data?.error || "Error al procesar la compra");
@@ -61,11 +56,11 @@ export const PurchaseProvider = ({ children }) => {
     };
 
     return (
-        <ContextPurchase.Provider value={{ 
+        <ContextPurchase.Provider value={{
             createPreference,
             confirmPurchase,
             resetError,
-            loading, 
+            loading,
             error
         }}>
             {children}
