@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react"
 import { ContextProducts } from "../../context/ProductsContext"
-import { Loader } from "../UIComponents/Loader"
+import { Loader } from "../../components/UIComponents/Loader"
 import Swal from "sweetalert2"
-import { Back } from "../UIComponents/Back"
+import { Back } from "../../components/UIComponents/Back"
 import { ContextCategories } from "../../context/CategoryContext"
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
@@ -31,15 +31,13 @@ export const ProductEdited = ({ id }) => {
       formdata.append("stock", data.stock || productById.stock)
       formdata.append("category", data.category || productById.category)
 
-      await editProduct(id,formdata)
-
       Swal.fire({
         icon: 'question',
         title: '¿Seguro deseas editar este producto?',
         showDenyButton: true,
         confirmButtonText: 'Si, editar',
         denyButtonText: `No, cancelar`,
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
           Swal.fire({
             icon: 'success',
@@ -48,6 +46,8 @@ export const ProductEdited = ({ id }) => {
             timer: 2000,
             showConfirmButton: false
           })
+
+          await editProduct(id,formdata)
 
           navigate('/panel-admin')
         } else if (result.isDenied) {
@@ -74,7 +74,7 @@ export const ProductEdited = ({ id }) => {
 
       <Back url="/panel-admin" />
 
-      {loading.loadingEditProduct ? <Loader /> : (
+      {loading.loadingEditProduct || loading.loadingProduct ? <Loader /> : (
         <div className="w-full max-w-xl bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8 mt-20 mb-10">
 
           <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
