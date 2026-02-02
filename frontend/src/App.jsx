@@ -195,9 +195,9 @@ function App() {
         <Route
           path="/carrito"
           element={
-            <CartProvider>
+            <AppProviders>
               <CartPage />
-            </CartProvider>
+            </AppProviders>
           }
         />
 
@@ -214,15 +214,6 @@ function App() {
           path="/pay-fail"
           element={
             <PaymentFailed />
-          }
-        />
-
-        <Route
-          path="/checkout"
-          element={
-            <AppProviders>
-              <CartPage />
-            </AppProviders>
           }
         />
       </Routes>

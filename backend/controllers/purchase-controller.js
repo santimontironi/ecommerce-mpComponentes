@@ -66,6 +66,7 @@ export const createCheckout = async (req, res) => {
             cancel_url: 'http://localhost:5173/pay-fail',
 
             customer_email: buyer_email,
+
             metadata: {
                 items: JSON.stringify(items),
                 buyer_phone: buyer_phone || ''
@@ -153,6 +154,7 @@ export const handleWebhook = async (req, res) => {
             const purchaseData = {
                 items: purchasedItems,
                 buyer_email: session.customer_email,
+                buyer_phone: session.metadata.buyer_phone || '',
                 total: total,
                 payment_id: session.id
             }
