@@ -73,7 +73,7 @@ const Home = () => {
           {showCategories && (
             <>
               {categories.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 px-4">
+                <div className="flex flex-col items-center justify-center py-2 px-4">
                   <div className="relative">
                     <div className="absolute inset-0 bg-linear-to-r from-blue-500/20 to-cyan-500/20 blur-3xl rounded-full" />
                     <div className="relative bg-linear-to-br from-blue-900/40 to-cyan-900/40 backdrop-blur-sm border border-cyan-500/30 rounded-2xl p-12 max-w-md text-center shadow-2xl">
