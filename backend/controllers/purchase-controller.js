@@ -1,4 +1,5 @@
-import stripe from '../config/stripeConfig.js'
+import client from '../config/mercadopagoConfig.js'
+import { Preference } from 'mercadopago'
 import Product from '../models/Product.js'
 import { sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
 import { sendPurchaseNotificationToStore } from '../services/emailService.js'
@@ -17,11 +18,6 @@ export const createCheckout = async (req, res) => {
         // Buscar todos los productos: productIds = ['123abc', '456def']
         const productIds = items.map(item => item.product_id)
         const products = await Product.find({ _id: { $in: productIds } })
-        // Busca todos los productos de una vez
-        // products = [
-        //   { _id: '123abc', name: 'Zapatillas', price: 50000, stock: 10 },
-        //   { _id: '456def', name: 'Remera', price: 20000, stock: 5 }
-        // ]
 
         if (products.length !== items.length) {
             return res.status(404).json({ error: 'Algunos productos no existen' })
@@ -38,44 +34,47 @@ export const createCheckout = async (req, res) => {
             }
         }
 
-        // Crear line_items para Stripe, esto le dice a Stripe qué productos mostrar en el checkout
-        const lineItems = items.map(item => {
+        // Crear items para MercadoPago
+        const mpItems = items.map(item => {
             const product = products.find(p => p._id.toString() === item.product_id)
 
             return {
-                price_data: {
-                    currency: 'ars',
-                    product_data: {
-                        name: product.name,
-                        description: product.description
-                    },
-                    unit_amount: Math.round(product.price * 100)
-                },
-                quantity: item.quantity
+                title: product.name,
+                description: product.description,
+                unit_price: Number(product.price),
+                quantity: Number(item.quantity),
+                currency_id: 'ARS'
             }
         })
 
-        // Crear sesión de Stripe, Stripe crea una sesión temporal de pago
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: lineItems,
-            mode: 'payment',
-
-            // URLs temporales (pueden no existir aún)
-            success_url: `${process.env.FRONTEND_URL}/pay-correct?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.FRONTEND_URL}/pay-fail`,
-
-            customer_email: buyer_email,
-
-            metadata: {
-                items: JSON.stringify(items),
-                buyer_phone: buyer_phone || ''
+        // Crear preferencia de MercadoPago
+        const preference = new Preference(client)
+        const result = await preference.create({
+            body: {
+                items: mpItems,
+                back_urls: {
+                    success: `${process.env.FRONTEND_URL}/pay-correct`,
+                    failure: `${process.env.FRONTEND_URL}/pay-fail`,
+                    pending: `${process.env.FRONTEND_URL}/pay-fail`
+                },
+                auto_return: 'approved',
+                payer: {
+                    email: buyer_email,
+                    phone: {
+                        number: buyer_phone || ''
+                    }
+                },
+                metadata: {
+                    items: JSON.stringify(items),
+                    buyer_phone: buyer_phone || ''
+                },
+                notification_url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/webhook/mercadopago`
             }
         })
 
         res.json({
-            url: session.url,  // URL de la página de pago
-            sessionId: session.id // ID de la sesión
+            url: result.init_point,  // URL de la página de pago
+            preferenceId: result.id // ID de la preferencia
         })
 
     } catch (error) {

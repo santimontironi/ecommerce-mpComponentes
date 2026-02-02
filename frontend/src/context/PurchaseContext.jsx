@@ -29,7 +29,7 @@ export const PurchaseProvider = ({ children }) => {
                 buyer_phone: buyerPhone
             });
 
-            // Redirigir a la URL de pago de Stripe
+            // Redirigir a la URL de pago de MercadoPago
             if (response.data.url) {
                 window.location.href = response.data.url;
             }

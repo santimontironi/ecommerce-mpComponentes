@@ -1,164 +1,162 @@
-import stripe from '../config/stripeConfig.js'
+import client from '../config/mercadopagoConfig.js'
+import { Preference } from 'mercadopago'
 import Product from '../models/Product.js'
-import Reservation from '../models/Reservation.js'
-import { sendReservationConfirmationToCustomer } from '../services/emailService.js'
-import { sendReservationNotificationToStore } from '../services/emailService.js'
+import { sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
+import { sendPurchaseNotificationToStore } from '../services/emailService.js'
 
-const DEPOSIT_PERCENTAGE = 0.30 // 30% de seña
-
-// Crear checkout para reserva (cobrar solo el 30%)
+// Crear checkout de reserva (30% de seña)
 export const createReservationCheckout = async (req, res) => {
     try {
-        const { items, phone, buyer_email } = req.body
+
+        //recibir los datos del frontend
+        const { items, buyer_email, buyer_phone } = req.body
 
         if (!items || items.length === 0) {
-            return res.status(400).json({ error: 'El carrito de reserva está vacío' })
+            return res.status(400).json({ error: 'El carrito está vacío' })
         }
 
-        // Extraer el primer (y único) item
-        const item = items[0]
-        const { product_id, quantity } = item
+        // Buscar todos los productos
+        const productIds = items.map(item => item.product_id)
+        const products = await Product.find({ _id: { $in: productIds } })
 
-        // Buscar el producto
-        const product = await Product.findById(product_id)
-
-        if (!product) {
-            return res.status(404).json({ error: 'Producto no encontrado' })
+        if (products.length !== items.length) {
+            return res.status(404).json({ error: 'Algunos productos no existen' })
         }
 
-        // Verificar stock disponible
-        if (product.stock < quantity) {
-            return res.status(400).json({
-                error: `Stock insuficiente para ${product.name}. Disponible: ${product.stock}`
-            })
+        // Verificar stock
+        for (const item of items) {
+            const product = products.find(p => p._id.toString() === item.product_id)
+
+            if (product.stock < item.quantity) {
+                return res.status(400).json({
+                    error: `Stock insuficiente para ${product.name}. Disponible: ${product.stock}`
+                })
+            }
         }
 
-        // Calcular montos
-        const totalAmount = product.price * quantity
-        const depositAmount = Math.round(totalAmount * DEPOSIT_PERCENTAGE)
+        // Crear items para MercadoPago con el 30% del precio (seña)
+        const mpItems = items.map(item => {
+            const product = products.find(p => p._id.toString() === item.product_id)
+            const reservationPrice = Number(product.price) * 0.3 // 30% de seña
 
-        // Crear line_item para Stripe (solo el 30% del precio)
-        const lineItems = [{
-            price_data: {
-                currency: 'ars',
-                product_data: {
-                    name: `${product.name} (Seña 30%)`,
-                    description: `Reserva del producto: ${product.description}`
+            return {
+                title: `RESERVA - ${product.name}`,
+                description: `Seña 30% - ${product.description}`,
+                unit_price: Number(reservationPrice.toFixed(2)),
+                quantity: Number(item.quantity),
+                currency_id: 'ARS'
+            }
+        })
+
+        // Crear preferencia de MercadoPago
+        const preference = new Preference(client)
+        const result = await preference.create({
+            body: {
+                items: mpItems,
+                back_urls: {
+                    success: `${process.env.FRONTEND_URL}/pay-correct`,
+                    failure: `${process.env.FRONTEND_URL}/pay-fail`,
+                    pending: `${process.env.FRONTEND_URL}/pay-fail`
                 },
-                unit_amount: Math.round(product.price * DEPOSIT_PERCENTAGE * 100)
-            },
-            quantity: quantity
-        }]
-
-        // Crear sesión de Stripe para la seña
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: lineItems,
-            mode: 'payment',
-
-            success_url: 'http://localhost:5173/reservation-success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'http://localhost:5173/reservation-cancel',
-
-            customer_email: buyer_email,
-            customer_phone: phone,
-            
-            metadata: {
-                product_id: product_id,
-                quantity: quantity.toString(),
-                type: 'reservation'
+                auto_return: 'approved',
+                payer: {
+                    email: buyer_email,
+                    phone: {
+                        number: buyer_phone || ''
+                    }
+                },
+                metadata: {
+                    items: JSON.stringify(items),
+                    buyer_phone: buyer_phone || '',
+                    is_reservation: 'true'
+                },
+                notification_url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/webhook/mercadopago/reservation`
             }
         })
 
         res.json({
-            url: session.url,
-            sessionId: session.id
+            url: result.init_point,
+            preferenceId: result.id
         })
 
     } catch (error) {
-        console.error('❌ Error en reserva:', error)
+        console.error('❌ Error:', error)
         res.status(500).json({ error: error.message })
     }
 }
 
-// Webhook para manejar pagos de reserva
+//Cuando MercadoPago confirma que el pago de reserva fue exitoso
 export const handleReservationWebhook = async (req, res) => {
-    const sig = req.headers['stripe-signature']
-    let event
 
     try {
-        event = stripe.webhooks.constructEvent(
-            req.body,
-            sig,
-            process.env.STRIPE_WEBHOOK_SECRET
-        )
-    } catch (err) {
-        console.error('⚠️ Webhook error:', err.message)
-        return res.status(400).send(`Webhook Error: ${err.message}`)
-    }
+        const payment = req.query
 
-    // Cuando el pago de la seña se completa
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object
+        if (payment.type !== 'payment') {
+            return res.status(200).send('OK')
+        }
 
-        console.log('✅ Seña pagada:', session.id)
+        console.log('📩 Notificación de reserva recibida:', payment.id)
+
+        const { Payment } = await import('mercadopago')
+        const paymentClient = new Payment(client)
+        const paymentData = await paymentClient.get({ id: payment['data.id'] })
+
+        if (paymentData.status !== 'approved') {
+            console.log('⚠️ Reserva no aprobada:', paymentData.status)
+            return res.status(200).send('OK')
+        }
+
+        console.log('✅ Reserva aprobada:', paymentData.id)
 
         try {
-            const { product_id, quantity } = session.metadata
+            const items = JSON.parse(paymentData.metadata.items)
 
-            // Buscar el producto
-            const product = await Product.findById(product_id)
+            const reservedItems = []
+            let totalReservation = 0
 
-            if (!product) {
-                console.error(`Producto no encontrado: ${product_id}`)
-                return res.json({ received: true })
+            // NO decrementamos stock en reservas, solo guardamos info
+            for (const item of items) {
+                const product = await Product.findById(item.product_id)
+
+                console.log(`📋 Producto reservado: ${product.name} - Cantidad: ${item.quantity}`)
+
+                const reservationPrice = product.price * 0.3 // 30% de seña
+
+                reservedItems.push({
+                    product_name: product.name,
+                    quantity: item.quantity,
+                    price: product.price,
+                    reservation_paid: reservationPrice
+                })
+
+                totalReservation += reservationPrice * item.quantity
             }
 
-            // Calcular montos
-            const totalAmount = product.price * parseInt(quantity)
-            const depositAmount = Math.round(totalAmount * DEPOSIT_PERCENTAGE)
+            console.log('🎉 Reserva procesada exitosamente')
 
-            // Crear registro de reserva en la BD
-            const reservation = new Reservation({
-                user_email: session.customer_email,
-                product_id: product._id,
-                product_name: product.name,
-                quantity: parseInt(quantity),
-                price: product.price,
-                total_amount: totalAmount,
-                deposit_amount: depositAmount,
-                status: 'deposit_paid',
-                stripe_session_id: session.id,
-                stripe_payment_intent_id: session.payment_intent
-            })
-
-            await reservation.save()
-
-            console.log(`🎉 Reserva creada: ${reservation._id}`)
-
-            // Preparar datos para emails
             const reservationData = {
-                product_name: product.name,
-                quantity: parseInt(quantity),
-                unit_price: product.price,
-                total_amount: totalAmount,
-                deposit_amount: depositAmount,
-                buyer_email: session.customer_email,
-                buyer_phone: session.customer_phone,
-                reservation_id: reservation._id,
-                expiration_date: reservation.expiration_date,
-                payment_id: session.id
-            };
+                items: reservedItems,
+                buyer_email: paymentData.payer.email,
+                buyer_phone: paymentData.metadata.buyer_phone || '',
+                total: totalReservation,
+                payment_id: paymentData.id,
+                is_reservation: true
+            }
 
             // 📧 Enviar email a la tienda
-            await sendReservationNotificationToStore(reservationData);
+            await sendPurchaseNotificationToStore(reservationData)
 
             // 📧 Enviar email de confirmación al cliente
-            await sendReservationConfirmationToCustomer(reservationData);
+            await sendPurchaseConfirmationToCustomer(reservationData)
 
         } catch (error) {
             console.error('❌ Error procesando reserva:', error)
         }
+
+    } catch (error) {
+        console.error('⚠️ Webhook error:', error.message)
+        return res.status(400).send(`Webhook Error: ${error.message}`)
     }
 
-    res.json({ received: true })
+    res.status(200).send('OK')
 }

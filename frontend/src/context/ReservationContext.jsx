@@ -7,12 +7,12 @@ export const ReservationProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(false);
 
-    // Crear checkout de reserva (formulario → Stripe - Pagar 30% de seña)
+    // Crear checkout de reserva (formulario → MercadoPago - Pagar 30% de seña)
     const createReservationCheckout = async (reservationData) => {
         try {
             setLoading(true);
             const response = await createReservationCheckoutAxios(reservationData);
-            return response.data; // { url, sessionId }
+            return response.data; // { url, preferenceId }
         } catch (error) {
             console.error('Error al crear checkout de reserva:', error);
             throw error;

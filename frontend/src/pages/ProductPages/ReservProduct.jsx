@@ -44,7 +44,7 @@ const ReservProduct = () => {
             const response = await createReservationCheckout(reservationData)
 
             if (response.url) {
-                window.location.href = response.url // Redirigir a la página de Stripe
+                window.location.href = response.url // Redirigir a la página de MercadoPago
             }
         } catch (error) {
             console.error('Error al crear reserva:', error)

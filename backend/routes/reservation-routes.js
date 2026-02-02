@@ -6,7 +6,8 @@ const router = express.Router();
 // Crear reserva (checkout de seña - 30%)
 router.post('/reserve', createReservationCheckout);
 
-// Webhook Stripe para pago de seña
+// Webhook MercadoPago para pago de seña (GET y POST)
 router.post('/webhook', handleReservationWebhook);
+router.get('/webhook', handleReservationWebhook);
 
 export default router;
