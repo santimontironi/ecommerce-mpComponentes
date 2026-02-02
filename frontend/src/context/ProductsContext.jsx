@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { getProductsAdminAxios, getAllProductsAxios, getProductsAxios, addProductAxios, deleteProductAxios, editProductAxios, getProductAxios, getProductAdminAxios, importProductsAxios, getProductsWithoutStockAxios, orderProductAxios } from "../api/api";
 import { useContext } from "react";
-import { ContextAdmin } from "./adminContext";
+import { ContextAdmin } from "./AdminContext";
 
 export const ContextProducts = createContext();
 
