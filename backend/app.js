@@ -7,7 +7,6 @@ import {router as productRouter} from "./routes/product-routes.js";
 import { router as purchaseRouter, webhookRouter } from "./routes/purchase-routes.js";
 import {router as categoryRouter} from "./routes/category-routes.js";
 import { router as contactRouter } from "./routes/contact-routes.js";
-import reservationRouter from "./routes/reservation-routes.js";
 
 dotenv.config()
 
@@ -33,6 +32,5 @@ app.use('', purchaseRouter) // Incluye /purchase/create-preference
 app.use('/webhook', webhookRouter) // Incluye /webhook/mercadopago
 app.use('', categoryRouter)
 app.use('', contactRouter)
-app.use('/reservation', reservationRouter)
 
 export default app
