@@ -64,11 +64,19 @@ export const createCheckout = async (req, res) => {
                         number: buyer_phone || ''
                     }
                 },
+                // ⭐ AGREGAR ESTA CONFIGURACIÓN
+                payment_methods: {
+                    excluded_payment_methods: [], // No excluir ningún método
+                    excluded_payment_types: [],   // No excluir ningún tipo
+                    installments: 12,              // Hasta 12 cuotas
+                    default_installments: 1        // Por defecto 1 cuota
+                },
+                statement_descriptor: "MP Componentes", // Nombre que aparece en resumen de tarjeta
                 metadata: {
                     items: JSON.stringify(items),
                     buyer_phone: buyer_phone || ''
                 },
-                notification_url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/webhook/mercadopago`
+                notification_url: `${process.env.BACKEND_URL}/webhook/mercadopago`
             }
         })
 
