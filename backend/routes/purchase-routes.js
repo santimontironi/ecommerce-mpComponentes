@@ -4,9 +4,6 @@ import {
     handleWebhook
 } from '../controllers/purchase-controller.js'
 
-// ===============================
-// ROUTER COMPRAS
-// ===============================
 export const router = Router()
 
 router.post(
@@ -14,12 +11,15 @@ router.post(
     createPreference
 )
 
-// ===============================
-// ROUTER WEBHOOK
-// ===============================
 export const webhookRouter = Router()
 
 webhookRouter.post(
+    '/mercadopago',
+    handleWebhook
+)
+
+// MercadoPago puede notificar por GET en algunos escenarios/formatos antiguos.
+webhookRouter.get(
     '/mercadopago',
     handleWebhook
 )
