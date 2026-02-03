@@ -1,13 +1,13 @@
 import { useContext, useState } from "react"
 import { ContextCart } from "../../context/CartContext"
 import { ContextPurchase } from "../../context/PurchaseContext"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import CheckoutModal from "../../components/UIComponents/CheckoutModal"
+import BtnBack from "../../components/UIComponents/BtnBack"
 
 const CartPage = () => {
     const { cart, removeProductFromCart, incrementQuantity, decreaseQuantity, getCartMoney, clearCart } = useContext(ContextCart);
     const { createPreference, loading, error } = useContext(ContextPurchase);
-    const navigate = useNavigate();
     
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
     const [buyerEmail, setBuyerEmail] = useState("");
@@ -35,25 +35,17 @@ const CartPage = () => {
             <div className="absolute top-1/3 right-20 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl" />
             <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
 
-            <div className="max-w-7xl mx-auto">
+            <BtnBack />
 
-                <div className="mb-8 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto mt-12">
+
+                <div className="mb-8 flex items-center justify-center text-center">
                     <div>
                         <h1 className="text-4xl font-bold text-white mb-2">Carrito de Compras</h1>
                         <p className="text-blue-100">
                             {cart.length === 0 ? "Tu carrito está vacío" : `${cart.length} producto${cart.length !== 1 ? 's' : ''} en tu carrito`}
                         </p>
-                    </div>
-
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-linear-to-r cursor-pointer from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg border border-slate-600/50"
-                    >
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        <span>Volver</span>
-                    </button>
+                    </div>                    
                 </div>
 
                 {cart.length === 0 ? (

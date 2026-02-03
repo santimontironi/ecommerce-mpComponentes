@@ -8,6 +8,7 @@ import ProductCard from "../../components/ProductComponents/ProductCard"
 import { Loader } from "../../components/UIComponents/Loader"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
+import BtnBack from "../../components/UIComponents/BtnBack"
 import { CartIcon } from "../../components/UIComponents/CartIcon"
 
 const Products = () => {
@@ -65,17 +66,19 @@ const Products = () => {
     <section className="min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
 
       {!isAdmin && (
-        <div className="absolute top-17 right-8 xl:top-17 xl:right-20 z-40">
+        <div className="absolute top-5 right-8 xl:top-17 xl:right-20 z-40">
           <CartIcon />
         </div>
       )}
+
+      <BtnBack/>
 
       {loading.loadingGetProducts ? (
         <div className="flex justify-center items-center h-[60vh]">
           <Loader />
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto mt-16">
 
           <div className="mb-12 space-y-4">
             <h1 className="text-5xl sm:text-6xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
