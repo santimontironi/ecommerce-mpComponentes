@@ -122,9 +122,18 @@ function App() {
         <Route
           path="/admin/categoria/:categoryId/subcategorias"
           element={
-            <AdminProvider>
+            <AdminProviders>
               <SubCategories />
-            </AdminProvider>
+            </AdminProviders>
+          }
+        />
+
+        <Route
+          path="/categoria/:categoryId/subcategorias"
+          element={
+            <AppProviders>
+              <SubCategories />
+            </AppProviders>
           }
         />
 
