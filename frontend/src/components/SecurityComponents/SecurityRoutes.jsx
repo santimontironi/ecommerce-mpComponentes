@@ -12,7 +12,7 @@ export const SecurityRoutes = ({children}) => {
     }
 
     if(!admin){
-        return <Navigate to="/ingresar"/>
+        return <Navigate to="/"/>
     }
 
     return children
