@@ -70,7 +70,7 @@ export const createReservationCheckout = async (req, res) => {
                     buyer_phone: buyer_phone || '',
                     is_reservation: 'true'
                 },
-                notification_url: `${process.env.BACKEND_URL || 'http://localhost:3000'}/webhook/mercadopago/reservation`
+                notification_url: `${process.env.BACKEND_URL}/webhook/mercadopago/reservation`
             }
         })
 

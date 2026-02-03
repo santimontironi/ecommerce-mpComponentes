@@ -5,6 +5,7 @@ import cors from "cors";
 import {router as adminRouter} from "./routes/admin-routes.js";
 import {router as productRouter} from "./routes/product-routes.js";
 import { router as purchaseRouter, webhookRouter } from "./routes/purchase-routes.js";
+import { router as reservationRouter, webhookRouter as reservationWebhookRouter } from "./routes/reservation-routes.js";
 import {router as categoryRouter} from "./routes/category-routes.js";
 import { router as contactRouter } from "./routes/contact-routes.js";
 
@@ -29,7 +30,9 @@ app.use(cors({
 app.use('', adminRouter)
 app.use('', productRouter)
 app.use('', purchaseRouter) // Incluye /purchase/create-preference
+app.use('', reservationRouter) // Incluye /reservation/reserve
 app.use('/webhook', webhookRouter) // Incluye /webhook/mercadopago
+app.use('/webhook', reservationWebhookRouter) // Incluye /webhook/mercadopago/reservation
 app.use('', categoryRouter)
 app.use('', contactRouter)
 
