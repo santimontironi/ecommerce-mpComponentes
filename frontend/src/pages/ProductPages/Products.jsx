@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { ContextAdmin } from "../../context/AdminContext"
 import { ContextProducts } from "../../context/ProductsContext"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { ContextCategories } from "../../context/CategoryContext"
 import { ContextCart } from "../../context/CartContext"
 import ProductCard from "../../components/ProductComponents/ProductCard"
@@ -12,15 +12,12 @@ import { CartIcon } from "../../components/UIComponents/CartIcon"
 
 const Products = () => {
   const { isAdmin } = useContext(ContextAdmin)
-
   const { getProducts, products, loading, deleteProduct } = useContext(ContextProducts)
-
   const { categories, getAllCategories, allCategories } = useContext(ContextCategories)
-
   const cartContext = useContext(ContextCart) || {}
   const { addProductToCart } = cartContext
-
   const { categoryId } = useParams()
+  const navigate = useNavigate()
 
   const actualCategory = categories.find((c) => c._id === categoryId) || allCategories.find((c) => c._id === categoryId)
 
@@ -30,7 +27,6 @@ const Products = () => {
   }, [categoryId])
 
   const onDeleteProduct = async (id) => {
-
     const result = await Swal.fire({
       title: 'Eliminar producto',
       text: 'Estas seguro de eliminar este producto?',
@@ -43,7 +39,6 @@ const Products = () => {
     })
 
     if (result.isConfirmed) {
-
       await Swal.fire({
         icon: 'success',
         title: 'Producto eliminado',
@@ -51,92 +46,89 @@ const Products = () => {
         timer: 2000,
         showConfirmButton: false
       })
-
       await deleteProduct(id)
     }
 
     if (!result.isConfirmed) {
       return
     }
-
   }
 
   return (
-    <section className="min-h-screen w-full bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-16 sm:px-6 lg:px-8">
-
+    <div className="container mx-auto px-4 py-8">
       {!isAdmin && (
-        <div className="absolute top-17 right-8 xl:top-17 xl:right-20 z-40">
+        <div className="fixed bottom-4 right-4 z-50">
           <CartIcon />
         </div>
       )}
+      
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-6 flex items-center gap-2 px-4 py-2 bg-linear-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-x-1"
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+        <span>Volver</span>
+      </button>
 
       {loading.loadingGetProducts ? (
-        <div className="flex justify-center items-center h-[60vh]">
-          <Loader />
-        </div>
+        <Loader />
       ) : (
-        <div className="max-w-7xl mx-auto">
-
-          <div className="mb-12 space-y-4">
-            <h1 className="text-5xl sm:text-6xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">
+        <>
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">
               {actualCategory?.name}
             </h1>
-            <div className="h-1.5 w-24 bg-linear-to-r from-blue-500 to-purple-500 rounded-full" />
-            <p className="text-slate-400 text-lg">
+            <p className="text-gray-600">
               {products.length} {products.length === 1 ? 'producto disponible' : 'productos disponibles'}
             </p>
           </div>
 
           {products.length > 0 ? (
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((product) => (
                 <ProductCard
                   key={product._id}
                   product={product}
-                  isAdmin={isAdmin}
-                  handleDelete={onDeleteProduct}
+                  onDelete={onDeleteProduct}
                   addProductToCart={addProductToCart}
                 />
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 px-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-linear-to-r from-blue-500/20 to-purple-500/20 blur-3xl rounded-full" />
-                <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-12 text-center max-w-md">
-                  <div className="mb-6">
-                    <svg
-                      className="w-20 h-20 mx-auto text-slate-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">
-                    No hay productos aún
-                  </h3>
-                  <p className="text-slate-400 mb-6">
-                    Esta categoría está esperando sus primeros productos. {isAdmin && "¡Comienza agregando uno!"}
-                  </p>
-                  {isAdmin && (
-                    <Link to={'/agregar-producto'} className="px-6 py-3 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105">
-                      Agregar Producto
-                    </Link>
-                  )}
-                </div>
+            <div className="text-center py-16 bg-gray-50 rounded-lg">
+              <div className="max-w-md mx-auto">
+                <h3 className="text-2xl font-semibold text-gray-700 mb-2">
+                  No hay productos aún
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  Esta categoría está esperando sus primeros productos. {isAdmin && "¡Comienza agregando uno!"}
+                </p>
+                {isAdmin && (
+                  <Link
+                    to={`/admin/products/new/${categoryId}`}
+                    className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Agregar Producto
+                  </Link>
+                )}
               </div>
             </div>
           )}
-        </div>
+        </>
       )}
-    </section>
+    </div>
   )
 }
 
