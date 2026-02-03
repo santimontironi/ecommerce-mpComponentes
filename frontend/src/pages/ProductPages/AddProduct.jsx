@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { ContextCategories } from "../../context/CategoryContext"
 import { ContextProducts } from "../../context/ProductsContext"
 import { useForm } from "react-hook-form"
@@ -8,11 +8,15 @@ import Swal from "sweetalert2"
 
 const AddProduct = () => {
 
-  const { categories } = useContext(ContextCategories)
+  const { getAllCategories, allCategories } = useContext(ContextCategories)
   const { addProduct, loading } = useContext(ContextProducts)
   const navigate = useNavigate()
 
   const { handleSubmit, register, reset, formState: { errors } } = useForm()
+
+  useEffect(() => {
+    getAllCategories()
+  }, [])
 
   async function submitForm(data) {
     try {
@@ -148,7 +152,7 @@ const AddProduct = () => {
                 {errors.stock && <p className="text-sm text-red-600 mt-1">El Stock es requerido</p>}
               </div>
 
-              {categories.length > 0 && (
+              {allCategories.length > 0 && (
                 <div>
                   <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
                     Categoría
@@ -159,7 +163,7 @@ const AddProduct = () => {
                     {...register("category", { required: true })}
                   >
                     <option value="">Seleccionar categoría</option>
-                    {categories.map((category) => (
+                    {allCategories.map((category) => (
                       <option key={category._id} value={category._id}>{category.name}</option>
                     ))}
                   </select>
