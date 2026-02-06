@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
-    const { addCategory, loading, categories } = useContext(ContextCategories);
+    const { addCategory, loading, allCategories } = useContext(ContextCategories);
 
     const {
         register,
@@ -109,7 +109,7 @@ const AddCategory = () => {
                                 )}
                             </div>
 
-                            {categories.length > 0 && (
+                            {allCategories.length > 0 && (
                                 <div>
                                     <label htmlFor="categoryParent" className="block text-sm font-medium text-gray-700 mb-1">
                                         Categoría padre
@@ -120,7 +120,7 @@ const AddCategory = () => {
                                         {...register("categoryParent")}
                                     >
                                         <option value="">Seleccionar categoría</option>
-                                        {categories.map((category) => (
+                                        {allCategories.map((category) => (
                                             <option key={category._id} value={category._id}>{category.name}</option>
                                         ))}
                                     </select>
