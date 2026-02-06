@@ -7,6 +7,10 @@ jest.mock("../models/Product.js");
 jest.mock("../config/cloudinary.js");
 jest.mock("../config/nodemailer_config.js");
 
+// ============================================================================
+// TEST: OBTENCIÓN DE PRODUCTOS
+// ============================================================================
+
 describe("Test unitario de la obtención de productos", () => {
 
     let req;
@@ -94,6 +98,10 @@ describe("Test unitario de la obtención de productos", () => {
     });
 })
 
+// ============================================================================
+// TEST: OBTENER PRODUCTO POR ID
+// ============================================================================
+
 describe("Test unitario de productById", () => {
 
     let req;
@@ -145,6 +153,10 @@ describe("Test unitario de productById", () => {
     });
 });
 
+// ============================================================================
+// TEST: PRODUCTOS SIN STOCK
+// ============================================================================
+
 describe("Test unitario de productsWithoutStock", () => {
 
     let req;
@@ -195,6 +207,10 @@ describe("Test unitario de productsWithoutStock", () => {
         });
     });
 });
+
+// ============================================================================
+// TEST: AGREGAR PRODUCTO
+// ============================================================================
 
 describe("Test unitario de addProduct", () => {
 
@@ -269,6 +285,10 @@ describe("Test unitario de addProduct", () => {
     });
 });
 
+// ============================================================================
+// TEST: ELIMINAR PRODUCTO
+// ============================================================================
+
 describe("Test unitario de deleteProduct", () => {
 
     let req;
@@ -319,6 +339,10 @@ describe("Test unitario de deleteProduct", () => {
         });
     });
 });
+
+// ============================================================================
+// TEST: EDITAR PRODUCTO
+// ============================================================================
 
 describe("Test unitario de editProduct", () => {
 
@@ -422,6 +446,10 @@ describe("Test unitario de editProduct", () => {
         });
     });
 });
+
+// ============================================================================
+// TEST: ORDENAR PRODUCTO (REALIZAR PEDIDO)
+// ============================================================================
 
 describe("Test unitario de orderProduct", () => {
 

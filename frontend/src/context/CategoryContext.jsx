@@ -60,7 +60,7 @@ const CategoriesProvider = ({ children }) => {
         try {
             const categoryAdded = await addCategoryAxios(data);
             const newCategory = categoryAdded.data.category;
-            if(!newCategory.parent){
+            if(!newCategory.categoryParent){
                 setCategories((prev) => [...prev, categoryAdded.data.category]);
             }
             else{

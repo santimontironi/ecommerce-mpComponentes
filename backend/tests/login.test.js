@@ -7,6 +7,10 @@ jest.mock("../models/Admin.js");
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
 
+// ============================================================================
+// TEST: LOGIN DE ADMINISTRADOR
+// ============================================================================
+
 describe("Test unitarios del Login de Admin", () => {
 
     let req;

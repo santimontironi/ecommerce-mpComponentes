@@ -46,7 +46,7 @@ export const CategoryList = () => {
   async function handleCategoryClick(categoryId) {
     try {
 
-      // se buscan subcategorías donde parent === categoryId
+      // se buscan subcategorías donde categoryParent === categoryId
       const subcategories = await getSubCategories(categoryId);
 
       //si hay subcategorias se redirige a subcategorias, ya que categoryId es el padre

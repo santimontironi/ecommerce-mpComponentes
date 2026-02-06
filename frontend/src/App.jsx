@@ -21,6 +21,7 @@ import PaymentFailed from "./pages/UserPages/PaymentFailed";
 import SubCategories from "./pages/CategoryPages/SubCategories";
 import OrderProduct from "./pages/ProductPages/OrderProduct";
 import ReservProduct from "./pages/ProductPages/ReservProduct";
+import ChatBot from "./pages/ChatBot/ChatBot";
 
 const AppProviders = ({ children }) => (
   <AdminProvider>
@@ -64,6 +65,8 @@ function App() {
       <Routes>
 
         <Route path="/contacto" element={<Contact />} />
+
+        <Route path="/chatbot" element={<ChatBot />} />
 
         <Route
           path="/"

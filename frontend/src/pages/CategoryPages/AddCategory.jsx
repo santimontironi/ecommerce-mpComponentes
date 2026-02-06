@@ -23,7 +23,7 @@ const AddCategory = () => {
 
             formData.append("image", data.image[0]);
             formData.append("name", data.name);
-            formData.append("parent", data.parent);
+            formData.append("categoryParent", data.categoryParent);
 
             await addCategory(formData);
             navigate("/panel-admin")
@@ -111,13 +111,13 @@ const AddCategory = () => {
 
                             {categories.length > 0 && (
                                 <div>
-                                    <label htmlFor="parent" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="categoryParent" className="block text-sm font-medium text-gray-700 mb-1">
                                         Categoría padre
                                     </label>
                                     <select
-                                        id="parent"
+                                        id="categoryParent"
                                         className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600"
-                                        {...register("parent")}
+                                        {...register("categoryParent")}
                                     >
                                         <option value="">Seleccionar categoría</option>
                                         {categories.map((category) => (

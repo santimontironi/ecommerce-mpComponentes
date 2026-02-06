@@ -21,7 +21,7 @@ export const allCategories = async (req, res) => {
 export const categoriesWithoutParents = async (req, res) => {
     try {
         const categories = await Category
-            .find({ active: true, parent: null })
+            .find({ active: true, categoryParent: null })
 
         res.status(200).json({
             message: "Categorias obtenidas correctamente",
@@ -40,7 +40,7 @@ export const getSubCategories = async (req, res) => {
         const { id } = req.params
 
         const categories = await Category
-            .find({ active: true, parent: id })
+            .find({ active: true, categoryParent: id })
 
         res.status(200).json({
             message: "Categorias obtenidas correctamente",
@@ -56,19 +56,19 @@ export const getSubCategories = async (req, res) => {
 
 export const addCategory = async (req, res) => {
     try {
-        const { name, parent } = req.body
-       
-        const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
-
-        const result = await cloudinary.uploader.upload(fileBase64);
-
+        const { name, categoryParent } = req.body
+        
         const categoryRepeated = await Category.findOne({ name, active: true })
 
         if (categoryRepeated) {
             return res.status(400).json({ message: 'La categoria ya existe' })
         }
 
-        const category = new Category({ image: result.secure_url, name, parent: (parent && parent !== 'undefined' && parent !== '') ? parent : null })
+        const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+
+        const result = await cloudinary.uploader.upload(fileBase64);
+
+        const category = new Category({ image: result.secure_url, name, categoryParent: (categoryParent && categoryParent !== 'undefined' && categoryParent !== '') ? categoryParent : null })
 
         await category.save()
 
@@ -91,7 +91,7 @@ export const deleteCategory = async (req, res) => {
         const category = await Category.findByIdAndUpdate(id, { active: false })
 
         // Encontrar y marcar todas las subcategorías como inactivas
-        await Category.updateMany({ parent: id }, { active: false })
+        await Category.updateMany({ categoryParent: id }, { active: false })
 
         res.status(200).json({ message: 'Categoria eliminada correctamente', category: category })
     }
