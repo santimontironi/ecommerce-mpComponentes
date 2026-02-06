@@ -1,4 +1,4 @@
-import { allCategories, categoriesWithoutParents, addCategory, deleteCategory } from "../controllers/category-controller.js";
+import { allCategories, categoriesWithoutParents, addCategory, deleteCategory, getSubCategories } from "../controllers/category-controller.js";
 import Category from "../models/Category.js";
 import cloudinary from "../config/cloudinary.js";
 
@@ -264,3 +264,63 @@ describe("Test unitario para eliminar una categoría", () => {
         });
     })
 })
+
+// ============================================================================
+// TEST: OBTENER SUBCATEGORÍAS DE UNA CATEGORÍA PADRE
+// ============================================================================
+
+describe("Test unitario para obtener subcategorías de una categoría padre", () => {
+    let req;
+    let res;    
+
+    beforeEach(() => {
+        req = {
+            params: {
+                id: "1"
+            }
+        };
+        res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn()
+        };
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    })
+
+    test("Debería obtener subcategorías de una categoría padre correctamente", async () => {
+        const fakeSubcategories = [
+            { _id: "2", name: "Subcategoría 1", categoryParent: "1", active: true },
+            { _id: "3", name: "Subcategoría 2", categoryParent: "1", active: true }
+        ];
+
+        Category.find.mockResolvedValue(fakeSubcategories);
+
+        await getSubCategories(req, res);
+
+        expect(Category.find).toHaveBeenCalledWith({ categoryParent: "1", active: true });
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "Categorias obtenidas correctamente",
+            categories: fakeSubcategories
+        });
+    })
+
+    test("Debería manejar errores al obtener subcategorías", async () => {
+        const error = new Error("Error de base de datos");
+        Category.find.mockRejectedValue(error);
+
+        await getSubCategories(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "Error al obtener categorias",
+            error: "Error de base de datos"
+        });
+    })
+
+})
+
+
+
