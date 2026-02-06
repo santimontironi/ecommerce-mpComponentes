@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "dev": "nodemon index.js",
-    "migrate:parent": "node scripts/migrate-parent-to-categoryParent.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",

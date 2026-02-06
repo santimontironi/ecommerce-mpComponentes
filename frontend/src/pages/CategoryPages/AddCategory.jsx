@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ContextCategories } from "../../context/CategoryContext";
 import { useForm } from "react-hook-form";
 import { Loader } from "../../components/UIComponents/Loader";
@@ -6,16 +6,15 @@ import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
-    const { addCategory, loading, allCategories } = useContext(ContextCategories);
+    const { addCategory, loading, allCategories, getAllCategories } = useContext(ContextCategories);
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors }
-    } = useForm();
+    const {register,handleSubmit,reset,formState: { errors }} = useForm();
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        getAllCategories();
+    }, []);
 
     async function onSubmit(data) {
         try {
