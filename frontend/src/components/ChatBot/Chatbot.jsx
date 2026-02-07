@@ -24,12 +24,12 @@ const Chatbot = () => {
             showWelcomeScreen: false,
             defaultLanguage: 'es',
             initialMessages: [
-                '👋 Hola, soy el asistente de mpcomponentes.',
+                '👋 Hola, soy el asistente de MPComponentes.',
                 'Consultá por productos, precios o compatibilidad.'
             ],
             i18n: {
                 es: {
-                    title: '👋 Bienvenido a mpcomponentes',
+                    title: '👋 Bienvenido a MPComponentes',
                     subtitle: 'Consultá por productos, precios, stock o compatibilidad.',
                     footer: '',
                     getStarted: 'Iniciar conversación',
