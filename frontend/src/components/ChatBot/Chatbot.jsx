@@ -13,19 +13,29 @@ const Chatbot = () => {
             webhookUrl: import.meta.env.VITE_CHATBOT_WEBHOOK_URL,
             webhookConfig: {
                 method: 'POST',
-                headers: {},
+                headers: {}
             },
             target: '#n8n-chat',
             mode: 'window',
             chatInputKey: 'chatInput',
             chatSessionKey: 'sessionId',
             loadPreviousSession: true,
+            metadata: {},
             showWelcomeScreen: false,
-            defaultLanguage: 'en',
+            defaultLanguage: 'es',
             initialMessages: [
-                'Hi there!',
-                'My name is Nathan. How can I assist you today?',
+                '👋 Hola, soy el asistente de mpcomponentes.',
+                'Consultá por productos, precios o compatibilidad.'
             ],
+            i18n: {
+                es: {
+                    title: '👋 Bienvenido a mpcomponentes',
+                    subtitle: 'Consultá por productos, precios, stock o compatibilidad.',
+                    footer: '',
+                    getStarted: 'Iniciar conversación',
+                    inputPlaceholder: 'Escribí tu consulta...',
+                },
+            },
         })
     }, [])
 
