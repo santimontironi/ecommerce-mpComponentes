@@ -22,7 +22,7 @@ const DashboardAdmin = () => {
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/50 rounded-full blur-3xl" />
 
       {loading ? <Loader /> : (
-        <div className=" 2xl:w-340 xl:w-280 md:w-[90%] w-[95%] min-h-[70vh] bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl shadow-black/40 p-10 flex flex-col gap-8">
+        <div className=" 2xl:w-340 xl:w-280 md:w-[90%] w-[95%] min-h-[90vh] bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl shadow-black/40 p-10 flex flex-col gap-8">
 
           <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
