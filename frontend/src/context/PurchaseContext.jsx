@@ -29,7 +29,7 @@ export const PurchaseProvider = ({ children }) => {
             });
 
             if (response.data.init_point) {
-                window.location.href = response.data.init_point;
+                window.location.replace(response.data.init_point);
             }
 
             return response.data;
