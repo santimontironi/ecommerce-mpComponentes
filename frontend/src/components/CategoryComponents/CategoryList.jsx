@@ -15,7 +15,7 @@ export const CategoryList = () => {
     try {
       const result = await Swal.fire({
         title: "Eliminar categoría",
-        text: "Estas seguro de eliminar esta categoría?",
+        text: "¿Estás seguro de eliminar esta categoría? También se eliminarán todas sus subcategorías.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

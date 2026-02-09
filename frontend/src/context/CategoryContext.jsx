@@ -78,6 +78,7 @@ const CategoriesProvider = ({ children }) => {
         try{
             await deleteCategoryAxios(id)
             setCategories((prev) => prev.filter((category) => category._id !== id));
+            setSubcategories((prev) => prev.filter((category) => category._id !== id));
         }
         catch(error){
             throw error

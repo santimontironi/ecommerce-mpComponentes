@@ -83,17 +83,34 @@ export const addCategory = async (req, res) => {
     }
 }
 
+// Función recursiva auxiliar para eliminar categorías y todas sus descendientes
+async function deleteCategoryRecursive(categoryId) {
+    // Buscar todas las subcategorías hijas directas que están activas
+    const subcategories = await Category.find({ categoryParent: categoryId, active: true })
+
+    // Eliminar recursivamente cada subcategoría hija
+    for (const subcategory of subcategories) {
+        await deleteCategoryRecursive(subcategory._id)
+    }
+
+    // Después de eliminar todas las hijas, marcar la categoría actual como inactiva
+    await Category.findByIdAndUpdate(categoryId, { active: false })
+}
+
 export const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params
 
-        // Marcar la categoría padre como inactiva
-        const category = await Category.findByIdAndUpdate(id, { active: false })
+        // Eliminar recursivamente la categoría y todas sus descendientes
+        await deleteCategoryRecursive(id)
 
-        // Encontrar y marcar todas las subcategorías como inactivas
-        await Category.updateMany({ categoryParent: id }, { active: false })
+        // Obtener la categoría eliminada para devolverla en la respuesta
+        const category = await Category.findById(id)
 
-        res.status(200).json({ message: 'Categoria eliminada correctamente', category: category })
+        res.status(200).json({ 
+            message: 'Categoria y todas sus subcategorías eliminadas correctamente', 
+            category: category 
+        })
     }
     catch (error) {
         res.status(500).json({ message: 'Error al eliminar categoria', error: error.message })

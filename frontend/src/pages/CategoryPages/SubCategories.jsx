@@ -29,13 +29,27 @@ const SubcategoryList = () => {
         fetchSubcategories()
     }, [categoryId])
 
+    async function handleSubcategoryClick(subcategoryId) {
+        try {
+            const subSubcategories = await getSubCategories(subcategoryId)
+
+            if (subSubcategories && subSubcategories.length > 0) {
+                navigate(`/categoria/${subcategoryId}/subcategorias`)
+            } else {
+                navigate(`/productos/${subcategoryId}`)
+            }
+        } catch (error) {
+            console.error("Error:", error)
+        }
+    }
+
     async function handleDelete(id, e) {
         e.stopPropagation()
 
         try {
             const result = await Swal.fire({
                 title: "Eliminar subcategoría",
-                text: "¿Estás seguro de eliminar esta subcategoría?",
+                text: "¿Estás seguro de eliminar esta subcategoría? También se eliminarán todas sus subcategorías hijas.",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -113,7 +127,7 @@ const SubcategoryList = () => {
                             {subcategories.map((subcategory) => (
                                 <article
                                     key={subcategory._id}
-                                    onClick={() => navigate(`/productos/${subcategory._id}`)}
+                                    onClick={() => handleSubcategoryClick(subcategory._id)}
                                     className="group cursor-pointer bg-linear-to-r from-blue-600 to-cyan-500 backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/50 transition-all duration-300"
                                 >
                                     <div className="relative h-80 overflow-hidden">
