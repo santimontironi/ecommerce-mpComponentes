@@ -9,6 +9,7 @@ import { SecurityRoutes } from "./components/SecurityComponents/SecurityRoutes";
 import { LoginAdmin } from "./pages/AuthPages/LoginAdmin";
 import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
 import AddCategory from "./pages/CategoryPages/AddCategory";
+import EditCategory from "./pages/CategoryPages/EditCategory";
 import AddProduct from "./pages/ProductPages/AddProduct";
 import ImportProducts from "./pages/ProductPages/ImportProducts";
 import ProductById from "./pages/ProductPages/ProductById";
@@ -99,6 +100,15 @@ function App() {
           element={
             <AdminProviders>
               <AddCategory />
+            </AdminProviders>
+          }
+        />
+
+        <Route
+          path="/editar-categoria/:id"
+          element={
+            <AdminProviders>
+              <EditCategory />
             </AdminProviders>
           }
         />

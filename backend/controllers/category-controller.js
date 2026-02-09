@@ -101,6 +101,67 @@ async function deleteCategoryRecursive(categoryId) {
     await Category.findByIdAndUpdate(categoryId, { active: false })
 }
 
+export const getCategory = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const category = await Category.findById(id)
+
+        if (!category) {
+            return res.status(404).json({ message: 'Categoria no encontrada' })
+        }
+
+        res.status(200).json({
+            message: 'Categoria obtenida correctamente',
+            category: category
+        })
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error al obtener categoria', error: error.message })
+    }
+}
+
+export const editCategory = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name } = req.body
+
+        const category = await Category.findById(id)
+
+        if (!category) {
+            return res.status(404).json({ message: 'Categoria no encontrada' })
+        }
+
+        // Verificar si el nuevo nombre ya existe (excepto si es la misma categoría)
+        if (name && name !== category.name) {
+            const categoryRepeated = await Category.findOne({ name, active: true, _id: { $ne: id } })
+            if (categoryRepeated) {
+                return res.status(400).json({ message: 'Ya existe una categoria con ese nombre' })
+            }
+        }
+
+        // Si se proporciona una nueva imagen
+        if (req.file) {
+            const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
+            const result = await cloudinary.uploader.upload(fileBase64)
+            category.image = result.secure_url
+        }
+
+        // Actualizar nombre
+        if (name) category.name = name
+
+        await category.save()
+
+        res.status(200).json({
+            message: 'Categoria actualizada correctamente',
+            category: category
+        })
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error al editar categoria', error: error.message })
+    }
+}
+
 export const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params

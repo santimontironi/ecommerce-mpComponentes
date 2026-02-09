@@ -33,7 +33,6 @@ export const products = async (req, res) => {
     }
 }
 
-
 export const productById = async (req, res) => {
     try {
         const { id } = req.params

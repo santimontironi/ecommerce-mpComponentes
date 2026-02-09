@@ -40,7 +40,7 @@ export const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }
 
                 <button
                     onClick={handleShare}
-                    className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition-all duration-200 hover:scale-110"
+                    className="absolute cursor-pointer top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition-all duration-200 hover:scale-110"
                     title="Compartir"
                 >
                     <i className="bi bi-share-fill text-lg"></i>

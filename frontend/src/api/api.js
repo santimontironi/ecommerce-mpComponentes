@@ -102,6 +102,14 @@ export const addCategoryAxios = (data) => {
     return api.post("/addCategory", data, { headers: { "Content-Type": "multipart/form-data" }});
 }
 
+export const getCategoryAxios = (id) => {
+    return api.get(`/getCategory/${id}`);
+}
+
+export const editCategoryAxios = (id, data) => {
+    return api.patch(`/editCategory/${id}`, data, { headers: { "Content-Type": "multipart/form-data" }});
+}
+
 export const deleteCategoryAxios = (id) => {
     return api.delete(`/deleteCategory/${id}`);
 }

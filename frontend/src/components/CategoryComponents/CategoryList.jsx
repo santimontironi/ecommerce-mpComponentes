@@ -77,11 +77,22 @@ export const CategoryList = () => {
                   <img src={category.image} alt={category.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>
 
+                <div className="absolute top-3 right-3 flex gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/editar-categoria/${category._id}`);
+                    }}
+                    className="w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-blue-600 transition-colors duration-200 cursor-pointer">
+                    <i className="bi bi-pencil-fill text-sm"></i>
+                  </button>
 
-                <button
-                  onClick={(e) => handleDelete(category._id, e)} className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-red-600 transition-colors duration-200 cursor-pointer">
-                  <i className="bi bi-trash-fill text-sm"></i>
-                </button>
+                  <button
+                    onClick={(e) => handleDelete(category._id, e)}
+                    className="w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-red-600 transition-colors duration-200 cursor-pointer">
+                    <i className="bi bi-trash-fill text-sm"></i>
+                  </button>
+                </div>
 
                 <div className="p-2 space-y-2">
                   <h3 className="text-lg font-semibold text-white">
