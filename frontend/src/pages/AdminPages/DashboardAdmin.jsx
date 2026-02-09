@@ -16,7 +16,7 @@ const DashboardAdmin = () => {
   }, []);
 
   return (
-    <section className="relative w-full min-h-screen py-12 xl:py-14 xl:pb-5 overflow-x-hidden bg-linear-120 from-[#101010] to-[#001b48] flex justify-center items-center containerDashboard">
+    <section className="relative w-full h-screen py-12 xl:py-14 xl:pb-5 overflow-hidden bg-linear-120 from-[#101010] to-[#001b48] flex justify-center items-center containerDashboard">
 
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/50 rounded-full blur-3xl" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/50 rounded-full blur-3xl" />
@@ -72,7 +72,7 @@ const DashboardAdmin = () => {
             </div>
           )}
 
-          <section className="flex-1 overflow-y-auto pr-2">
+          <section className="flex-1 pr-2">
             <CategoryList />
           </section>
 
