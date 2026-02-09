@@ -8,4 +8,8 @@ const client = new MercadoPagoConfig({
     accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN 
 })
 
+console.log('✅ MercadoPagoConfig inicializado correctamente')
+console.log('🔑 Access Token:', process.env.MERCADOPAGO_ACCESS_TOKEN)
+console.log('🔗 Endpoint de MercadoPago:', client.config.baseURL)
+
 export default client
