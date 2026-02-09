@@ -92,21 +92,16 @@ const CategoriesProvider = ({ children }) => {
             const categoryUpdated = await editCategoryAxios(id, data);
             const updatedCategory = categoryUpdated.data.category;
 
-            // Actualizar en allCategories
+            // Actualizar en todos los arrays (solo se modificará donde exista)
             setAllCategories((prev) =>
                 prev.map((cat) => cat._id === id ? updatedCategory : cat)
             );
-
-            // Actualizar en categories o subcategories según corresponda
-            if (!updatedCategory.categoryParent) {
-                setCategories((prev) =>
-                    prev.map((cat) => cat._id === id ? updatedCategory : cat)
-                );
-            } else {
-                setSubcategories((prev) =>
-                    prev.map((cat) => cat._id === id ? updatedCategory : cat)
-                );
-            }
+            setCategories((prev) =>
+                prev.map((cat) => cat._id === id ? updatedCategory : cat)
+            );
+            setSubcategories((prev) =>
+                prev.map((cat) => cat._id === id ? updatedCategory : cat)
+            );
         } catch (error) {
             throw error;
         } finally {
