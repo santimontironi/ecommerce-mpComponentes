@@ -2,6 +2,32 @@ import { Link } from "react-router-dom"
 
 export const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }) => {
 
+    const handleShare = async () => {
+        const url = `${window.location.origin}/producto/${product._id}`
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: product.name,
+                    text: product.description,
+                    url
+                })
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    console.error('Error al compartir:', error)
+                }
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(url)
+                alert("Link copiado 📋")
+            } catch (error) {
+                console.error('Error al copiar:', error)
+                alert("No se pudo copiar el link")
+            }
+        }
+    }
+
     return (
         <section className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl transition-all duration-300 hover:outline-1 hover:outline-white hover:scale-105">
 
@@ -11,6 +37,15 @@ export const ProductCard = ({ product, isAdmin, handleDelete, addProductToCart }
                     alt={`Imagen del producto ${product.name}`}
                     className="w-full h-full object-cover"
                 />
+
+                <button
+                    onClick={handleShare}
+                    className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition-all duration-200 hover:scale-110"
+                    title="Compartir"
+                >
+                    <i className="bi bi-share-fill text-lg"></i>
+                </button>
+
                 <div className="absolute inset-0 bg-linear-to-t from-slate-900/80 via-transparent to-transparent" />
             </div>
 
