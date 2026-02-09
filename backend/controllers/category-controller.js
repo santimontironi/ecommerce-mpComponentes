@@ -1,4 +1,5 @@
 import Category from "../models/Category.js";
+import Product from "../models/Product.js";
 import cloudinary from "../config/cloudinary.js";
 
 export const allCategories = async (req, res) => {
@@ -93,7 +94,10 @@ async function deleteCategoryRecursive(categoryId) {
         await deleteCategoryRecursive(subcategory._id)
     }
 
-    // Después de eliminar todas las hijas, marcar la categoría actual como inactiva
+    // Marcar todos los productos de esta categoría como inactivos
+    await Product.updateMany({ category: categoryId }, { active: false })
+
+    // Después de eliminar todas las hijas y sus productos, marcar la categoría actual como inactiva
     await Category.findByIdAndUpdate(categoryId, { active: false })
 }
 
