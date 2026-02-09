@@ -60,6 +60,12 @@ export const createPreference = async (req, res) => {
                     buyer_phone
                 },
 
+                payment_methods: {
+                    excluded_payment_types: [
+                        { id: "account_money" }
+                    ]
+                },
+
                 // URLs a las que redirige MercadoPago según el resultado
                 back_urls: {
                     success: `${process.env.FRONTEND_URL}/pay-correct`,
