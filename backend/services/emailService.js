@@ -5,8 +5,24 @@ dotenv.config()
 
 // Enviar email a la tienda cuando hay una nueva compra
 export const sendPurchaseNotificationToStore = async (purchaseData) => {
+    console.log('📧 Intentando enviar email a la tienda...')
+    console.log('📦 Datos de compra:', JSON.stringify(purchaseData, null, 2))
+
     try {
         const { items, buyer_email, buyer_phone, total, payment_id } = purchaseData
+
+        // ✅ Validación de datos
+        if (!items || items.length === 0) {
+            console.error('❌ No hay items para enviar')
+            return false
+        }
+
+        if (!buyer_email) {
+            console.error('❌ No hay email del comprador')
+            return false
+        }
+
+        console.log('📋 Items a enviar:', items)
 
         // Crear HTML con los productos
         const itemsHTML = items.map(item => `
@@ -19,7 +35,7 @@ export const sendPurchaseNotificationToStore = async (purchaseData) => {
         `).join('')
 
         const mailOptions = {
-            from: buyer_email,
+            from: process.env.EMAIL_USER, // 🔥 CAMBIO: Usa EMAIL_USER como from
             to: process.env.EMAIL_USER,
             subject: `🛒 Nueva compra - ${payment_id}`,
             html: `
@@ -67,19 +83,41 @@ export const sendPurchaseNotificationToStore = async (purchaseData) => {
             `,
         }
 
-        await mail_transporter.sendMail(mailOptions)
-    
+        console.log('📮 Enviando email con opciones:', {
+            from: mailOptions.from,
+            to: mailOptions.to,
+            subject: mailOptions.subject
+        })
+
+        const result = await mail_transporter.sendMail(mailOptions)
+
+        console.log('✅ Email enviado exitosamente a la tienda:', result.messageId)
         return true
+
     } catch (error) {
-        console.error('❌ Error enviando email:', error)
+        console.error('❌ Error enviando email a la tienda:', error.message)
+        console.error('❌ Stack completo:', error)
         return false
     }
 }
 
-// Opcional: Enviar email de confirmación al cliente
+// Enviar email de confirmación al cliente
 export const sendPurchaseConfirmationToCustomer = async (purchaseData) => {
+    console.log('📧 Intentando enviar email al cliente...')
+
     try {
         const { items, buyer_email, total } = purchaseData
+
+        // ✅ Validación
+        if (!buyer_email) {
+            console.error('❌ No hay email del comprador para enviar confirmación')
+            return false
+        }
+
+        if (!items || items.length === 0) {
+            console.error('❌ No hay items para enviar al cliente')
+            return false
+        }
 
         const itemsHTML = items.map(item => `
             <li>${item.product_name} x${item.quantity} - $${(item.price * item.quantity).toLocaleString('es-AR')}</li>
@@ -111,11 +149,16 @@ export const sendPurchaseConfirmationToCustomer = async (purchaseData) => {
             `,
         }
 
-        await mail_transporter.sendMail(mailOptions)
+        console.log('📮 Enviando email al cliente:', buyer_email)
 
+        const result = await mail_transporter.sendMail(mailOptions)
+
+        console.log('✅ Email enviado exitosamente al cliente:', result.messageId)
         return true
+
     } catch (error) {
-        console.error('❌ Error enviando email al cliente:', error)
+        console.error('❌ Error enviando email al cliente:', error.message)
+        console.error('❌ Stack completo:', error)
         return false
     }
 }

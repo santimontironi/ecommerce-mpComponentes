@@ -117,40 +117,39 @@ export const createPreference = async (req, res) => {
 
 // Controlador que maneja las notificaciones de MercadoPago
 export const handleWebhook = async (req, res) => {
-    // 🔥 LOG INMEDIATO - Esto DEBE aparecer en tus logs
-    console.log('='.repeat(50))
+    console.log('=' .repeat(50))
     console.log('🔔 WEBHOOK LLAMADO')
     console.log('Timestamp:', new Date().toISOString())
-    console.log('Method:', req.method)
-    console.log('Body:', JSON.stringify(req.body, null, 2))
-    console.log('Query:', JSON.stringify(req.query, null, 2))
-    console.log('='.repeat(50))
+    console.log('=' .repeat(50))
 
     try {
         let paymentId = null
 
         if (req.body?.type === 'payment' && req.body?.data?.id) {
             paymentId = req.body.data.id
-            console.log('💰 Payment ID desde body:', paymentId)
         }
         else if (req.query?.topic === 'payment' && req.query?.id) {
             paymentId = req.query.id
-            console.log('💰 Payment ID desde query:', paymentId)
         }
         else {
-            console.log('⚠️ No es notificación de pago, ignorando')
+            console.log('⚠️ No es notificación de pago')
             return res.sendStatus(200)
         }
+
+        console.log('💰 Payment ID:', paymentId)
 
         const payment = new Payment(client)
         const paymentData = await payment.get({ id: paymentId })
 
-        console.log('📊 Datos del pago:', {
+        console.log('📊 Estado del pago:', {
             id: paymentData.id,
             status: paymentData.status,
             status_detail: paymentData.status_detail,
             amount: paymentData.transaction_amount,
-            email: paymentData.payer?.email
+            description: paymentData.description,
+            metadata: paymentData.metadata,
+            payer_email: paymentData.payer?.email,
+            additional_info: paymentData.additional_info
         })
 
         if (paymentData.status !== 'approved') {
@@ -158,30 +157,39 @@ export const handleWebhook = async (req, res) => {
             return res.sendStatus(200)
         }
 
-        console.log('✅ Pago aprobado, enviando emails...')
-
+        // 🔥 Construcción mejorada de purchaseData
         const purchaseData = {
-            items: [{
+            items: paymentData.additional_info?.items?.map(item => ({
+                product_name: item.title || item.description,
+                quantity: item.quantity || 1,
+                price: item.unit_price || paymentData.transaction_amount
+            })) || [{
                 product_name: paymentData.description || 'Producto',
                 quantity: 1,
                 price: paymentData.transaction_amount
             }],
             buyer_email: paymentData.metadata?.buyer_email || paymentData.payer?.email,
-            buyer_phone: paymentData.metadata?.buyer_phone,
+            buyer_phone: paymentData.metadata?.buyer_phone || paymentData.payer?.phone?.number,
             total: paymentData.transaction_amount,
             payment_id: paymentData.id
         }
 
-        await sendPurchaseNotificationToStore(purchaseData)
-        await sendPurchaseConfirmationToCustomer(purchaseData)
+        console.log('📦 Purchase data construido:', JSON.stringify(purchaseData, null, 2))
 
-        console.log('📧 Emails enviados')
-        console.log('='.repeat(50))
+        console.log('📧 Enviando emails...')
+        
+        const storeEmailSent = await sendPurchaseNotificationToStore(purchaseData)
+        console.log('📧 Email a tienda:', storeEmailSent ? '✅ Enviado' : '❌ Falló')
+        
+        const customerEmailSent = await sendPurchaseConfirmationToCustomer(purchaseData)
+        console.log('📧 Email a cliente:', customerEmailSent ? '✅ Enviado' : '❌ Falló')
 
+        console.log('=' .repeat(50))
         res.sendStatus(200)
 
     } catch (error) {
-        console.error('❌ ERROR EN WEBHOOK:', error)
+        console.error('❌ ERROR EN WEBHOOK:', error.message)
+        console.error('❌ Stack:', error.stack)
         res.sendStatus(200)
     }
 }
