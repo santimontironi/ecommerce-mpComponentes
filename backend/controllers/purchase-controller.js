@@ -57,7 +57,8 @@ export const createPreference = async (req, res) => {
                 // Metadata personalizada (se recupera luego en el webhook)
                 metadata: {
                     buyer_email,
-                    buyer_phone
+                    buyer_phone,
+                    items: JSON.stringify(items) // Guardar items para recuperar en webhook
                 },
 
 
@@ -157,17 +158,34 @@ export const handleWebhook = async (req, res) => {
             return res.sendStatus(200)
         }
 
-        // 🔥 Construcción mejorada de purchaseData
-        const purchaseData = {
-            items: paymentData.additional_info?.items?.map(item => ({
-                product_name: item.title || item.description,
-                quantity: item.quantity || 1,
-                price: item.unit_price || paymentData.transaction_amount
-            })) || [{
+        // 🔥 Recuperar items desde metadata
+        let items = []
+        try {
+            if (paymentData.metadata?.items) {
+                const parsedItems = JSON.parse(paymentData.metadata.items)
+                items = parsedItems.map(item => ({
+                    product_name: item.title,
+                    quantity: item.quantity,
+                    price: item.unit_price
+                }))
+                console.log('✅ Items recuperados desde metadata')
+            }
+        } catch (parseError) {
+            console.error('⚠️ Error parseando items de metadata:', parseError.message)
+        }
+
+        // Fallback si no hay items en metadata
+        if (!items || items.length === 0) {
+            console.log('⚠️ No hay items en metadata, usando fallback')
+            items = [{
                 product_name: paymentData.description || 'Producto',
                 quantity: 1,
                 price: paymentData.transaction_amount
-            }],
+            }]
+        }
+
+        const purchaseData = {
+            items,
             buyer_email: paymentData.metadata?.buyer_email || paymentData.payer?.email,
             buyer_phone: paymentData.metadata?.buyer_phone || paymentData.payer?.phone?.number,
             total: paymentData.transaction_amount,
