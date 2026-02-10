@@ -59,7 +59,7 @@ export const createPreference = async (req, res) => {
                     buyer_email,
                     buyer_phone
                 },
-                
+
 
                 // URLs a las que redirige MercadoPago según el resultado
                 back_urls: {
@@ -82,10 +82,15 @@ export const createPreference = async (req, res) => {
 
                 // ✅ Configuración del checkout
                 purpose: 'wallet_purchase', // Importante para pagos con saldo MP
-                
+
                 // ✅ Prevención de fraudes
                 binary_mode: false // Permite pagos pendientes de revisión
             }
+        })
+
+        console.log('✅ Preferencia creada:', {
+            id: result.id,
+            init_point: result.init_point
         })
 
         // Devuelve al frontend el ID y el link de pago
@@ -135,8 +140,9 @@ export const handleWebhook = async (req, res) => {
         // Obtiene los datos reales del pago desde MercadoPago
         const paymentData = await payment.get({ id: paymentId })
 
-        // Si el pago no está aprobado, no se hace nada
-        if (paymentData.status !== 'approved') {
+
+        if (paymentData.status !== 'approved' && paymentData.status !== 'in_process') {
+            console.log(`⚠️ Pago no aprobado: ${paymentData.status} - ${paymentData.status_detail}`)
             return res.sendStatus(200)
         }
 
