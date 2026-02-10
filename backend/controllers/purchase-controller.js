@@ -14,9 +14,6 @@ export const createPreference = async (req, res) => {
 
         // URL pública del backend (necesaria para el webhook)
         const backendBaseUrl = process.env.BACKEND_URL
-        
-        console.log('🌐 BACKEND_URL configurada:', backendBaseUrl)
-        console.log('🔔 Webhook URL que se enviará:', `${backendBaseUrl}/webhook/mercadopago`)
 
         // Validación de datos obligatorios
         if (!buyer_email || !buyer_phone || !items || items.length === 0) {
@@ -60,8 +57,7 @@ export const createPreference = async (req, res) => {
                 // Metadata personalizada (se recupera luego en el webhook)
                 metadata: {
                     buyer_email,
-                    buyer_phone,
-                    items: JSON.stringify(items) // Guardar items para recuperar en webhook
+                    buyer_phone
                 },
 
 
@@ -121,70 +117,31 @@ export const createPreference = async (req, res) => {
 
 // Controlador que maneja las notificaciones de MercadoPago
 export const handleWebhook = async (req, res) => {
-    console.log('=' .repeat(50))
-    console.log('🔔 WEBHOOK LLAMADO')
-    console.log('Timestamp:', new Date().toISOString())
-    console.log('📥 req.body:', JSON.stringify(req.body, null, 2))
-    console.log('📥 req.query:', JSON.stringify(req.query, null, 2))
-    console.log('=' .repeat(50))
-
     try {
         let paymentId = null
 
-        // Manejar notificación de payment directamente
         if (req.body?.type === 'payment' && req.body?.data?.id) {
             paymentId = req.body.data.id
-            console.log('✅ Payment ID obtenido de req.body')
+            console.log('💰 Payment ID desde body:', paymentId)
         }
         else if (req.query?.topic === 'payment' && req.query?.id) {
             paymentId = req.query.id
-            console.log('✅ Payment ID obtenido de req.query')
-        }
-        // Manejar notificación de merchant_order
-        else if (req.query?.topic === 'merchant_order' || req.body?.topic === 'merchant_order') {
-            const merchantOrderId = req.query?.id || req.body?.id
-            console.log('📦 Merchant Order ID:', merchantOrderId)
-            
-            try {
-                const merchantOrder = new MerchantOrder(client)
-                const orderData = await merchantOrder.get({ merchantOrderId })
-                
-                console.log('📦 Merchant Order obtenida:', JSON.stringify(orderData, null, 2))
-                
-                // Obtener el primer payment de la orden
-                if (orderData.payments && orderData.payments.length > 0) {
-                    paymentId = orderData.payments[0].id
-                    console.log('✅ Payment ID obtenido de merchant_order:', paymentId)
-                } else {
-                    console.log('⚠️ Merchant order sin payments')
-                    return res.sendStatus(200)
-                }
-            } catch (merchantOrderError) {
-                console.error('❌ Error obteniendo merchant order:', merchantOrderError.message)
-                return res.sendStatus(200)
-            }
+            console.log('💰 Payment ID desde query:', paymentId)
         }
         else {
-            console.log('⚠️ No es notificación de pago ni merchant_order')
-            console.log('⚠️ req.body.type:', req.body?.type)
-            console.log('⚠️ req.query.topic:', req.query?.topic)
+            console.log('⚠️ No es notificación de pago, ignorando')
             return res.sendStatus(200)
         }
-
-        console.log('💰 Payment ID:', paymentId)
 
         const payment = new Payment(client)
         const paymentData = await payment.get({ id: paymentId })
 
-        console.log('📊 Estado del pago:', {
+        console.log('📊 Datos del pago:', {
             id: paymentData.id,
             status: paymentData.status,
             status_detail: paymentData.status_detail,
             amount: paymentData.transaction_amount,
-            description: paymentData.description,
-            metadata: paymentData.metadata,
-            payer_email: paymentData.payer?.email,
-            additional_info: paymentData.additional_info
+            email: paymentData.payer?.email
         })
 
         if (paymentData.status !== 'approved') {
@@ -192,64 +149,30 @@ export const handleWebhook = async (req, res) => {
             return res.sendStatus(200)
         }
 
-        // 🔥 Recuperar items desde metadata
-        let items = []
-        try {
-            console.log('🔍 Metadata completo:', JSON.stringify(paymentData.metadata, null, 2))
-            
-            if (paymentData.metadata?.items) {
-                console.log('📝 Items raw en metadata:', paymentData.metadata.items)
-                const parsedItems = JSON.parse(paymentData.metadata.items)
-                console.log('✅ Items parseados:', JSON.stringify(parsedItems, null, 2))
-                
-                items = parsedItems.map(item => ({
-                    product_name: item.title,
-                    quantity: item.quantity,
-                    price: item.unit_price
-                }))
-                console.log('✅ Items mapeados:', JSON.stringify(items, null, 2))
-            } else {
-                console.log('⚠️ paymentData.metadata.items es:', paymentData.metadata?.items)
-            }
-        } catch (parseError) {
-            console.error('⚠️ Error parseando items de metadata:', parseError.message)
-            console.error('⚠️ Stack:', parseError.stack)
-        }
+        console.log('✅ Pago aprobado, enviando emails...')
 
-        // Fallback si no hay items en metadata
-        if (!items || items.length === 0) {
-            console.log('⚠️ No hay items en metadata, usando fallback')
-            items = [{
+        const purchaseData = {
+            items: [{
                 product_name: paymentData.description || 'Producto',
                 quantity: 1,
                 price: paymentData.transaction_amount
-            }]
-        }
-
-        const purchaseData = {
-            items,
+            }],
             buyer_email: paymentData.metadata?.buyer_email || paymentData.payer?.email,
-            buyer_phone: paymentData.metadata?.buyer_phone || paymentData.payer?.phone?.number,
+            buyer_phone: paymentData.metadata?.buyer_phone,
             total: paymentData.transaction_amount,
             payment_id: paymentData.id
         }
 
-        console.log('📦 Purchase data construido:', JSON.stringify(purchaseData, null, 2))
+        await sendPurchaseNotificationToStore(purchaseData)
+        await sendPurchaseConfirmationToCustomer(purchaseData)
 
-        console.log('📧 Enviando emails...')
-        
-        const storeEmailSent = await sendPurchaseNotificationToStore(purchaseData)
-        console.log('📧 Email a tienda:', storeEmailSent ? '✅ Enviado' : '❌ Falló')
-        
-        const customerEmailSent = await sendPurchaseConfirmationToCustomer(purchaseData)
-        console.log('📧 Email a cliente:', customerEmailSent ? '✅ Enviado' : '❌ Falló')
+        console.log('📧 Emails enviados')
+        console.log('='.repeat(50))
 
-        console.log('=' .repeat(50))
         res.sendStatus(200)
 
     } catch (error) {
-        console.error('❌ ERROR EN WEBHOOK:', error.message)
-        console.error('❌ Stack:', error.stack)
+        console.error('❌ ERROR EN WEBHOOK:', error)
         res.sendStatus(200)
     }
 }
