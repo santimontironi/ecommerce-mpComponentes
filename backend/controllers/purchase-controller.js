@@ -131,6 +131,7 @@ export const handleWebhook = async (req, res) => {
     try {
         let paymentId = null
 
+        // Manejar notificación de payment directamente
         if (req.body?.type === 'payment' && req.body?.data?.id) {
             paymentId = req.body.data.id
             console.log('✅ Payment ID obtenido de req.body')
@@ -139,8 +140,32 @@ export const handleWebhook = async (req, res) => {
             paymentId = req.query.id
             console.log('✅ Payment ID obtenido de req.query')
         }
+        // Manejar notificación de merchant_order
+        else if (req.query?.topic === 'merchant_order' || req.body?.topic === 'merchant_order') {
+            const merchantOrderId = req.query?.id || req.body?.id
+            console.log('📦 Merchant Order ID:', merchantOrderId)
+            
+            try {
+                const merchantOrder = new MerchantOrder(client)
+                const orderData = await merchantOrder.get({ merchantOrderId })
+                
+                console.log('📦 Merchant Order obtenida:', JSON.stringify(orderData, null, 2))
+                
+                // Obtener el primer payment de la orden
+                if (orderData.payments && orderData.payments.length > 0) {
+                    paymentId = orderData.payments[0].id
+                    console.log('✅ Payment ID obtenido de merchant_order:', paymentId)
+                } else {
+                    console.log('⚠️ Merchant order sin payments')
+                    return res.sendStatus(200)
+                }
+            } catch (merchantOrderError) {
+                console.error('❌ Error obteniendo merchant order:', merchantOrderError.message)
+                return res.sendStatus(200)
+            }
+        }
         else {
-            console.log('⚠️ No es notificación de pago')
+            console.log('⚠️ No es notificación de pago ni merchant_order')
             console.log('⚠️ req.body.type:', req.body?.type)
             console.log('⚠️ req.query.topic:', req.query?.topic)
             return res.sendStatus(200)
