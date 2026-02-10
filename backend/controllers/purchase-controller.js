@@ -124,6 +124,8 @@ export const handleWebhook = async (req, res) => {
     console.log('=' .repeat(50))
     console.log('🔔 WEBHOOK LLAMADO')
     console.log('Timestamp:', new Date().toISOString())
+    console.log('📥 req.body:', JSON.stringify(req.body, null, 2))
+    console.log('📥 req.query:', JSON.stringify(req.query, null, 2))
     console.log('=' .repeat(50))
 
     try {
@@ -131,12 +133,16 @@ export const handleWebhook = async (req, res) => {
 
         if (req.body?.type === 'payment' && req.body?.data?.id) {
             paymentId = req.body.data.id
+            console.log('✅ Payment ID obtenido de req.body')
         }
         else if (req.query?.topic === 'payment' && req.query?.id) {
             paymentId = req.query.id
+            console.log('✅ Payment ID obtenido de req.query')
         }
         else {
             console.log('⚠️ No es notificación de pago')
+            console.log('⚠️ req.body.type:', req.body?.type)
+            console.log('⚠️ req.query.topic:', req.query?.topic)
             return res.sendStatus(200)
         }
 
