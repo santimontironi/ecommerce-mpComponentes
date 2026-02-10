@@ -2,6 +2,14 @@ import client from '../config/mercadopagoConfig.js'
 import { Preference, Payment } from 'mercadopago'
 import { sendPurchaseNotificationToStore, sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
 
+// Almacenar pagos procesados para evitar duplicados
+const processedPayments = new Set()
+// Limpiar el Set cada hora para no acumular memoria
+setInterval(() => {
+    console.log('🧹 Limpiando pagos procesados...')
+    processedPayments.clear()
+}, 3600000) // 1 hora
+
 // ===============================
 // CREATE PREFERENCE
 // ===============================
@@ -133,6 +141,12 @@ export const handleWebhook = async (req, res) => {
             return res.sendStatus(200)
         }
 
+        // Verificar si el pago ya fue procesado
+        if (processedPayments.has(paymentId)) {
+            console.log(`⚠️ Pago ${paymentId} ya procesado anteriormente, ignorando duplicado`)
+            return res.sendStatus(200)
+        }
+
         const payment = new Payment(client)
         const paymentData = await payment.get({ id: paymentId })
 
@@ -166,7 +180,10 @@ export const handleWebhook = async (req, res) => {
         await sendPurchaseNotificationToStore(purchaseData)
         await sendPurchaseConfirmationToCustomer(purchaseData)
 
+        // Marcar como procesado
+        processedPayments.add(paymentId)
         console.log('📧 Emails enviados')
+        console.log(`✅ Pago ${paymentId} marcado como procesado`)
         console.log('='.repeat(50))
 
         res.sendStatus(200)
