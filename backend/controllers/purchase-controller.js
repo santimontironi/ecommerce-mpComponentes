@@ -59,6 +59,7 @@ export const createPreference = async (req, res) => {
                     buyer_email,
                     buyer_phone
                 },
+                
 
                 // URLs a las que redirige MercadoPago según el resultado
                 back_urls: {
@@ -71,7 +72,19 @@ export const createPreference = async (req, res) => {
                 notification_url: `${backendBaseUrl}/webhook/mercadopago`,
 
                 // Redirige automáticamente si el pago se aprueba
-                auto_return: 'approved'
+                auto_return: 'approved',
+
+                payment_methods: {
+                    excluded_payment_types: [],
+                    excluded_payment_methods: [],
+                    installments: 1 // Número máximo de cuotas
+                },
+
+                // ✅ Configuración del checkout
+                purpose: 'wallet_purchase', // Importante para pagos con saldo MP
+                
+                // ✅ Prevención de fraudes
+                binary_mode: false // Permite pagos pendientes de revisión
             }
         })
 
