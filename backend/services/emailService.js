@@ -35,7 +35,7 @@ export const sendPurchaseNotificationToStore = async (purchaseData) => {
         `).join('')
 
         const mailOptions = {
-            from: process.env.EMAIL_USER, // 🔥 CAMBIO: Usa EMAIL_USER como from
+            from: process.env.EMAIL_USER,
             to: process.env.EMAIL_USER,
             subject: `🛒 Nueva compra - ${payment_id}`,
             html: `
@@ -169,7 +169,7 @@ export const sendReservationNotificationToStore = async (reservationData) => {
         const { product_name, quantity, unit_price, total_amount, deposit_amount, buyer_email, reservation_id, expiration_date, payment_id } = reservationData;
 
         const mailOptions = {
-            from: buyer_email,
+            from: process.env.EMAIL_USER,
             to: process.env.EMAIL_USER,
             subject: `📦 Nueva reserva - ${reservation_id}`,
             html: `

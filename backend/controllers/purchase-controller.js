@@ -161,17 +161,25 @@ export const handleWebhook = async (req, res) => {
         // 🔥 Recuperar items desde metadata
         let items = []
         try {
+            console.log('🔍 Metadata completo:', JSON.stringify(paymentData.metadata, null, 2))
+            
             if (paymentData.metadata?.items) {
+                console.log('📝 Items raw en metadata:', paymentData.metadata.items)
                 const parsedItems = JSON.parse(paymentData.metadata.items)
+                console.log('✅ Items parseados:', JSON.stringify(parsedItems, null, 2))
+                
                 items = parsedItems.map(item => ({
                     product_name: item.title,
                     quantity: item.quantity,
                     price: item.unit_price
                 }))
-                console.log('✅ Items recuperados desde metadata')
+                console.log('✅ Items mapeados:', JSON.stringify(items, null, 2))
+            } else {
+                console.log('⚠️ paymentData.metadata.items es:', paymentData.metadata?.items)
             }
         } catch (parseError) {
             console.error('⚠️ Error parseando items de metadata:', parseError.message)
+            console.error('⚠️ Stack:', parseError.stack)
         }
 
         // Fallback si no hay items en metadata
