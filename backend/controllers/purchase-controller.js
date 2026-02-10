@@ -117,67 +117,71 @@ export const createPreference = async (req, res) => {
 
 // Controlador que maneja las notificaciones de MercadoPago
 export const handleWebhook = async (req, res) => {
+    // 🔥 LOG INMEDIATO - Esto DEBE aparecer en tus logs
+    console.log('='.repeat(50))
+    console.log('🔔 WEBHOOK LLAMADO')
+    console.log('Timestamp:', new Date().toISOString())
+    console.log('Method:', req.method)
+    console.log('Body:', JSON.stringify(req.body, null, 2))
+    console.log('Query:', JSON.stringify(req.query, null, 2))
+    console.log('='.repeat(50))
+
     try {
-        // Variable donde se guardará el ID del pago
         let paymentId = null
 
-        // Webhook versión nueva (POST con body)
         if (req.body?.type === 'payment' && req.body?.data?.id) {
             paymentId = req.body.data.id
+            console.log('💰 Payment ID desde body:', paymentId)
         }
-        // Webhook versión antigua (GET con query)
         else if (req.query?.topic === 'payment' && req.query?.id) {
             paymentId = req.query.id
+            console.log('💰 Payment ID desde query:', paymentId)
         }
-        // Si no es un evento de pago, se responde OK
         else {
+            console.log('⚠️ No es notificación de pago, ignorando')
             return res.sendStatus(200)
         }
 
-        // Crea instancia de Payment para consultar el pago real
         const payment = new Payment(client)
-
-        // Obtiene los datos reales del pago desde MercadoPago
         const paymentData = await payment.get({ id: paymentId })
 
+        console.log('📊 Datos del pago:', {
+            id: paymentData.id,
+            status: paymentData.status,
+            status_detail: paymentData.status_detail,
+            amount: paymentData.transaction_amount,
+            email: paymentData.payer?.email
+        })
 
-        if (paymentData.status !== 'approved' && paymentData.status !== 'in_process') {
-            console.log(`⚠️ Pago no aprobado: ${paymentData.status} - ${paymentData.status_detail}`)
+        if (paymentData.status !== 'approved') {
+            console.log(`⚠️ Pago no aprobado: ${paymentData.status}`)
             return res.sendStatus(200)
         }
 
-        // Construye los datos de la compra confirmada
+        console.log('✅ Pago aprobado, enviando emails...')
+
         const purchaseData = {
-            items: [
-                {
-                    product_name: paymentData.description || 'Producto',
-                    quantity: paymentData.additional_info?.items?.[0]?.quantity || 1,
-                    price: paymentData.transaction_amount
-                }
-            ],
-            buyer_email: paymentData.metadata?.buyer_email,
+            items: [{
+                product_name: paymentData.description || 'Producto',
+                quantity: 1,
+                price: paymentData.transaction_amount
+            }],
+            buyer_email: paymentData.metadata?.buyer_email || paymentData.payer?.email,
             buyer_phone: paymentData.metadata?.buyer_phone,
             total: paymentData.transaction_amount,
             payment_id: paymentData.id
         }
 
-        // Envía email a la tienda
         await sendPurchaseNotificationToStore(purchaseData)
-
-        // Envía email de confirmación al cliente
         await sendPurchaseConfirmationToCustomer(purchaseData)
 
-        // Log de éxito
-        console.log('📧 Emails enviados correctamente')
+        console.log('📧 Emails enviados')
+        console.log('='.repeat(50))
 
-        // Responde OK a MercadoPago
         res.sendStatus(200)
 
     } catch (error) {
-        // Log del error del webhook
-        console.error('❌ Error webhook:', error)
-
-        // Siempre responder 200 para evitar reintentos infinitos
+        console.error('❌ ERROR EN WEBHOOK:', error)
         res.sendStatus(200)
     }
 }
