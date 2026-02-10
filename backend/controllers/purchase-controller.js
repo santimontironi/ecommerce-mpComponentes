@@ -14,6 +14,9 @@ export const createPreference = async (req, res) => {
 
         // URL pública del backend (necesaria para el webhook)
         const backendBaseUrl = process.env.BACKEND_URL
+        
+        console.log('🌐 BACKEND_URL configurada:', backendBaseUrl)
+        console.log('🔔 Webhook URL que se enviará:', `${backendBaseUrl}/webhook/mercadopago`)
 
         // Validación de datos obligatorios
         if (!buyer_email || !buyer_phone || !items || items.length === 0) {
