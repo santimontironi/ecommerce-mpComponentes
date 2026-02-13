@@ -96,7 +96,7 @@ const CartPage = () => {
                                                 </button>
                                             </div>
 
-                                            <div className="flex items-center justify-between">
+                                            <div className="flex flex-col items-center justify-between">
                                                 <div className="flex items-center gap-3 bg-linear-to-r from-blue-50 to-blue-100 rounded-lg p-1">
                                                     <button
                                                         onClick={() => decreaseQuantity(item._id)}
@@ -121,7 +121,7 @@ const CartPage = () => {
                                                     </button>
                                                 </div>
 
-                                                <div className="text-right">
+                                                <div className="text-center mt-4">
                                                     <p className="text-2xl font-bold bg-linear-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
                                                         ${(item.price * item.quantity).toFixed(2)}
                                                     </p>
