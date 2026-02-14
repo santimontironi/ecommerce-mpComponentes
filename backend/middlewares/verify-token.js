@@ -4,15 +4,19 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const verifyToken = (req, res, next) => {
-    const token = req.cookies.token;
+    const token = req.cookies?.token;
+
     if (!token) {
-        return res.status(401).json({ authorized: false });
+        req.user = null;
+        return next();
     }
+
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        next();
     } catch (error) {
-        return res.status(401).json({ authorized: false });
+        req.user = null;
     }
+
+    next();
 };
