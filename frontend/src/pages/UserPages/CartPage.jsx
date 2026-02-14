@@ -96,7 +96,7 @@ const CartPage = () => {
                                                 </button>
                                             </div>
 
-                                            <div className="flex flex-col items-center justify-between">
+                                            <div className="flex flex-col md:flex-row items-center justify-between">
                                                 <div className="flex items-center gap-3 bg-linear-to-r from-blue-50 to-blue-100 rounded-lg p-1">
                                                     <button
                                                         onClick={() => decreaseQuantity(item._id)}
