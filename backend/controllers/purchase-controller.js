@@ -1,5 +1,6 @@
 import client from '../config/mercadopagoConfig.js'
 import { Preference, Payment } from 'mercadopago'
+import Product from '../models/Product.js'
 import { sendPurchaseNotificationToStore, sendPurchaseConfirmationToCustomer } from '../services/emailService.js'
 
 // ===============================
@@ -30,6 +31,17 @@ export const createPreference = async (req, res) => {
             })
         }
 
+        const normalizedItems = items.map(item => ({
+            product_id: item.product_id,
+            title: item.title,
+            quantity: parseInt(item.quantity, 10),
+            unit_price: parseFloat(item.unit_price)
+        }))
+
+        if (normalizedItems.some(item => !item.product_id || !item.quantity || item.quantity <= 0 || !item.unit_price)) {
+            return res.status(400).json({ error: 'Los productos deben incluir product_id, quantity y unit_price válidos' })
+        }
+
         // Crea una instancia de Preference
         const preference = new Preference(client)
 
@@ -37,11 +49,12 @@ export const createPreference = async (req, res) => {
         const result = await preference.create({
             body: {
                 // Productos que se van a pagar
-                items: items.map(item => ({
+                items: normalizedItems.map(item => ({
+                    id: item.product_id,
                     title: item.title,
                     description: item.title,
-                    quantity: parseInt(item.quantity),
-                    unit_price: parseFloat(item.unit_price),
+                    quantity: item.quantity,
+                    unit_price: item.unit_price,
                     currency_id: 'ARS'
                 })),
 
@@ -57,7 +70,8 @@ export const createPreference = async (req, res) => {
                 // Metadata personalizada (se recupera luego en el webhook)
                 metadata: {
                     buyer_email,
-                    buyer_phone
+                    buyer_phone,
+                    cart_items: JSON.stringify(normalizedItems)
                 },
 
 
@@ -150,17 +164,67 @@ export const handleWebhook = async (req, res) => {
             return res.sendStatus(200)
         }
 
-        console.log('✅ Pago aprobado, enviando emails...')
+        console.log('✅ Pago aprobado, procesando stock...')
+
+        // Obtener los items originales desde la metadata de la preferencia
+        let cartItems = []
+        try {
+            const rawCart = paymentData.metadata?.cart_items
+            if (rawCart) {
+                cartItems = typeof rawCart === 'string' ? JSON.parse(rawCart) : rawCart
+            }
+        } catch (err) {
+            console.error('⚠️ Error parseando cart_items de metadata:', err.message)
+        }
+
+        const purchasedItems = []
+        let total = 0
+
+        if (cartItems.length > 0) {
+            for (const item of cartItems) {
+                const productId = item.product_id
+                const quantity = parseInt(item.quantity, 10)
+
+                if (!productId || !quantity || quantity <= 0) {
+                    continue
+                }
+
+                const product = await Product.findById(productId)
+
+                if (!product) {
+                    console.warn(`⚠️ Producto no encontrado para descontar stock: ${productId}`)
+                    continue
+                }
+
+                await Product.findByIdAndUpdate(
+                    productId,
+                    { $inc: { stock: -quantity } },
+                    { new: true }
+                )
+
+                purchasedItems.push({
+                    product_name: product.name,
+                    quantity,
+                    price: product.price
+                })
+
+                total += product.price * quantity
+            }
+        } else {
+            console.warn('⚠️ No se recibieron items en metadata. No se puede descontar stock con detalle.')
+        }
+
+        const fallbackItems = [{
+            product_name: paymentData.description || 'Producto',
+            quantity: 1,
+            price: paymentData.transaction_amount
+        }]
 
         const purchaseData = {
-            items: [{
-                product_name: paymentData.description || 'Producto',
-                quantity: 1,
-                price: paymentData.transaction_amount
-            }],
+            items: purchasedItems.length ? purchasedItems : fallbackItems,
             buyer_email: paymentData.metadata?.buyer_email || paymentData.payer?.email,
             buyer_phone: paymentData.metadata?.buyer_phone,
-            total: paymentData.transaction_amount,
+            total: purchasedItems.length ? total : paymentData.transaction_amount,
             payment_id: paymentData.id
         }
 
