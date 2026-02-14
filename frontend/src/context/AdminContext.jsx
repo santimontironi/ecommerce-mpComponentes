@@ -37,9 +37,6 @@ const AdminProvider = ({children}) => {
                     return res.data
                 }
             }
-            catch(error){
-                console.log("Error al obtener el dashboard", error);
-            }
             finally{
                 setLoading(false);
             }

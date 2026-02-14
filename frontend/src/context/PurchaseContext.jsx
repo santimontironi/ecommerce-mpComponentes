@@ -19,7 +19,8 @@ export const PurchaseProvider = ({ children }) => {
             const items = cart.map(item => ({
                 title: item.name,
                 quantity: item.quantity,
-                unit_price: item.price
+                unit_price: item.price,
+                product_id: item._id
             }));
 
             const response = await createPreferenceAxios({
