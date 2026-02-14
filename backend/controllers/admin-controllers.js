@@ -39,7 +39,7 @@ export const loginAdmin = async (req, res) => {
 
         if (!passwordMatch) {
             return res.status(401).json({ message: "Credenciales incorrectas" });
-        }    
+        }
 
         const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
             expiresIn: "1h",
@@ -57,25 +57,31 @@ export const loginAdmin = async (req, res) => {
     }
 };
 
-export const dashboardAdmin = async (req,res) => {
-    try{
-        const userId = req.user.id;
-        const admin = await Admin.findById(userId)
-
-        if(!admin){
-            return res.status(401).json({authorized: false});
+export const dashboardAdmin = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(200).json({ authorized: false });
         }
 
-        res.status(200).json({message:"Dashboard obtenido correctamente", admin: {id: admin._id, username: admin.username}});
+        const admin = await Admin.findById(req.user.id)
+
+        if (!admin) {
+            return res.status(200).json({ authorized: false });
+        }
+
+        res.status(200).json({
+            authorized: true,
+            admin: { id: admin._id, username: admin.username }
+        });
     }
-    catch(error){
-        res.status(500).json({message:"Error al obtener el dashboard", error: error.message});
+    catch (error) {
+        res.status(500).json({ message: "Error al obtener el dashboard", error: error.message });
     }
 }
 
 export const logoutAdmin = async (req, res) => {
     try {
-        res.clearCookie("token",{
+        res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
