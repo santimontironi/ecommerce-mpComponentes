@@ -33,6 +33,8 @@ export const PurchaseProvider = ({ children }) => {
                 window.location.replace(response.data.init_point);
             }
 
+            clearCart();
+
             return response.data;
 
         } catch (err) {

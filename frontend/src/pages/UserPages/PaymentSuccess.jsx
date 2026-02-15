@@ -35,7 +35,7 @@ const PaymentSuccess = () => {
                         Volver al inicio
                     </button>
                     <button 
-                        onClick={() => navigate('/productos')}
+                        onClick={() => navigate('/')}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-base transition-colors"
                     >
                         Seguir comprando
