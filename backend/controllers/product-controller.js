@@ -47,6 +47,9 @@ export const productById = async (req, res) => {
 }
 
 export const productsWithoutStock = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "No autorizado" });
+    }
     try {
         const products = await Product.find({
             active: true,
