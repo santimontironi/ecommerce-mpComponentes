@@ -142,8 +142,12 @@ export const sendPurchaseConfirmationToCustomer = async (purchaseData) => {
                         Total: $${total.toLocaleString('es-AR')}
                     </p>
                     
-                    <p style="color: #666; margin-top: 30px;">
-                        Te enviaremos otro email cuando tu pedido sea enviado.
+                    <p style="color: #fff; margin-top: 30px;">
+                        Nos contactaremos contigo pronto para coordinar la entrega de tu pedido.
+                    </p>
+
+                    span style="color: #fff; margin-top: 30px;">
+                        Puede que este mail te llegue dos veces. Si es así, no te preocupes, es solo una confirmación adicional de que tu compra se ha registrado correctamente.
                     </p>
                 </div>
             `,
