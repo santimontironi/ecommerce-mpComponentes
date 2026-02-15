@@ -29,16 +29,11 @@ export const Header = () => {
             </div>
           </Link>
 
-          <div className="flex-1 max-w-xs sm:max-w-xl">
+          <div className="flex-1 min-w-0 max-w-xs sm:max-w-xl">
             <FormSearch />
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-
-            <div className="scale-75 sm:scale-100 origin-right">
-              <CartIcon />
-            </div>
-
             <button
               onClick={toggleMenu}
               className="lg:hidden p-2 text-cyan-400 hover:text-cyan-300 transition-colors relative z-50"
@@ -50,6 +45,10 @@ export const Header = () => {
                 <span className={`block h-0.5 w-full bg-current transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
               </div>
             </button>
+
+            <div className="scale-75 sm:scale-100 origin-right">
+              <CartIcon />
+            </div>
 
             <nav className="hidden lg:flex items-center gap-3 lg:gap-4">
               <ContactButton />
