@@ -46,7 +46,7 @@ export const Header = () => {
               </div>
             </button>
 
-            <div className="scale-75 sm:scale-100 origin-right">
+            <div className="scale-90 sm:scale-100 origin-right">
               <CartIcon />
             </div>
 

@@ -6,13 +6,13 @@ export const CartIcon = () => {
     const { getCartCount } = useContext(ContextCart);
 
     return (
-        <Link to={'/carrito'} className="fixed top-6 right-6 z-50">
+        <Link to={'/carrito'}>
             <div className="relative cursor-pointer group">
                 <div className="absolute inset-0 bg-linear-to-br from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300" />
 
-                <div className="relative bg-linear-to-br from-slate-800 to-slate-900 border border-cyan-400/30 rounded-xl p-2.5 sm:p-3 shadow-2xl">
+                <div className="relative bg-linear-to-br from-slate-800 to-slate-900 border border-cyan-400/30 rounded-xl p-3 sm:p-3 shadow-lg">
                     <svg
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300"
+                        className="w-6 h-6 sm:w-6 sm:h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
