@@ -29,13 +29,15 @@ export const Header = () => {
             </div>
           </Link>
 
-          <div className="flex-1 max-w-xl">
+          <div className="flex-1 max-w-xs sm:max-w-xl">
             <FormSearch />
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
 
-            <CartIcon />
+            <div className="scale-75 sm:scale-100 origin-right">
+              <CartIcon />
+            </div>
 
             <button
               onClick={toggleMenu}
