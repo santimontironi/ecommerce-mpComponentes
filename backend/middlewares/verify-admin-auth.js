@@ -7,8 +7,7 @@ export const verifyAdminAuth = (req, res, next) => {
     const token = req.cookies?.token;
 
     if (!token) {
-        res.status(200).json({authorized: false})
-        next();
+        return res.status(200).json({authorized: false})
     }
 
     try {
@@ -16,7 +15,6 @@ export const verifyAdminAuth = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(200).json({authorized: false})
-        next();
+        return res.status(200).json({authorized: false})
     }
 };
