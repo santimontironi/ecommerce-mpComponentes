@@ -62,6 +62,10 @@ export const productsWithoutStock = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         const { name, price, description, category, stock } = req.body
 
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
@@ -88,6 +92,10 @@ export const addProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         const { id } = req.params
 
         const product = await Product.findByIdAndUpdate(id, { active: false })
@@ -101,6 +109,10 @@ export const deleteProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         const { id } = req.params;
 
         const updateData = { ...req.body };

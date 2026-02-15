@@ -5,6 +5,10 @@ import Product from '../models/Product.js';
 
 export const importProducts = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         // Subir el archivo a Cloudinary
         const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
         const uploadResult = await cloudinary.uploader.upload(fileBase64, {

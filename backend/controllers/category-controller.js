@@ -57,6 +57,10 @@ export const getSubCategories = async (req, res) => {
 
 export const addCategory = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         const { name, categoryParent } = req.body
         
         const categoryRepeated = await Category.findOne({ name, active: true })
@@ -123,6 +127,10 @@ export const getCategory = async (req, res) => {
 
 export const editCategory = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         const { id } = req.params
         const { name } = req.body
 
@@ -164,6 +172,10 @@ export const editCategory = async (req, res) => {
 
 export const deleteCategory = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ message: "No autorizado" });
+        }
+
         const { id } = req.params
 
         // Eliminar recursivamente la categoría y todas sus descendientes
