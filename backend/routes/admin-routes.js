@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { loginAdmin, logoutAdmin, dashboardAdmin } from "../controllers/admin-controllers.js";
-import { verifyToken } from "../middlewares/verify-token.js";
+import { verifyAdminAuth } from "../middlewares/verify-admin-auth.js";
 
 export const router = Router();
 
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
 
-router.get("/dashboard", verifyToken, dashboardAdmin);
+router.get("/dashboard", verifyAdminAuth, dashboardAdmin);

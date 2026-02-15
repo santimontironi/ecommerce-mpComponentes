@@ -3,20 +3,20 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const verifyToken = (req, res, next) => {
+export const verifyAdminAuth = (req, res, next) => {
     const token = req.cookies?.token;
 
     if (!token) {
-        req.user = null;
-        return next();
+        res.status(200).json({authorized: false})
+        next();
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
+        next();
     } catch (error) {
-        req.user = null;
+        res.status(200).json({authorized: false})
+        next();
     }
-
-    next();
 };
