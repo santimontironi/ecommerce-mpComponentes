@@ -50,7 +50,7 @@ const Home = () => {
           <div className="text-center mb-16 animate-fade-in">
             <div className="flex flex-col gap-2 mb-10">
               <h1 className="text-4xl md:text-7xl font-bold bg-linear-to-r py-5 from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-2xl">
-                Bienvenido a <span className="text-white/70">MpComponentes</span>
+                Bienvenido a <span className="text-white/70">MPComponentes</span>
               </h1>
               <p className="text-gray-300 text-lg md:text-xl">
                 el e-commerce de Seguimiento Tecnológico

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import logo from '../../img/logo.jpg'
+import coopImage from '../../img/coop.jpeg'
 import { CartIcon } from './CartIcon'
 import { ContactButton } from './ContactButton'
 import { LoginAdminButton } from './LoginAdminButton'
@@ -18,23 +19,39 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div className="flex items-center justify-between gap-2 sm:gap-4 h-16 sm:h-20">
 
-          <Link to="/" className="group flex items-center gap-3 shrink-0">
-            <div className="relative">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Link to="/" className="group flex items-center gap-3 shrink-0">
+              <div className="relative">
+                <img
+                  src={logo}
+                  alt="Logo"
+                  className="h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 object-contain rounded-xl sm:rounded-2xl lg:rounded-3xl transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-cyan-400/30 to-transparent opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+              </div>
+            </Link>
+
+            <a
+              href="https://www.seguimientotec.com.ar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative shrink-0"
+            >
               <img
-                src={logo}
-                alt="Logo"
+                src={coopImage}
+                alt="Coop"
                 className="h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 object-contain rounded-xl sm:rounded-2xl lg:rounded-3xl transition-transform duration-300 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-linear-to-r from-transparent via-cyan-400/30 to-transparent opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
-            </div>
-          </Link>
+            </a>
+          </div>
 
           <div className="flex-1 min-w-0 max-w-xs sm:max-w-xl">
             <FormSearch />
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            
+
             <div className="scale-90 sm:scale-100 origin-right">
               <CartIcon />
             </div>
