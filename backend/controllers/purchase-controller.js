@@ -228,6 +228,11 @@ export const handleWebhook = async (req, res) => {
             payment_id: paymentData.id
         }
 
+        if (purchasedItems.length === 0) {
+            console.log('⚠️ Pago inválido sin productos reales. No se envían emails.')
+            return res.sendStatus(200)
+        }
+
         await sendPurchaseNotificationToStore(purchaseData)
         await sendPurchaseConfirmationToCustomer(purchaseData)
 
