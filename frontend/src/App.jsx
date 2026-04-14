@@ -22,8 +22,6 @@ import PaymentFailed from "./pages/UserPages/PaymentFailed";
 import SubCategories from "./pages/CategoryPages/SubCategories";
 import OrderProduct from "./pages/ProductPages/OrderProduct";
 import ReservProduct from "./pages/ProductPages/ReservProduct";
-import Chatbot from "./components/ChatBot/Chatbot";
-
 const AppProviders = ({ children }) => (
   <AdminProvider>
     <ProductsProvider>
@@ -31,7 +29,6 @@ const AppProviders = ({ children }) => (
         <CartProvider>
           <PurchaseProvider>
             {children}
-            <Chatbot />
           </PurchaseProvider>
         </CartProvider>
       </CategoriesProvider>
